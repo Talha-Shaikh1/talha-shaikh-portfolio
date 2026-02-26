@@ -31,7 +31,7 @@ Talha Shaikh is a confident junior full-stack developer based in Pakistan, open 
 - Frontend: Next.js, React, TypeScript, Tailwind CSS, Framer Motion
 - Backend: Node.js, Python, FastAPI, Prisma
 - Databases: PostgreSQL (Neon), Supabase, Redis
-- AI: OpenAI Agents SDK, LangChain, OpenRouter
+- AI: OpenAI Agents SDK, OpenRouter
 - CMS: Sanity
 - DevOps: Docker, Vercel
 
@@ -48,9 +48,9 @@ Talha Shaikh is a confident junior full-stack developer based in Pakistan, open 
 
 ## Contact & Availability
 - Available for freelance and full-time opportunities
-- Email: talha@example.com
-- GitHub: github.com/talhashaikh
-- LinkedIn: linkedin.com/in/talhashaikh
+- Email:  talha369852@gmail.com
+- GitHub: https://github.com/Talha-Shaikh1
+- LinkedIn: https://www.linkedin.com/in/muhammad-talha-938b75377?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
 - Location: Pakistan (remote-friendly)
 
 ## Personality
