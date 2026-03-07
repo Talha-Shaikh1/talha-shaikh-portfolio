@@ -2,18 +2,231 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
-import { Mail, Github, Linkedin, Twitter, Send, ArrowUpRight, CheckCircle, Loader2, MapPin, Clock, XCircle } from 'lucide-react'
+import { 
+  Mail, 
+  Github, 
+  Linkedin, 
+  Twitter, 
+  Send, 
+  ArrowUpRight, 
+  CheckCircle, 
+  Loader2, 
+  MapPin, 
+  Clock, 
+  XCircle,
+  Sparkles,
+  MessageCircle,
+  Zap,
+  Coffee
+} from 'lucide-react'
 
 const socialLinks = [
-  { icon: Github,   href: 'https://github.com/Talha-Shaikh1',   label: 'GitHub',     desc: 'Check my code',      darkColor: '#e2e8f0', lightColor: '#374151', bg: 'rgba(226,232,240,0.08)' },
-  { icon: Linkedin, href: 'https://www.linkedin.com/in/muhammad-talha-938b75377?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app', label: 'LinkedIn', desc: "Let's connect",    darkColor: '#60a5fa', lightColor: '#1d4ed8', bg: 'rgba(96,165,250,0.08)'  },
-  { icon: Twitter,  href: 'https://github.com/Talha-Shaikh1',  label: 'Twitter / X', desc: 'Follow my updates', darkColor: '#818cf8', lightColor: '#4f46e5', bg: 'rgba(129,140,248,0.08)' },
-  { icon: Mail,     href: 'mailto:talha369852@gmail.com',         label: 'Email',       desc: 'talha369852@gmail.com',  darkColor: '#a78bfa', lightColor: '#7c3aed', bg: 'rgba(167,139,250,0.08)' },
+  { 
+    icon: Github, 
+    href: 'https://github.com/Talha-Shaikh1', 
+    label: 'GitHub', 
+    desc: 'Check my code', 
+    color: '#e2e8f0',
+    bg: 'rgba(226,232,240,0.08)',
+    gradient: 'from-slate-400 to-slate-500',
+  },
+  { 
+    icon: Linkedin, 
+    href: 'https://www.linkedin.com/in/muhammad-talha-938b75377', 
+    label: 'LinkedIn', 
+    desc: "Let's connect", 
+    color: '#0077b5',
+    bg: 'rgba(0,119,181,0.08)',
+    gradient: 'from-blue-500 to-blue-600',
+  },
+  { 
+    icon: Twitter, 
+    href: 'https://github.com/Talha-Shaikh1', 
+    label: 'Twitter / X', 
+    desc: 'Follow my updates', 
+    color: '#1da1f2',
+    bg: 'rgba(29,161,242,0.08)',
+    gradient: 'from-sky-400 to-sky-500',
+  },
+  { 
+    icon: Mail, 
+    href: 'mailto:talha369852@gmail.com', 
+    label: 'Email', 
+    desc: 'talha369852@gmail.com', 
+    color: '#ea4335',
+    bg: 'rgba(234,67,53,0.08)',
+    gradient: 'from-red-400 to-red-500',
+  },
 ]
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
+
+// Animated social card
+function SocialCard({ link, index, inView, isLight }: { 
+  link: typeof socialLinks[0]; 
+  index: number; 
+  inView: boolean;
+  isLight: boolean;
+}) {
+  const Icon = link.icon
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <motion.a
+      key={link.label}
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="group relative block"
+    >
+      <div
+        className="flex items-center gap-4 p-4 rounded-2xl transition-all duration-300"
+        style={{
+          background: hovered ? link.bg : isLight ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.02)',
+          border: `1px solid ${isLight ? 'rgba(109,40,217,0.12)' : 'rgba(139,92,246,0.12)'}`,
+        }}
+      >
+        {/* Icon container */}
+        <motion.div
+          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+          style={{
+            background: `linear-gradient(135deg, ${link.color}20, ${link.color}10)`,
+            border: `1px solid ${link.color}30`,
+          }}
+          animate={{ scale: hovered ? 1.1 : 1, rotate: hovered ? 5 : 0 }}
+          transition={{ type: 'spring', stiffness: 400 }}
+        >
+          <Icon className="w-5 h-5" style={{ color: link.color }} />
+        </motion.div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <p
+            className="text-sm font-semibold transition-colors"
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              color: isLight ? '#0f0a1e' : '#ffffff',
+            }}
+          >
+            {link.label}
+          </p>
+          <p
+            className="text-xs truncate"
+            style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
+          >
+            {link.desc}
+          </p>
+        </div>
+
+        {/* Arrow */}
+        <motion.div
+          className="w-8 h-8 rounded-lg flex items-center justify-center"
+          style={{ background: `${link.color}15` }}
+          animate={{ x: hovered ? 4 : 0, scale: hovered ? 1.1 : 1 }}
+          transition={{ type: 'spring', stiffness: 400 }}
+        >
+          <ArrowUpRight className="w-4 h-4" style={{ color: link.color }} />
+        </motion.div>
+      </div>
+
+      {/* Hover gradient overlay */}
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{
+          background: `linear-gradient(135deg, ${link.color}10, transparent)`,
+        }}
+      />
+    </motion.a>
+  )
+}
+
+// Premium form input
+function FormInput({ 
+  field, 
+  type, 
+  placeholder, 
+  value, 
+  onChange, 
+  onFocus, 
+  onBlur, 
+  focused, 
+  isLight,
+  rows 
+}: any) {
+  const isTextarea = rows !== undefined
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative"
+    >
+      {isTextarea ? (
+        <textarea
+          name={field}
+          placeholder={placeholder}
+          rows={rows}
+          required
+          value={value}
+          onChange={onChange}
+          onFocus={() => onFocus(field)}
+          onBlur={() => onBlur()}
+          className="w-full rounded-xl px-4 py-3.5 text-sm outline-none transition-all duration-300 resize-none"
+          style={{
+            background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
+            color: isLight ? '#0f0a1e' : '#ffffff',
+            border: `1px solid ${focused === field ? 'rgba(124,58,237,0.5)' : 'rgba(124,58,237,0.15)'}`,
+            boxShadow: focused === field ? '0 0 0 3px rgba(124,58,237,0.08)' : 'none',
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        />
+      ) : (
+        <input
+          name={field}
+          type={type}
+          placeholder={placeholder}
+          required
+          value={value}
+          onChange={onChange}
+          onFocus={() => onFocus(field)}
+          onBlur={() => onBlur()}
+          className="w-full rounded-xl px-4 py-3.5 text-sm outline-none transition-all duration-300"
+          style={{
+            background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
+            color: isLight ? '#0f0a1e' : '#ffffff',
+            border: `1px solid ${focused === field ? 'rgba(124,58,237,0.5)' : 'rgba(124,58,237,0.15)'}`,
+            boxShadow: focused === field ? '0 0 0 3px rgba(124,58,237,0.08)' : 'none',
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        />
+      )}
+      
+      {/* Animated border glow */}
+      <motion.div
+        className="absolute inset-0 rounded-xl pointer-events-none"
+        style={{
+          background: `linear-gradient(135deg, rgba(124,58,237,0.3), rgba(219,39,119,0.3))`,
+          opacity: focused === field ? 1 : 0,
+          padding: '1px',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          borderRadius: '12px',
+        }}
+        initial={false}
+        animate={{ opacity: focused === field ? 1 : 0 }}
+        transition={{ duration: 0.2 }}
+      />
+    </motion.div>
+  )
+}
 
 export default function Contact() {
   const { theme } = useTheme()
@@ -21,6 +234,7 @@ export default function Contact() {
   useEffect(() => setMounted(true), [])
   const isLight = mounted && theme === 'light'
 
+  const [sectionRef, sectionInView] = useInView({ triggerOnce: true, threshold: 0.1 })
   const [headingRef, headingInView] = useInView({ triggerOnce: true, threshold: 0.2 })
   const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.05 })
 
@@ -59,62 +273,46 @@ export default function Contact() {
     }
   }
 
-  // ── Style helpers ────────────────────────────────────────────────
-  const sectionBg = isLight ? '#f8f7ff' : '#050508'
-  const headingColor = isLight ? '#0f0a1e' : '#ffffff'
-  const subColor = isLight ? '#6b7280' : '#6b7280'
-  const accentColor = isLight ? 'rgba(109,40,217,0.5)' : 'rgba(139,92,246,0.5)'
-  const labelColor = isLight ? '#7c3aed' : '#a78bfa'
-
-  const cardBg = isLight ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.02)'
-  const cardBorder = isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'
-  const cardShadow = isLight ? '0 2px 20px rgba(109,40,217,0.06)' : 'none'
-
-  const inputBg = isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)'
-  const inputColor = isLight ? '#0f0a1e' : '#ffffff'
-  const inputPlaceholder = isLight ? '#9ca3af' : '#4b5563'
-  const inputBorderIdle = isLight ? 'rgba(109,40,217,0.15)' : 'rgba(255,255,255,0.07)'
-  const inputBorderFocus = isLight ? 'rgba(109,40,217,0.5)' : 'rgba(139,92,246,0.5)'
-  const inputShadowFocus = isLight ? '0 0 0 3px rgba(109,40,217,0.08)' : '0 0 0 3px rgba(139,92,246,0.08)'
-
-  const inputStyle = (field: string) => ({
-    background: inputBg,
-    color: inputColor,
-    border: focused === field ? `1px solid ${inputBorderFocus}` : `1px solid ${inputBorderIdle}`,
-    boxShadow: focused === field ? inputShadowFocus : 'none',
-    fontFamily: "'DM Sans', sans-serif",
-  })
-
   return (
     <section
       id="contact"
+      ref={sectionRef}
       className="relative py-32 px-6 overflow-hidden transition-colors duration-500"
-      style={{ background: sectionBg }}
+      style={{ background: 'var(--bg-primary)' }}
     >
       <style dangerouslySetInnerHTML={{ __html: [
         "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap');",
-        `#contact input::placeholder, #contact textarea::placeholder { color: ${inputPlaceholder} !important; }`,
       ].join('\n') }} />
 
       {/* Background */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(109,40,217,0.25)' : 'rgba(139,92,246,0.3)'}, transparent)` }} />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(219,39,119,0.15)' : 'rgba(236,72,153,0.2)'}, transparent)` }} />
+        {/* Grid lines */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
+          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(109,40,217,0.25)' : 'rgba(139,92,246,0.3)'}, transparent)` }}
+        />
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
+          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(219,39,119,0.15)' : 'rgba(236,72,153,0.2)'}, transparent)` }}
+        />
+        
+        {/* Animated orbs */}
         <motion.div
           className="absolute -top-40 right-[-100px] w-[500px] h-[500px] rounded-full"
           style={{ background: `radial-gradient(circle, ${isLight ? 'rgba(109,40,217,0.06)' : 'rgba(139,92,246,0.08)'} 0%, transparent 70%)` }}
-          animate={{ scale: [1, 1.2, 1] }}
+          animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }}
           transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
           className="absolute -bottom-40 left-[-100px] w-[500px] h-[500px] rounded-full"
           style={{ background: `radial-gradient(circle, ${isLight ? 'rgba(219,39,119,0.05)' : 'rgba(236,72,153,0.06)'} 0%, transparent 70%)` }}
-          animate={{ scale: [1, 1.15, 1] }}
+          animate={{ scale: [1, 1.15, 1], x: [0, -20, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div className="absolute inset-0"
+        
+        {/* Dot grid pattern */}
+        <div
+          className="absolute inset-0"
           style={{
             backgroundImage: `radial-gradient(${isLight ? 'rgba(109,40,217,0.12)' : 'rgba(139,92,246,0.2)'} 1px, transparent 1px)`,
             backgroundSize: '40px 40px',
@@ -124,7 +322,6 @@ export default function Contact() {
       </div>
 
       <div className="max-w-6xl mx-auto">
-
         {/* Heading */}
         <motion.div
           ref={headingRef}
@@ -134,55 +331,97 @@ export default function Contact() {
           className="mb-16"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-[50px]" style={{ background: accentColor }} />
-            <span className="text-xs font-mono tracking-[0.3em] uppercase" style={{ color: labelColor }}>
+            <div className="h-px w-[50px]" style={{ background: isLight ? 'rgba(109,40,217,0.4)' : 'rgba(139,92,246,0.5)' }} />
+            <span
+              className="text-xs font-mono tracking-[0.3em] uppercase"
+              style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
+            >
               Say hello
             </span>
           </div>
           <h2
             className="text-5xl md:text-6xl font-black tracking-tighter leading-none"
-            style={{ fontFamily: "'Syne', sans-serif", color: headingColor }}
+            style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
           >
             Get In{' '}
             <span className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
               Touch
             </span>
           </h2>
-          <p className="mt-4 text-base max-w-lg" style={{ fontFamily: "'DM Sans', sans-serif", color: subColor }}>
+          <p
+            className="mt-4 text-base max-w-2xl"
+            style={{ fontFamily: "'DM Sans', sans-serif", color: isLight ? '#6b7280' : '#6b7280' }}
+          >
             Have a project in mind or want to collaborate? I'd love to hear from you — let's build something great together.
           </p>
         </motion.div>
 
         {/* Main grid */}
-        <div ref={contentRef} className="grid lg:grid-cols-[1fr_1.6fr] gap-6 items-start">
-
+        <div ref={contentRef} className="grid lg:grid-cols-[1fr_1.6fr] gap-8 items-start">
+          
           {/* Left — Info + Socials */}
-          <div className="space-y-4">
-
+          <div className="space-y-6">
             {/* Availability card */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-2xl p-5 transition-colors duration-300"
-              style={{ background: cardBg, border: `1px solid ${cardBorder}`, backdropFilter: 'blur(12px)', boxShadow: cardShadow }}
+              className="relative rounded-2xl p-5 overflow-hidden"
+              style={{
+                background: isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.02)',
+                border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
+                backdropFilter: 'blur(12px)',
+              }}
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.2)' }}>
-                  <Clock className="w-4 h-4 text-emerald-400" />
+              {/* Corner accent */}
+              <div
+                className="absolute top-0 right-0 w-32 h-32 rounded-bl-full"
+                style={{ background: 'radial-gradient(circle at top right, rgba(52,211,153,0.15), transparent 70%)' }}
+              />
+              
+              <div className="flex items-center gap-3 mb-4 relative z-10">
+                <div 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #34d399, #10b981)',
+                    boxShadow: '0 4px 20px rgba(52,211,153,0.4)',
+                  }}
+                >
+                  <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold" style={{ fontFamily: "'Syne', sans-serif", color: headingColor }}>
+                  <p
+                    className="text-sm font-bold"
+                    style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
+                  >
                     Available Now
                   </p>
-                  <p className="text-xs font-mono" style={{ color: subColor }}>Open to opportunities</p>
+                  <p className="text-xs font-mono" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
+                    Open to opportunities
+                  </p>
                 </div>
-                <div className="ml-auto w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <motion.div 
+                  className="ml-auto w-2.5 h-2.5 rounded-full bg-emerald-400"
+                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
               </div>
-              <div className="flex items-center gap-2 text-xs font-mono" style={{ color: subColor }}>
-                <MapPin className="w-3 h-3" style={{ color: labelColor }} />
+              
+              <div className="flex items-center gap-2 text-xs font-mono relative z-10" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
+                <MapPin className="w-3.5 h-3.5" style={{ color: '#7c3aed' }} />
                 <span>Pakistan · Remote friendly</span>
+              </div>
+
+              {/* Quick stats */}
+              <div className="flex items-center gap-4 mt-4 pt-4 relative z-10" style={{ borderTop: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}` }}>
+                <div className="flex items-center gap-1.5">
+                  <Coffee className="w-3.5 h-3.5" style={{ color: '#a78bfa' }} />
+                  <span className="text-xs" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>Quick responder</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
+                  <span className="text-xs" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>24h turnaround</span>
+                </div>
               </div>
             </motion.div>
 
@@ -191,42 +430,29 @@ export default function Contact() {
               initial={{ opacity: 0, x: -40 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-2xl p-5 transition-colors duration-300"
-              style={{ background: cardBg, border: `1px solid ${cardBorder}`, backdropFilter: 'blur(12px)', boxShadow: cardShadow }}
+              className="relative rounded-2xl p-5"
+              style={{
+                background: isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.02)',
+                border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
+                backdropFilter: 'blur(12px)',
+              }}
             >
-              <p className="text-xs font-mono uppercase tracking-widest mb-4" style={{ color: subColor }}>Find me on</p>
-              <div className="space-y-2">
-                {socialLinks.map((link, i) => {
-                  const color = isLight ? link.lightColor : link.darkColor
-                  return (
-                    <motion.a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={contentInView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ delay: 0.15 + i * 0.07, duration: 0.5 }}
-                      whileHover={{ x: 5 }}
-                      className="flex items-center gap-3 p-2.5 rounded-xl group transition-all duration-200"
-                      style={{ background: 'transparent' }}
-                      onMouseEnter={e => (e.currentTarget.style.background = link.bg)}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                    >
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                        style={{ background: link.bg, border: `1px solid ${color}25` }}>
-                        <link.icon className="w-4 h-4" style={{ color }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium" style={{ fontFamily: "'DM Sans', sans-serif", color: headingColor }}>
-                          {link.label}
-                        </p>
-                        <p className="text-xs truncate" style={{ color: subColor }}>{link.desc}</p>
-                      </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 shrink-0 transition-colors group-hover:text-violet-400" style={{ color: subColor }} />
-                    </motion.a>
-                  )
-                })}
+              <div className="flex items-center gap-2 mb-4">
+                <MessageCircle className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>
+                  Connect
+                </span>
+              </div>
+              <div className="space-y-3">
+                {socialLinks.map((link, i) => (
+                  <SocialCard 
+                    key={link.label} 
+                    link={link} 
+                    index={i} 
+                    inView={contentInView}
+                    isLight={isLight}
+                  />
+                ))}
               </div>
             </motion.div>
           </div>
@@ -236,53 +462,77 @@ export default function Contact() {
             initial={{ opacity: 0, x: 40 }}
             animate={contentInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative rounded-2xl overflow-hidden transition-colors duration-300"
-            style={{ background: cardBg, border: `1px solid ${cardBorder}`, backdropFilter: 'blur(16px)', boxShadow: cardShadow }}
+            className="relative rounded-3xl overflow-hidden"
+            style={{
+              background: isLight ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.02)',
+              border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
+              backdropFilter: 'blur(20px)',
+              boxShadow: isLight ? '0 4px 40px rgba(109,40,217,0.08)' : 'none',
+            }}
           >
-            {/* Top accent bar */}
-            <div className="h-[2px] w-full" style={{ background: 'linear-gradient(90deg, #a78bfa, #ec4899)' }} />
+            {/* Top gradient bar */}
+            <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #7c3aed, #db2777, #ec4899)' }} />
 
             <AnimatePresence mode="wait">
-              {/* ── Success state ── */}
+              {/* Success state */}
               {formState === 'success' && (
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-10 flex flex-col items-center justify-center text-center min-h-[400px]"
+                  className="p-10 flex flex-col items-center justify-center text-center min-h-[450px]"
                 >
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
-                    className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
-                    style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.3)' }}
+                    className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #34d399, #10b981)',
+                      boxShadow: '0 10px 40px rgba(52,211,153,0.4)',
+                    }}
                   >
-                    <CheckCircle className="w-8 h-8 text-emerald-400" />
+                    <CheckCircle className="w-10 h-10 text-white" />
                   </motion.div>
-                  <h3 className="text-2xl font-black mb-2" style={{ fontFamily: "'Syne', sans-serif", color: headingColor }}>
+                  <h3
+                    className="text-2xl font-black mb-3"
+                    style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
+                  >
                     Message Sent! 🎉
                   </h3>
-                  <p className="text-sm max-w-xs mb-1" style={{ fontFamily: "'DM Sans', sans-serif", color: subColor }}>
+                  <p
+                    className="text-sm max-w-xs mb-6"
+                    style={{ fontFamily: "'DM Sans', sans-serif", color: isLight ? '#6b7280' : '#9ca3af' }}
+                  >
                     Thanks for reaching out! I've received your message and you should have a confirmation email in your inbox.
                   </p>
-                  <p className="text-xs font-mono mb-6" style={{ color: labelColor }}>
-                    I'll reply within 24 hours.
-                  </p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl"
+                    style={{ background: isLight ? 'rgba(52,211,153,0.1)' : 'rgba(52,211,153,0.15)' }}
+                  >
+                    <Clock className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="text-xs font-mono text-emerald-600">I'll reply within 24 hours</span>
+                  </motion.div>
                   <motion.button
                     onClick={() => setFormState('idle')}
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.97 }}
-                    className="px-5 py-2 rounded-xl text-xs font-mono transition-colors"
-                    style={{ background: isLight ? 'rgba(109,40,217,0.08)' : 'rgba(139,92,246,0.1)', border: `1px solid ${isLight ? 'rgba(109,40,217,0.2)' : 'rgba(139,92,246,0.25)'}`, color: labelColor }}
+                    className="mt-8 px-6 py-3 rounded-xl text-xs font-mono transition-colors"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #7c3aed, #db2777)',
+                      color: '#ffffff',
+                    }}
                   >
                     Send another message
                   </motion.button>
                 </motion.div>
               )}
 
-              {/* ── Form state ── */}
+              {/* Form state */}
               {formState !== 'success' && (
                 <motion.form
                   key="form"
@@ -293,50 +543,52 @@ export default function Contact() {
                   className="p-6 space-y-4"
                 >
                   <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { field: 'name', placeholder: 'Your Name', type: 'text' },
-                      { field: 'email', placeholder: 'Email Address', type: 'email' },
-                    ].map(({ field, placeholder, type }) => (
-                      <input
-                        key={field}
-                        name={field}
-                        type={type}
-                        placeholder={placeholder}
-                        required
-                        value={fields[field as keyof typeof fields]}
-                        onChange={handleChange}
-                        onFocus={() => setFocused(field)}
-                        onBlur={() => setFocused(null)}
-                        className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200"
-                        style={inputStyle(field)}
-                      />
-                    ))}
+                    <FormInput
+                      field="name"
+                      type="text"
+                      placeholder="Your Name"
+                      value={fields.name}
+                      onChange={handleChange}
+                      onFocus={setFocused}
+                      onBlur={() => setFocused(null)}
+                      focused={focused}
+                      isLight={isLight}
+                    />
+                    <FormInput
+                      field="email"
+                      type="email"
+                      placeholder="Email Address"
+                      value={fields.email}
+                      onChange={handleChange}
+                      onFocus={setFocused}
+                      onBlur={() => setFocused(null)}
+                      focused={focused}
+                      isLight={isLight}
+                    />
                   </div>
 
-                  <input
-                    name="subject"
+                  <FormInput
+                    field="subject"
                     type="text"
                     placeholder="Subject"
-                    required
                     value={fields.subject}
                     onChange={handleChange}
-                    onFocus={() => setFocused('subject')}
+                    onFocus={setFocused}
                     onBlur={() => setFocused(null)}
-                    className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200"
-                    style={inputStyle('subject')}
+                    focused={focused}
+                    isLight={isLight}
                   />
 
-                  <textarea
-                    name="message"
+                  <FormInput
+                    field="message"
                     placeholder="Tell me about your project..."
-                    rows={5}
-                    required
                     value={fields.message}
                     onChange={handleChange}
-                    onFocus={() => setFocused('message')}
+                    onFocus={setFocused}
                     onBlur={() => setFocused(null)}
-                    className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200 resize-none"
-                    style={inputStyle('message')}
+                    focused={focused}
+                    isLight={isLight}
+                    rows={5}
                   />
 
                   {/* Error message */}
@@ -346,11 +598,17 @@ export default function Contact() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex items-center gap-2.5 px-4 py-3 rounded-xl"
-                        style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
+                        className="flex items-center gap-3 p-4 rounded-xl"
+                        style={{ 
+                          background: 'rgba(239,68,68,0.08)', 
+                          border: '1px solid rgba(239,68,68,0.2)',
+                        }}
                       >
-                        <XCircle className="w-4 h-4 text-red-400 shrink-0" />
-                        <p className="text-xs text-red-400" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                        <XCircle className="w-5 h-5 text-red-400 shrink-0" />
+                        <p
+                          className="text-sm"
+                          style={{ fontFamily: "'DM Sans', sans-serif", color: '#ef4444' }}
+                        >
                           {errorMsg}
                         </p>
                       </motion.div>
@@ -362,10 +620,16 @@ export default function Contact() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={formState === 'loading'}
-                    className="w-full relative py-3.5 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 overflow-hidden disabled:opacity-70"
+                    className="w-full relative py-4 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 overflow-hidden disabled:opacity-70"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   >
-                    <span className="absolute inset-0" style={{ background: 'linear-gradient(to right, #7c3aed, #db2777)' }} />
+                    <span className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #7c3aed, #db2777)' }} />
+                    <motion.span 
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.2), transparent)' }}
+                      animate={{ x: formState === 'loading' ? [-100, 100] : 0 }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
                     <span className="relative flex items-center gap-2">
                       {formState === 'loading' ? (
                         <>
@@ -381,9 +645,16 @@ export default function Contact() {
                     </span>
                   </motion.button>
 
-                  <p className="text-center text-xs font-mono" style={{ color: isLight ? '#d1d5db' : '#374151' }}>
-                    You'll receive an auto-reply confirmation · Usually responds within 24h
-                  </p>
+                  <div className="flex items-center justify-center gap-2 text-xs">
+                    <Sparkles className="w-3.5 h-3.5" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+                    <p
+                      className="text-center font-mono"
+                      style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
+                    >
+                      You'll receive an auto-reply confirmation · Usually responds within 24h
+                    </p>
+                    <Sparkles className="w-3.5 h-3.5" style={{ color: isLight ? '#f59e0b' : '#fbbf24' }} />
+                  </div>
                 </motion.form>
               )}
             </AnimatePresence>
