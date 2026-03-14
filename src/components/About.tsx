@@ -63,7 +63,7 @@ const timeline = [
   {
     icon: GraduationCap,
     title: 'Learning Journey Begins',
-    period: '2020',
+    period: '2023',
     description: 'Started programming with Python and web development fundamentals',
     details: ['Self-taught programming', 'Built first web applications', 'Explored multiple languages'],
     color: '#8b5cf6',
@@ -71,7 +71,7 @@ const timeline = [
   {
     icon: Briefcase,
     title: 'First Professional Projects',
-    period: '2021-2022',
+    period: '2024',
     description: 'Transitioned to professional development with client projects',
     details: ['Freelance web development', 'Built e-commerce solutions', 'Learned React & Next.js'],
     color: '#34d399',
@@ -79,7 +79,7 @@ const timeline = [
   {
     icon: Code2,
     title: 'Full-Stack Specialization',
-    period: '2023',
+    period: '2025',
     description: 'Deepened expertise in full-stack development and databases',
     details: ['Mastered TypeScript', 'PostgreSQL & Prisma', 'Production deployments'],
     color: '#60a5fa',
@@ -87,7 +87,7 @@ const timeline = [
   {
     icon: Brain,
     title: 'AI Integration Focus',
-    period: '2024-Present',
+    period: '2026-Present',
     description: 'Specializing in AI-powered applications and LLM integrations',
     details: ['OpenAI SDK expertise', 'Custom chatbot solutions', 'RAG systems'],
     color: '#f472b6',
@@ -388,7 +388,7 @@ export default function About() {
             </motion.div>
 
             {/* Resume link */}
-            <motion.a
+            {/* <motion.a
               href="#"
               initial={{ opacity: 0, x: -50 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
@@ -404,7 +404,7 @@ export default function About() {
                 Download Resume
               </span>
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </motion.a>
+            </motion.a> */}
           </div>
 
           {/* Right — Timeline + Highlights */}
@@ -453,9 +453,9 @@ export default function About() {
             >
               <div className="flex items-center justify-between">
                 {[
-                  { label: 'Projects', val: '30+' },
-                  { label: 'AI Integrations', val: '15+' },
-                  { label: 'Years Active', val: '4+' },
+                  { label: 'Projects', val: '6+' },
+                  { label: 'AI Integrations', val: '5+' },
+                  { label: 'Years Active', val: '2+' },
                   { label: 'Technologies', val: '12+' },
                 ].map((stat, i) => (
                   <motion.div

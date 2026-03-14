@@ -297,9 +297,9 @@ export default function Hero() {
   ]
 
   const stats = [
-    { value: '30+', label: 'Projects' },
-    { value: '15+', label: 'AI Integrations' },
-    { value: '4+', label: 'Years Active' },
+    { value: '6+', label: 'Projects' },
+    { value: '5+', label: 'AI Integrations' },
+    { value: '2+', label: 'Years Active' },
   ]
 
   return (

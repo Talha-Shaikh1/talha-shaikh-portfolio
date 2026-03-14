@@ -174,7 +174,7 @@ function ServiceCard({ service, inView, isLight }: {
           </div>
 
           {/* Learn more link */}
-          <motion.div
+          {/* <motion.div
             className="flex items-center gap-2 text-xs font-mono"
             style={{ color: service.accentColor }}
             animate={{ x: isHovered ? 4 : 0 }}
@@ -182,7 +182,7 @@ function ServiceCard({ service, inView, isLight }: {
           >
             <span>Explore service</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </motion.div>
+          </motion.div> */}
         </div>
 
         {/* Corner accent */}
