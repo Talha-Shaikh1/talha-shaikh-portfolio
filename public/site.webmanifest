@@ -1,0 +1,20 @@
+{
+  "name": "Talha Shaikh - Full Stack Developer",
+  "short_name": "Talha Shaikh",
+  "description": "Full Stack Web Developer and AI Automation Engineer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["technology", "productivity"],
+  "lang": "en-US"
+}
