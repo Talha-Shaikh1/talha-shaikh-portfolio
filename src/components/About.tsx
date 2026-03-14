@@ -4,202 +4,358 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useRef, useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { 
-  Code2, 
-  Brain, 
-  Rocket, 
-  Users, 
-  Sparkles, 
-  ArrowUpRight, 
-  Award,
-  Calendar,
-  MapPin,
-  GraduationCap,
-  Briefcase,
-  Trophy,
-  Zap
+import {
+  Terminal,
+  Code2,
+  Cpu,
+  Database,
+  Globe,
+  Zap,
+  GitBranch,
+  GitCommit,
+  FolderOpen,
+  FileCode,
+  Layers,
+  ChevronRight,
 } from 'lucide-react'
 
-const highlights = [
-  {
-    icon: Code2,
-    title: 'Practical Experience',
-    description: 'Building production-ready applications with modern tech stack',
-    accent: 'from-violet-500 to-indigo-500',
-    color: '#8b5cf6',
-    stat: '4+',
-    statLabel: 'Years',
-  },
-  {
-    icon: Brain,
-    title: 'AI Integration',
-    description: 'Specialized in OpenAI Agents SDK and intelligent chatbot systems',
-    accent: 'from-fuchsia-500 to-pink-500',
-    color: '#d946ef',
-    stat: '15+',
-    statLabel: 'AI Projects',
-  },
-  {
-    icon: Rocket,
-    title: 'Continuous Growth',
-    description: 'Deepening backend architecture and scalable systems knowledge',
-    accent: 'from-pink-500 to-rose-500',
-    color: '#ec4899',
-    stat: '30+',
-    statLabel: 'Projects',
-  },
-  {
-    icon: Users,
-    title: 'Problem Solver',
-    description: 'Approaching challenges with innovative and practical solutions',
-    accent: 'from-indigo-500 to-violet-500',
-    color: '#6366f1',
-    stat: '100%',
-    statLabel: 'Commitment',
-  },
-]
+/* ═══════════════════════════════════════════════════════════════
+   DEVELOPER MODE ABOUT - IDE/Code Editor Inspired
+   ═══════════════════════════════════════════════════════════════ */
 
-const timeline = [
-  {
-    icon: GraduationCap,
-    title: 'Learning Journey Begins',
-    period: '2023',
-    description: 'Started programming with Python and web development fundamentals',
-    details: ['Self-taught programming', 'Built first web applications', 'Explored multiple languages'],
-    color: '#8b5cf6',
-  },
-  {
-    icon: Briefcase,
-    title: 'First Professional Projects',
-    period: '2024',
-    description: 'Transitioned to professional development with client projects',
-    details: ['Freelance web development', 'Built e-commerce solutions', 'Learned React & Next.js'],
-    color: '#34d399',
-  },
-  {
-    icon: Code2,
-    title: 'Full-Stack Specialization',
-    period: '2025',
-    description: 'Deepened expertise in full-stack development and databases',
-    details: ['Mastered TypeScript', 'PostgreSQL & Prisma', 'Production deployments'],
-    color: '#60a5fa',
-  },
-  {
-    icon: Brain,
-    title: 'AI Integration Focus',
-    period: '2026-Present',
-    description: 'Specializing in AI-powered applications and LLM integrations',
-    details: ['OpenAI SDK expertise', 'Custom chatbot solutions', 'RAG systems'],
-    color: '#f472b6',
-  },
-]
+// File Explorer Component
+function FileExplorer({ isLight }: { isLight: boolean }) {
+  const [expandedFolders, setExpandedFolders] = useState<string[]>(['src', 'components', 'lib'])
 
-const skills = [
-  'Next.js', 'TypeScript', 'Python', 'OpenAI SDK',
-  'Node.js', 'PostgreSQL', 'Prisma', 'TailwindCSS',
-  'FastAPI', 'Docker', 'Redis', 'LangChain',
-]
+  type FileTree = {
+    name: string
+    icon: React.ElementType
+    children?: FileTree[]
+  }
 
-function TimelineItem({ item, index, inView, isLight }: {
-  item: typeof timeline[0];
-  index: number;
-  inView: boolean;
-  isLight: boolean;
-}) {
-  const Icon = item.icon
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -40 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      className="relative pl-12 pb-12 last:pb-0"
-    >
-      {/* Timeline line */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-px"
-        style={{
-          background: `linear-gradient(180deg, ${item.color}60, ${item.color}20, transparent)`,
-        }}
-      />
-      
-      {/* Timeline dot */}
-      <motion.div
-        className="absolute left-0 top-0 w-8 h-8 -translate-x-1/2 rounded-full flex items-center justify-center"
-        style={{
-          background: `linear-gradient(135deg, ${item.color}, ${item.color}80)`,
-          boxShadow: `0 0 20px ${item.color}60`,
-        }}
-        initial={{ scale: 0 }}
-        animate={inView ? { scale: 1 } : {}}
-        transition={{ delay: index * 0.15 + 0.2, type: 'spring', stiffness: 300 }}
-      >
-        <Icon className="w-4 h-4 text-white" />
-      </motion.div>
+  const files: FileTree[] = [
+    {
+      name: 'src',
+      icon: FolderOpen,
+      children: [
+        { name: 'app', icon: FolderOpen, children: [
+          { name: 'page.tsx', icon: FileCode },
+          { name: 'layout.tsx', icon: FileCode },
+        ]},
+        { name: 'components', icon: FolderOpen, children: [
+          { name: 'Hero.tsx', icon: FileCode },
+          { name: 'About.tsx', icon: FileCode },
+          { name: 'Projects.tsx', icon: FileCode },
+        ]},
+        { name: 'lib', icon: FolderOpen, children: [
+          { name: 'utils.ts', icon: FileCode },
+          { name: 'api.ts', icon: FileCode },
+        ]},
+      ],
+    },
+  ]
 
-      {/* Content card */}
-      <motion.div
-        className="relative rounded-2xl p-5 transition-all duration-300"
-        whileHover={{ scale: 1.02, x: 8 }}
-        style={{
-          background: isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.02)',
-          border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.12)'}`,
-          backdropFilter: 'blur(12px)',
-        }}
-      >
-        {/* Period badge */}
-        <div className="flex items-center gap-2 mb-3">
-          <Calendar className="w-3.5 h-3.5" style={{ color: item.color }} />
+  const toggleFolder = (folderName: string) => {
+    setExpandedFolders(prev =>
+      prev.includes(folderName)
+        ? prev.filter(f => f !== folderName)
+        : [...prev, folderName]
+    )
+  }
+
+  const renderTree = (items: FileTree[], depth = 0) => {
+    return items.map((item) => (
+      <div key={item.name}>
+        <motion.div
+          className={`flex items-center gap-2 py-1.5 px-2 rounded-md cursor-pointer transition-colors ${
+            isLight ? 'hover:bg-violet-100' : 'hover:bg-violet-900/20'
+          }`}
+          style={{ paddingLeft: `${depth * 12 + 8}px` }}
+          onClick={() => item.children && toggleFolder(item.name)}
+          whileHover={{ x: 2 }}
+        >
+          {item.children && (
+            <ChevronRight
+              className={`w-3 h-3 transition-transform ${
+                expandedFolders.includes(item.name) ? 'rotate-90' : ''
+              }`}
+              style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
+            />
+          )}
+          <item.icon className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
           <span
-            className="text-xs font-mono uppercase tracking-wider"
-            style={{ color: item.color }}
+            className="text-xs font-mono"
+            style={{ color: isLight ? '#4b5563' : '#d1d5db' }}
           >
-            {item.period}
+            {item.name}
+          </span>
+        </motion.div>
+        {item.children && expandedFolders.includes(item.name) && (
+          <div>{renderTree(item.children, depth + 1)}</div>
+        )}
+      </div>
+    ))
+  }
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden backdrop-blur-xl"
+      style={{
+        background: isLight ? 'rgba(249, 250, 251, 0.9)' : 'rgba(15, 15, 25, 0.9)',
+        border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
+      }}
+    >
+      {/* Title bar */}
+      <div
+        className="flex items-center justify-between px-3 py-2"
+        style={{
+          background: isLight ? 'rgba(243, 244, 246, 0.8)' : 'rgba(30, 30, 46, 0.8)',
+          borderBottom: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.15)' : 'rgba(139, 92, 246, 0.2)'}`,
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <FolderOpen className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+          <span className="text-xs font-mono" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
+            EXPLORER
           </span>
         </div>
+        <span className="text-[10px] font-mono" style={{ color: isLight ? '#9ca3af' : '#6b7280' }}>
+          PORTFOLIO
+        </span>
+      </div>
 
-        {/* Title */}
-        <h4
-          className="text-lg font-bold mb-2"
-          style={{
-            fontFamily: "'Syne', sans-serif",
-            color: isLight ? '#0f0a1e' : '#ffffff',
-          }}
-        >
-          {item.title}
-        </h4>
+      {/* File tree */}
+      <div className="p-2">{renderTree(files)}</div>
+    </div>
+  )
+}
 
-        {/* Description */}
-        <p
-          className="text-sm mb-4"
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            color: isLight ? '#6b7280' : '#9ca3af',
-          }}
-        >
-          {item.description}
-        </p>
+// Terminal Window Component
+function TerminalWindow({ isLight }: { isLight: boolean }) {
+  const [displayedLines, setDisplayedLines] = useState<string[]>([])
+  const [currentCommandIndex, setCurrentCommandIndex] = useState(0)
+  const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  const [showingOutput, setShowingOutput] = useState(false)
+  const [outputCharIndex, setOutputCharIndex] = useState(0)
 
-        {/* Details */}
-        <div className="flex flex-wrap gap-2">
-          {item.details.map((detail, i) => (
-            <motion.span
-              key={detail}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: index * 0.15 + 0.3 + i * 0.05 }}
-              className="text-xs px-2.5 py-1 rounded-lg"
+  useEffect(() => {
+    const commands = [
+      { cmd: '$ whoami', output: 'Talha Shaikh - Full Stack Developer' },
+      { cmd: '$ cat skills.json', output: '["Next.js", "TypeScript", "Python", "AI Agents", "PostgreSQL"]' },
+      { cmd: '$ npm run build', output: '✓ Build completed successfully in 2.4s' },
+      { cmd: '$ git status', output: 'On branch main - Your branch is up to date.' },
+    ]
+
+    const timeout = setTimeout(() => {
+      const currentCmd = commands[currentCommandIndex]
+
+      if (!showingOutput) {
+        // Typing the command
+        if (currentCharIndex < currentCmd.cmd.length) {
+          setDisplayedLines(prev => {
+            const newLines = [...prev]
+            if (newLines.length === 0 || newLines[newLines.length - 1].startsWith('$')) {
+              newLines.push(currentCmd.cmd.slice(0, currentCharIndex + 1))
+            } else {
+              newLines[newLines.length - 1] = currentCmd.cmd.slice(0, currentCharIndex + 1)
+            }
+            return newLines
+          })
+          setCurrentCharIndex(prev => prev + 1)
+        } else {
+          // Command complete, show output next
+          setShowingOutput(true)
+        }
+      } else {
+        // Showing output
+        if (outputCharIndex < currentCmd.output.length) {
+          setDisplayedLines(prev => [...prev, currentCmd.output.slice(0, outputCharIndex + 1)])
+          setOutputCharIndex(prev => prev + 1)
+        } else {
+          // Output complete, move to next command
+          setTimeout(() => {
+            setCurrentCommandIndex(prev => (prev + 1) % commands.length)
+            setCurrentCharIndex(0)
+            setShowingOutput(false)
+            setOutputCharIndex(0)
+            setDisplayedLines(prev => [...prev, ''])
+          }, 800)
+        }
+      }
+    }, showingOutput ? 30 : 80)
+
+    return () => clearTimeout(timeout)
+  }, [currentCommandIndex, currentCharIndex, outputCharIndex, showingOutput])
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden backdrop-blur-xl font-mono text-xs"
+      style={{
+        background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(10, 10, 15, 0.95)',
+        border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.3)' : 'rgba(139, 92, 246, 0.4)'}`,
+      }}
+    >
+      {/* Terminal header */}
+      <div
+        className="flex items-center justify-between px-4 py-2"
+        style={{
+          background: isLight ? 'rgba(30, 30, 46, 0.9)' : 'rgba(20, 20, 30, 0.9)',
+          borderBottom: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.25)'}`,
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <Terminal className="w-4 h-4" style={{ color: '#34d399' }} />
+          <span className="text-xs" style={{ color: '#9ca3af' }}>
+            bash — 80x24
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+          <div className="w-3 h-3 rounded-full bg-green-500" />
+        </div>
+      </div>
+
+      {/* Terminal content */}
+      <div className="p-4 h-[200px] overflow-hidden">
+        {displayedLines.slice(-6).map((line, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-1.5 whitespace-pre-wrap"
+          >
+            <span
               style={{
-                background: `${item.color}15`,
-                color: item.color,
-                border: `1px solid ${item.color}25`,
+                color: line.startsWith('$') ? '#34d399' : '#9ca3af',
               }}
             >
-              {detail}
-            </motion.span>
-          ))}
-        </div>
-      </motion.div>
+              {line}
+            </span>
+          </motion.div>
+        ))}
+        <motion.span
+          className="inline-block w-2 h-4 bg-emerald-400 align-middle ml-1"
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+        />
+      </div>
+    </div>
+  )
+}
+
+// Stat Card Component
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  color,
+  isLight,
+  delay,
+  inView,
+}: {
+  icon: React.ElementType
+  label: string
+  value: string
+  color: string
+  isLight: boolean
+  delay: number
+  inView: boolean
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+      animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, type: 'spring', stiffness: 200 }}
+      whileHover={{ scale: 1.05, y: -3 }}
+      className="relative p-5 rounded-xl overflow-hidden"
+      style={{
+        background: isLight
+          ? `rgba(${color}, 0.08)`
+          : `rgba(${color}, 0.12)`,
+        border: `1px solid rgba(${color}, ${isLight ? 0.2 : 0.3})`,
+      }}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <Icon className="w-6 h-6" style={{ color: `rgb(${color})` }} />
+        <GitCommit className="w-4 h-4" style={{ color: `rgba(${color}, 0.5)` }} />
+      </div>
+      <motion.p
+        className="text-3xl font-black mb-1"
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          color: `rgb(${color})`,
+        }}
+        initial={{ scale: 0.5 }}
+        animate={inView ? { scale: 1 } : {}}
+        transition={{ delay: delay + 0.2, type: 'spring', stiffness: 300 }}
+      >
+        {value}
+      </motion.p>
+      <p
+        className="text-xs font-mono uppercase tracking-wider"
+        style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
+      >
+        {label}
+      </p>
+    </motion.div>
+  )
+}
+
+// Skill Bar Component
+function SkillBar({
+  name,
+  level,
+  color,
+  isLight,
+  index,
+  inView,
+}: {
+  name: string
+  level: number
+  color: string
+  isLight: boolean
+  index: number
+  inView: boolean
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="mb-4"
+    >
+      <div className="flex items-center justify-between mb-2">
+        <span
+          className="text-sm font-mono"
+          style={{ color: isLight ? '#4b5563' : '#d1d5db' }}
+        >
+          {name}
+        </span>
+        <span
+          className="text-xs font-mono"
+          style={{ color: `rgb(${color})` }}
+        >
+          {level}%
+        </span>
+      </div>
+      <div
+        className="h-2 rounded-full overflow-hidden"
+        style={{
+          background: isLight ? 'rgba(124, 58, 237, 0.1)' : 'rgba(139, 92, 246, 0.15)',
+        }}
+      >
+        <motion.div
+          className="h-full rounded-full"
+          style={{
+            background: `linear-gradient(90deg, rgb(${color}), rgba(${color}, 0.7))`,
+            boxShadow: `0 0 10px rgba(${color}, 0.5)`,
+          }}
+          initial={{ width: 0 }}
+          animate={inView ? { width: `${level}%` } : {}}
+          transition={{ duration: 1, delay: index * 0.1 + 0.3, ease: 'easeOut' }}
+        />
+      </div>
     </motion.div>
   )
 }
@@ -207,6 +363,7 @@ function TimelineItem({ item, index, inView, isLight }: {
 export default function About() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
   const isLight = mounted && theme === 'light'
 
@@ -215,271 +372,248 @@ export default function About() {
   const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.1 })
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%'])
+
+  const stats = [
+    { icon: Code2, label: 'Projects', value: '6+', color: '139, 92, 246' },
+    { icon: Cpu, label: 'AI Agents', value: '5+', color: '236, 72, 153' },
+    { icon: Database, label: 'Databases', value: '4', color: '59, 130, 246' },
+    { icon: Globe, label: 'Technologies', value: '12+', color: '167, 139, 250' },
+  ]
+
+  const skills = [
+    { name: 'Next.js / React', level: 92, color: '96, 165, 250' },
+    { name: 'TypeScript / JavaScript', level: 90, color: '234, 179, 8' },
+    { name: 'Python / FastAPI', level: 88, color: '139, 92, 246' },
+    { name: 'AI Agents (OpenAI SDK)', level: 85, color: '236, 72, 153' },
+    { name: 'PostgreSQL / Prisma', level: 82, color: '59, 130, 246' },
+    { name: 'TailwindCSS', level: 95, color: '56, 189, 248' },
+  ]
 
   return (
     <section
       id="about"
       ref={sectionRef}
-      className="relative py-32 px-6 overflow-hidden transition-colors duration-500"
-      style={{ background: 'var(--bg-primary)' }}
+      className="relative py-32 px-6 overflow-hidden"
+      style={{
+        background: isLight ? '#fafafc' : '#0a0a0f',
+      }}
     >
-      <style dangerouslySetInnerHTML={{ __html: "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap');" }} />
+      {/* Font imports */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');",
+        }}
+      />
 
-      {/* Background */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 -z-10 pointer-events-none">
+      {/* Animated background */}
+      <motion.div style={{ y: bgY }} className="absolute inset-0">
         {/* Grid lines */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(109,40,217,0.25)' : 'rgba(139,92,246,0.3)'}, transparent)` }}
-        />
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(219,39,119,0.15)' : 'rgba(236,72,153,0.2)'}, transparent)` }}
-        />
-        
-        {/* Animated orbs */}
-        <motion.div
-          className="absolute -top-40 right-[-200px] w-[500px] h-[500px] rounded-full"
-          style={{ background: `radial-gradient(circle, ${isLight ? 'rgba(109,40,217,0.06)' : 'rgba(139,92,246,0.08)'} 0%, transparent 70%)` }}
-          animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute -bottom-40 left-[-200px] w-[500px] h-[500px] rounded-full"
-          style={{ background: `radial-gradient(circle, ${isLight ? 'rgba(219,39,119,0.05)' : 'rgba(236,72,153,0.07)'} 0%, transparent 70%)` }}
-          animate={{ scale: [1, 1.15, 1], x: [0, -20, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        
-        {/* Dot grid pattern */}
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(${isLight ? 'rgba(109,40,217,0.1)' : 'rgba(139,92,246,0.15)'} 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-            opacity: isLight ? 0.2 : 0.3,
+            backgroundImage: `
+              linear-gradient(${isLight ? 'rgba(124,58,237,0.06)' : 'rgba(139,92,246,0.05)'} 1px, transparent 1px),
+              linear-gradient(90deg, ${isLight ? 'rgba(124,58,237,0.06)' : 'rgba(139,92,246,0.05)'} 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+            opacity: isLight ? 0.4 : 0.5,
           }}
         />
+
+        {/* Floating code snippets */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-xs font-mono"
+            style={{
+              color: isLight ? 'rgba(124, 58, 237, 0.1)' : 'rgba(139, 92, 246, 0.15)',
+              left: `${10 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{
+              opacity: [0, 0.5, 0],
+              y: [0, -100, -200],
+            }}
+            transition={{
+              duration: 8 + i,
+              repeat: Infinity,
+              delay: i * 1.5,
+            }}
+          >
+            {['const', 'function', 'import', 'export', 'async', 'await'][i]}
+          </motion.div>
+        ))}
       </motion.div>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}
         <motion.div
           ref={headingRef}
           initial={{ opacity: 0, y: 40 }}
           animate={headingInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7 }}
           className="mb-16"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-[50px]" style={{ background: isLight ? 'rgba(109,40,217,0.4)' : 'rgba(139,92,246,0.5)' }} />
+            <GitBranch className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
             <span
               className="text-xs font-mono tracking-[0.3em] uppercase"
               style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
             >
-              Who I am
+              git log --about
             </span>
           </div>
-          <h2
-            className="text-5xl md:text-6xl font-black tracking-tighter leading-none"
-            style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
-          >
-            About{' '}
-            <span className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
-              Me
-            </span>
-          </h2>
+          <div className="flex items-center gap-4">
+            <Terminal className="w-8 h-8" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+            <h2
+              className="text-5xl md:text-7xl font-black tracking-tighter leading-none"
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                color: isLight ? '#0f0a1e' : '#ffffff',
+              }}
+            >
+              ABOUT{' '}
+              <span
+                className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent"
+                style={{
+                  textShadow: isLight ? 'none' : '0 0 80px rgba(124,58,237,0.5)',
+                }}
+              >
+                ME
+              </span>
+            </h2>
+          </div>
         </motion.div>
 
         {/* Main grid */}
-        <div ref={contentRef} className="grid lg:grid-cols-[1fr_1fr] gap-12 items-start">
-          
-          {/* Left — Bio + Skills */}
-          <div className="space-y-8">
-            {/* Bio card */}
+        <div ref={contentRef} className="grid lg:grid-cols-2 gap-8">
+          {/* Left Column */}
+          <div className="space-y-6">
+            {/* Terminal Window */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-3xl p-8 backdrop-blur-md overflow-hidden"
-              style={{
-                background: isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.02)',
-                border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
-                boxShadow: isLight ? '0 4px 40px rgba(109,40,217,0.06)' : 'none',
-              }}
+              transition={{ duration: 0.8 }}
             >
-              {/* Corner accent */}
-              <div
-                className="absolute top-0 right-0 w-40 h-40 rounded-bl-[100px]"
-                style={{ background: `radial-gradient(circle at top right, ${isLight ? 'rgba(109,40,217,0.08)' : 'rgba(139,92,246,0.12)'}, transparent 70%)` }}
-              />
-              
-              <div className="flex items-center gap-2 mb-6">
-                <Sparkles className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-                <span className="text-xs font-mono tracking-widest uppercase" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>Bio</span>
-              </div>
-              
-              <div className="space-y-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <p className="leading-[1.85] text-base" style={{ color: isLight ? '#374151' : '#d1d5db' }}>
-                  I'm a{' '}
-                  <span className="font-medium" style={{ color: isLight ? '#7c3aed' : '#c4b5fd' }}>
-                    confident early-career developer
-                  </span>{' '}
-                  focused on building modern web applications and AI-powered solutions. My work blends clean architecture with practical AI integrations.
-                </p>
-                <p className="leading-[1.85] text-base" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
-                  I specialize in integrating AI systems using{' '}
-                  <span className="font-medium" style={{ color: isLight ? '#be185d' : '#f0abfc' }}>
-                    OpenAI Agents SDK
-                  </span>{' '}
-                  and building scalable platforms with Next.js, TypeScript, and Python — constantly leveling up backend architecture.
-                </p>
-                <p className="leading-[1.85] text-base" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
-                  I don't just code — I{' '}
-                  <span className="font-medium" style={{ color: isLight ? '#db2777' : '#f9a8d4' }}>
-                    craft solutions
-                  </span>{' '}
-                  that meet real-world needs while maintaining high standards of quality and design.
-                </p>
-              </div>
-
-              {/* Location & availability */}
-              <div className="flex items-center gap-6 mt-6 pt-6" style={{ borderTop: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}` }}>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-                  <span className="text-sm" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>Pakistan</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4" style={{ color: '#34d399' }} />
-                  <span className="text-sm text-emerald-500">Available for work</span>
-                </div>
-              </div>
+              <TerminalWindow isLight={isLight} />
             </motion.div>
 
-            {/* Skills */}
+            {/* Stats Grid */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="grid grid-cols-2 gap-4"
             >
-              <p className="text-xs font-mono tracking-[0.25em] uppercase mb-4" style={{ color: isLight ? '#9ca3af' : '#6b7280' }}>
-                Tech Stack
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {skills.map((skill, i) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.7 }}
-                    animate={contentInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.4, delay: 0.2 + i * 0.03, type: 'spring', stiffness: 180 }}
-                    whileHover={{ scale: 1.08, y: -2 }}
-                    className="px-3 py-1.5 rounded-full text-xs font-mono cursor-default transition-colors duration-300"
-                    style={{
-                      background: isLight ? 'rgba(109,40,217,0.07)' : 'rgba(139,92,246,0.08)',
-                      border: `1px solid ${isLight ? 'rgba(109,40,217,0.2)' : 'rgba(139,92,246,0.25)'}`,
-                      color: isLight ? '#6d28d9' : '#c4b5fd',
-                    }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </div>
+              {stats.map((stat, i) => (
+                <StatCard
+                  key={stat.label}
+                  icon={stat.icon}
+                  label={stat.label}
+                  value={stat.value}
+                  color={stat.color}
+                  isLight={isLight}
+                  delay={i * 0.1}
+                  inView={contentInView}
+                />
+              ))}
             </motion.div>
-
-            {/* Resume link */}
-            {/* <motion.a
-              href="#"
-              initial={{ opacity: 0, x: -50 }}
-              animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ x: 4 }}
-              className="inline-flex items-center gap-2 text-sm font-mono transition-colors group"
-              style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
-            >
-              <span
-                className="border-b transition-colors"
-                style={{ borderColor: isLight ? 'rgba(124,58,237,0.4)' : 'rgba(167,139,250,0.4)' }}
-              >
-                Download Resume
-              </span>
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </motion.a> */}
           </div>
 
-          {/* Right — Timeline + Highlights */}
-          <div className="space-y-8">
-            {/* Timeline */}
+          {/* Right Column */}
+          <div className="space-y-6">
+            {/* File Explorer */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-3xl p-6"
+              transition={{ duration: 0.8 }}
+            >
+              <FileExplorer isLight={isLight} />
+            </motion.div>
+
+            {/* Skills Panel */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={contentInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="rounded-xl p-6 backdrop-blur-xl"
               style={{
-                background: isLight ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.01)',
-                border: `1px solid ${isLight ? 'rgba(109,40,217,0.1)' : 'rgba(139,92,246,0.1)'}`,
+                background: isLight
+                  ? 'rgba(249, 250, 251, 0.9)'
+                  : 'rgba(15, 15, 25, 0.9)',
+                border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
               }}
             >
               <div className="flex items-center gap-2 mb-6">
-                <Award className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-                <span className="text-xs font-mono tracking-widest uppercase" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>Journey</span>
+                <Layers className="w-5 h-5" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+                <h3
+                  className="text-sm font-mono uppercase tracking-widest"
+                  style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
+                >
+                  Tech Stack Proficiency
+                </h3>
               </div>
-              
+
               <div className="space-y-2">
-                {timeline.map((item, i) => (
-                  <TimelineItem 
-                    key={item.title} 
-                    item={item} 
-                    index={i} 
-                    inView={contentInView}
+                {skills.map((skill, i) => (
+                  <SkillBar
+                    key={skill.name}
+                    name={skill.name}
+                    level={skill.level}
+                    color={skill.color}
                     isLight={isLight}
+                    index={i}
+                    inView={contentInView}
                   />
                 ))}
               </div>
             </motion.div>
 
-            {/* Stats card */}
+            {/* Bio Card */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-3xl p-6 overflow-hidden"
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="rounded-xl p-6 backdrop-blur-xl"
               style={{
-                background: isLight 
-                  ? 'linear-gradient(135deg, rgba(109,40,217,0.06), rgba(219,39,119,0.05))'
-                  : 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(236,72,153,0.08))',
-                border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.2)'}`,
+                background: isLight
+                  ? 'rgba(255, 255, 255, 0.7)'
+                  : 'rgba(255, 255, 255, 0.02)',
+                border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
               }}
             >
-              <div className="flex items-center justify-between">
-                {[
-                  { label: 'Projects', val: '6+' },
-                  { label: 'AI Integrations', val: '5+' },
-                  { label: 'Years Active', val: '2+' },
-                  { label: 'Technologies', val: '12+' },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    className="text-center flex-1"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={contentInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.6, delay: 0.3 + i * 0.1, type: 'spring', stiffness: 200 }}
-                  >
-                    <p
-                      className="text-2xl md:text-3xl font-black bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent"
-                      style={{ fontFamily: "'Syne', sans-serif" }}
-                    >
-                      {stat.val}
-                    </p>
-                    <p
-                      className="text-xs font-mono mt-1 uppercase tracking-widest"
-                      style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
-                    >
-                      {stat.label}
-                    </p>
-                  </motion.div>
-                ))}
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="w-4 h-4" style={{ color: '#34d399' }} />
+                <span
+                  className="text-xs font-mono uppercase tracking-widest"
+                  style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
+                >
+                  Status: Available
+                </span>
               </div>
+              <p
+                className="text-sm leading-relaxed font-mono mb-4"
+                style={{ color: isLight ? '#4b5563' : '#d1d5db' }}
+              >
+                <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'// '}</span>
+                Full Stack Developer specializing in modern web applications and AI-powered solutions.
+              </p>
+              <p
+                className="text-sm leading-relaxed font-mono mb-4"
+                style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
+              >
+                <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'// '}</span>
+                Building with Next.js, TypeScript, Python & OpenAI SDK.
+              </p>
+              <p
+                className="text-sm leading-relaxed font-mono"
+                style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
+              >
+                <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'// '}</span>
+                Location: <span style={{ color: isLight ? '#db2777' : '#f0abfc' }}>Pakistan</span> | Open to remote opportunities
+              </p>
             </motion.div>
           </div>
         </div>

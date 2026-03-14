@@ -2,76 +2,111 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { 
-  Mail, 
-  Github, 
-  Linkedin, 
-  Twitter, 
-  Send, 
-  ArrowUpRight, 
-  CheckCircle, 
-  Loader2, 
-  MapPin, 
-  Clock, 
+import {
+  Terminal,
+  FolderGit2,
+  FileJson,
+  Mail,
+  Github,
+  Linkedin,
+  Twitter,
+  Send,
+  CheckCircle2,
+  Loader2,
+  MapPin,
+  Clock,
   XCircle,
-  Sparkles,
-  MessageCircle,
+  MessageSquare,
   Zap,
-  Coffee
+  Server,
+  Code2,
+  ExternalLink,
+  Copy,
+  Check,
 } from 'lucide-react'
 
+/* ═══════════════════════════════════════════════════════════════
+   DEVELOPER MODE CONTACT - API Endpoint / Contact Form Inspired
+   ═══════════════════════════════════════════════════════════════ */
+
 const socialLinks = [
-  { 
-    icon: Github, 
-    href: 'https://github.com/Talha-Shaikh1', 
-    label: 'GitHub', 
-    desc: 'Check my code', 
-    color: '#e2e8f0',
-    bg: 'rgba(226,232,240,0.08)',
-    gradient: 'from-slate-400 to-slate-500',
+  {
+    icon: Github,
+    username: 'Talha-Shaikh1',
+    label: 'GitHub',
+    href: 'https://github.com/Talha-Shaikh1',
+    color: '#f0f6fc',
+    bgColor: '139, 92, 246',
   },
-  { 
-    icon: Linkedin, 
-    href: 'https://www.linkedin.com/in/muhammad-talha-938b75377', 
-    label: 'LinkedIn', 
-    desc: "Let's connect", 
-    color: '#0077b5',
-    bg: 'rgba(0,119,181,0.08)',
-    gradient: 'from-blue-500 to-blue-600',
+  {
+    icon: Linkedin,
+    username: 'muhammad-talha-938b75377',
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/muhammad-talha-938b75377',
+    color: '#0a66c2',
+    bgColor: '59, 130, 246',
   },
-  { 
-    icon: Twitter, 
-    href: 'https://github.com/Talha-Shaikh1', 
-    label: 'Twitter / X', 
-    desc: 'Follow my updates', 
+  {
+    icon: Twitter,
+    username: '@TalhaShaikh',
+    label: 'Twitter',
+    href: 'https://twitter.com',
     color: '#1da1f2',
-    bg: 'rgba(29,161,242,0.08)',
-    gradient: 'from-sky-400 to-sky-500',
+    bgColor: '29, 161, 242',
   },
-  { 
-    icon: Mail, 
-    href: 'mailto:talha369852@gmail.com', 
-    label: 'Email', 
-    desc: 'talha369852@gmail.com', 
+  {
+    icon: Mail,
+    username: 'talha369852@gmail.com',
+    label: 'Email',
+    href: 'mailto:talha369852@gmail.com',
     color: '#ea4335',
-    bg: 'rgba(234,67,53,0.08)',
-    gradient: 'from-red-400 to-red-500',
+    bgColor: '234, 67, 53',
   },
 ]
 
-type FormState = 'idle' | 'loading' | 'success' | 'error'
+// Copy Button Component
+function CopyButton({ text, isLight }: { text: string; isLight: boolean }) {
+  const [copied, setCopied] = useState(false)
 
-// Animated social card
-function SocialCard({ link, index, inView, isLight }: { 
-  link: typeof socialLinks[0]; 
-  index: number; 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <motion.button
+      onClick={handleCopy}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex items-center gap-1.5 text-xs font-mono"
+      style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
+    >
+      {copied ? (
+        <>
+          <Check className="w-3 h-3" />
+          <span>Copied!</span>
+        </>
+      ) : (
+        <>
+          <Copy className="w-3 h-3" />
+          <span>Copy</span>
+        </>
+      )}
+    </motion.button>
+  )
+}
+
+// Social Link Card
+function SocialCard({ link, index, inView, isLight }: {
+  link: typeof socialLinks[0];
+  index: number;
   inView: boolean;
   isLight: boolean;
 }) {
   const Icon = link.icon
-  const [hovered, setHovered] = useState(false)
 
   return (
     <motion.a
@@ -82,86 +117,68 @@ function SocialCard({ link, index, inView, isLight }: {
       initial={{ opacity: 0, x: -20 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="group relative block"
+      className="group block"
     >
       <div
-        className="flex items-center gap-4 p-4 rounded-2xl transition-all duration-300"
+        className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
         style={{
-          background: hovered ? link.bg : isLight ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.02)',
-          border: `1px solid ${isLight ? 'rgba(109,40,217,0.12)' : 'rgba(139,92,246,0.12)'}`,
+          background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(10, 10, 15, 0.95)',
+          border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : `rgba(${link.bgColor}, 0.3)`}`,
         }}
       >
-        {/* Icon container */}
+        {/* Icon */}
         <motion.div
-          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
           style={{
-            background: `linear-gradient(135deg, ${link.color}20, ${link.color}10)`,
-            border: `1px solid ${link.color}30`,
+            background: `rgba(${link.bgColor}, 0.15)`,
+            border: `1px solid rgba(${link.bgColor}, 0.3)`,
           }}
-          animate={{ scale: hovered ? 1.1 : 1, rotate: hovered ? 5 : 0 }}
-          transition={{ type: 'spring', stiffness: 400 }}
+          whileHover={{ scale: 1.1 }}
         >
-          <Icon className="w-5 h-5" style={{ color: link.color }} />
+          <Icon className="w-5 h-5" style={{ color: `rgb(${link.bgColor})` }} />
         </motion.div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p
+              className="text-sm font-mono font-bold truncate"
+              style={{ color: isLight ? '#f3f4f6' : '#ffffff' }}
+            >
+              {link.label}
+            </p>
+            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+          </div>
           <p
-            className="text-sm font-semibold transition-colors"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              color: isLight ? '#0f0a1e' : '#ffffff',
-            }}
+            className="text-xs font-mono truncate"
+            style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}
           >
-            {link.label}
-          </p>
-          <p
-            className="text-xs truncate"
-            style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
-          >
-            {link.desc}
+            {link.username}
           </p>
         </div>
 
-        {/* Arrow */}
-        <motion.div
-          className="w-8 h-8 rounded-lg flex items-center justify-center"
-          style={{ background: `${link.color}15` }}
-          animate={{ x: hovered ? 4 : 0, scale: hovered ? 1.1 : 1 }}
-          transition={{ type: 'spring', stiffness: 400 }}
-        >
-          <ArrowUpRight className="w-4 h-4" style={{ color: link.color }} />
-        </motion.div>
+        {/* Copy button */}
+        <CopyButton text={link.username} isLight={isLight} />
       </div>
-
-      {/* Hover gradient overlay */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{
-          background: `linear-gradient(135deg, ${link.color}10, transparent)`,
-        }}
-      />
     </motion.a>
   )
 }
 
-// Premium form input
-function FormInput({ 
-  field, 
-  type, 
-  placeholder, 
-  value, 
-  onChange, 
-  onFocus, 
-  onBlur, 
-  focused, 
+// Form Input Component
+function FormInput({
+  field,
+  type,
+  placeholder,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  focused,
   isLight,
-  rows 
+  rows,
 }: any) {
   const isTextarea = rows !== undefined
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -178,13 +195,12 @@ function FormInput({
           onChange={onChange}
           onFocus={() => onFocus(field)}
           onBlur={() => onBlur()}
-          className="w-full rounded-xl px-4 py-3.5 text-sm outline-none transition-all duration-300 resize-none"
+          className="w-full rounded-xl px-4 py-3 text-xs outline-none transition-all duration-300 resize-none font-mono"
           style={{
-            background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
-            color: isLight ? '#0f0a1e' : '#ffffff',
-            border: `1px solid ${focused === field ? 'rgba(124,58,237,0.5)' : 'rgba(124,58,237,0.15)'}`,
-            boxShadow: focused === field ? '0 0 0 3px rgba(124,58,237,0.08)' : 'none',
-            fontFamily: "'DM Sans', sans-serif",
+            background: isLight ? 'rgba(30, 30, 46, 0.5)' : 'rgba(20, 20, 30, 0.5)',
+            color: isLight ? '#f3f4f6' : '#ffffff',
+            border: `1px solid ${focused === field ? `rgba(124, 58, 237, 0.5)` : 'rgba(124, 58, 237, 0.2)'}`,
+            boxShadow: focused === field ? `0 0 0 3px rgba(124, 58, 237, 0.15)` : 'none',
           }}
         />
       ) : (
@@ -197,33 +213,15 @@ function FormInput({
           onChange={onChange}
           onFocus={() => onFocus(field)}
           onBlur={() => onBlur()}
-          className="w-full rounded-xl px-4 py-3.5 text-sm outline-none transition-all duration-300"
+          className="w-full rounded-xl px-4 py-3 text-xs outline-none transition-all duration-300 font-mono"
           style={{
-            background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
-            color: isLight ? '#0f0a1e' : '#ffffff',
-            border: `1px solid ${focused === field ? 'rgba(124,58,237,0.5)' : 'rgba(124,58,237,0.15)'}`,
-            boxShadow: focused === field ? '0 0 0 3px rgba(124,58,237,0.08)' : 'none',
-            fontFamily: "'DM Sans', sans-serif",
+            background: isLight ? 'rgba(30, 30, 46, 0.5)' : 'rgba(20, 20, 30, 0.5)',
+            color: isLight ? '#f3f4f6' : '#ffffff',
+            border: `1px solid ${focused === field ? `rgba(124, 58, 237, 0.5)` : 'rgba(124, 58, 237, 0.2)'}`,
+            boxShadow: focused === field ? `0 0 0 3px rgba(124, 58, 237, 0.15)` : 'none',
           }}
         />
       )}
-      
-      {/* Animated border glow */}
-      <motion.div
-        className="absolute inset-0 rounded-xl pointer-events-none"
-        style={{
-          background: `linear-gradient(135deg, rgba(124,58,237,0.3), rgba(219,39,119,0.3))`,
-          opacity: focused === field ? 1 : 0,
-          padding: '1px',
-          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          WebkitMaskComposite: 'xor',
-          maskComposite: 'exclude',
-          borderRadius: '12px',
-        }}
-        initial={false}
-        animate={{ opacity: focused === field ? 1 : 0 }}
-        transition={{ duration: 0.2 }}
-      />
     </motion.div>
   )
 }
@@ -231,6 +229,7 @@ function FormInput({
 export default function Contact() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
   const isLight = mounted && theme === 'light'
 
@@ -238,7 +237,7 @@ export default function Contact() {
   const [headingRef, headingInView] = useInView({ triggerOnce: true, threshold: 0.2 })
   const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.05 })
 
-  const [formState, setFormState] = useState<FormState>('idle')
+  const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const [focused, setFocused] = useState<string | null>(null)
   const [fields, setFields] = useState({ name: '', email: '', subject: '', message: '' })
@@ -277,262 +276,332 @@ export default function Contact() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative py-32 px-6 overflow-hidden transition-colors duration-500"
-      style={{ background: 'var(--bg-primary)' }}
+      className="relative py-32 px-6 overflow-hidden"
+      style={{
+        background: isLight ? '#fafafc' : '#0a0a0f',
+      }}
     >
-      <style dangerouslySetInnerHTML={{ __html: [
-        "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap');",
-      ].join('\n') }} />
+      {/* Font imports */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');",
+        }}
+      />
 
       {/* Background */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
         {/* Grid lines */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(109,40,217,0.25)' : 'rgba(139,92,246,0.3)'}, transparent)` }}
-        />
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${isLight ? 'rgba(219,39,119,0.15)' : 'rgba(236,72,153,0.2)'}, transparent)` }}
-        />
-        
-        {/* Animated orbs */}
-        <motion.div
-          className="absolute -top-40 right-[-100px] w-[500px] h-[500px] rounded-full"
-          style={{ background: `radial-gradient(circle, ${isLight ? 'rgba(109,40,217,0.06)' : 'rgba(139,92,246,0.08)'} 0%, transparent 70%)` }}
-          animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute -bottom-40 left-[-100px] w-[500px] h-[500px] rounded-full"
-          style={{ background: `radial-gradient(circle, ${isLight ? 'rgba(219,39,119,0.05)' : 'rgba(236,72,153,0.06)'} 0%, transparent 70%)` }}
-          animate={{ scale: [1, 1.15, 1], x: [0, -20, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        
-        {/* Dot grid pattern */}
-        <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(${isLight ? 'rgba(109,40,217,0.12)' : 'rgba(139,92,246,0.2)'} 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-            opacity: isLight ? 0.12 : 0.12,
+            backgroundImage: `
+              linear-gradient(${isLight ? 'rgba(124,58,237,0.06)' : 'rgba(139,92,246,0.05)'} 1px, transparent 1px),
+              linear-gradient(90deg, ${isLight ? 'rgba(124,58,237,0.06)' : 'rgba(139,92,246,0.05)'} 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+            opacity: isLight ? 0.4 : 0.5,
           }}
         />
+
+        {/* Floating code */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-xs font-mono"
+            style={{
+              color: isLight ? 'rgba(124, 58, 237, 0.08)' : 'rgba(139, 92, 246, 0.12)',
+              left: `${5 + i * 15}%`,
+              top: `${10 + (i % 3) * 25}%`,
+            }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{
+              opacity: [0, 0.5, 0],
+              y: [0, -100, -200],
+            }}
+            transition={{
+              duration: 8 + i,
+              repeat: Infinity,
+              delay: i * 1.5,
+            }}
+          >
+            {['POST', 'GET', 'PUT', 'PATCH', 'DELETE', 'webhook'][i]}
+          </motion.div>
+        ))}
       </div>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Heading */}
         <motion.div
           ref={headingRef}
           initial={{ opacity: 0, y: 40 }}
           animate={headingInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          transition={{ duration: 0.7 }}
+          className="mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-[50px]" style={{ background: isLight ? 'rgba(109,40,217,0.4)' : 'rgba(139,92,246,0.5)' }} />
+            <MessageSquare className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
             <span
               className="text-xs font-mono tracking-[0.3em] uppercase"
               style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
             >
-              Say hello
+              POST /api/contact
             </span>
           </div>
-          <h2
-            className="text-5xl md:text-6xl font-black tracking-tighter leading-none"
-            style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
+          <div className="flex items-center gap-4">
+            <Terminal className="w-8 h-8" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+            <h2
+              className="text-5xl md:text-7xl font-black tracking-tighter leading-none"
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                color: isLight ? '#0f0a1e' : '#ffffff',
+              }}
+            >
+              GET IN{' '}
+              <span
+                className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent"
+                style={{
+                  textShadow: isLight ? 'none' : '0 0 80px rgba(124,58,237,0.5)',
+                }}
+              >
+                TOUCH
+              </span>
+            </h2>
+          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={headingInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="mt-6 text-sm max-w-2xl"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              color: isLight ? '#6b7280' : '#9ca3af',
+            }}
           >
-            Get In{' '}
-            <span className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
-              Touch
-            </span>
-          </h2>
-          <p
-            className="mt-4 text-base max-w-2xl"
-            style={{ fontFamily: "'DM Sans', sans-serif", color: isLight ? '#6b7280' : '#6b7280' }}
-          >
-            Have a project in mind or want to collaborate? I'd love to hear from you — let's build something great together.
-          </p>
+            <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'// '}</span>
+            Send a message through the API endpoint below. 
+            All fields are required. Response time: {'<'} 24 hours.
+          </motion.p>
         </motion.div>
 
-        {/* Main grid */}
-        <div ref={contentRef} className="grid lg:grid-cols-[1fr_1.6fr] gap-8 items-start">
-          
-          {/* Left — Info + Socials */}
-          <div className="space-y-6">
-            {/* Availability card */}
+        {/* Main Grid */}
+        <div ref={contentRef} className="grid lg:grid-cols-[1fr_1.2fr] gap-6">
+          {/* Left Column - Info & Social */}
+          <div className="space-y-4">
+            {/* Status Card */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-2xl p-5 overflow-hidden"
+              transition={{ duration: 0.6 }}
+              className="rounded-xl p-5 backdrop-blur-xl"
               style={{
-                background: isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.02)',
-                border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
-                backdropFilter: 'blur(12px)',
+                background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(10, 10, 15, 0.95)',
+                border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
               }}
             >
-              {/* Corner accent */}
-              <div
-                className="absolute top-0 right-0 w-32 h-32 rounded-bl-full"
-                style={{ background: 'radial-gradient(circle at top right, rgba(52,211,153,0.15), transparent 70%)' }}
-              />
-              
-              <div className="flex items-center gap-3 mb-4 relative z-10">
-                <div 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ 
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{
                     background: 'linear-gradient(135deg, #34d399, #10b981)',
-                    boxShadow: '0 4px 20px rgba(52,211,153,0.4)',
+                    boxShadow: '0 0 20px rgba(52, 211, 153, 0.4)',
                   }}
                 >
-                  <Clock className="w-5 h-5 text-white" />
+                  <Zap className="w-5 h-5 text-white" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p
-                    className="text-sm font-bold"
-                    style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
+                    className="text-sm font-mono font-bold"
+                    style={{ color: isLight ? '#f3f4f6' : '#ffffff' }}
                   >
-                    Available Now
+                    Status: Available
                   </p>
-                  <p className="text-xs font-mono" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
-                    Open to opportunities
+                  <p className="text-xs font-mono" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
+                    Open for opportunities
                   </p>
                 </div>
-                <motion.div 
-                  className="ml-auto w-2.5 h-2.5 rounded-full bg-emerald-400"
+                <motion.div
+                  className="w-3 h-3 rounded-full bg-emerald-400"
                   animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
               </div>
-              
-              <div className="flex items-center gap-2 text-xs font-mono relative z-10" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>
+
+              <div className="flex items-center gap-2 text-xs font-mono" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
                 <MapPin className="w-3.5 h-3.5" style={{ color: '#7c3aed' }} />
                 <span>Pakistan · Remote friendly</span>
               </div>
 
-              {/* Quick stats */}
-              <div className="flex items-center gap-4 mt-4 pt-4 relative z-10" style={{ borderTop: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}` }}>
+              <div className="flex items-center gap-4 mt-4 pt-4" style={{ borderTop: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.15)' : 'rgba(139, 92, 246, 0.2)'}` }}>
                 <div className="flex items-center gap-1.5">
-                  <Coffee className="w-3.5 h-3.5" style={{ color: '#a78bfa' }} />
-                  <span className="text-xs" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>Quick responder</span>
+                  <Clock className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
+                  <span className="text-xs font-mono" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>24h response</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
-                  <span className="text-xs" style={{ color: isLight ? '#6b7280' : '#9ca3af' }}>24h turnaround</span>
+                  <Server className="w-3.5 h-3.5" style={{ color: '#34d399' }} />
+                  <span className="text-xs font-mono" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>99.9% uptime</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Social links */}
+            {/* Social Links */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-2xl p-5"
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="rounded-xl p-5 backdrop-blur-xl"
               style={{
-                background: isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.02)',
-                border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
-                backdropFilter: 'blur(12px)',
+                background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(10, 10, 15, 0.95)',
+                border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
               }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <MessageCircle className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+                <FolderGit2 className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
                 <span className="text-xs font-mono uppercase tracking-widest" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>
-                  Connect
+                  Social Channels
                 </span>
               </div>
               <div className="space-y-3">
                 {socialLinks.map((link, i) => (
-                  <SocialCard 
-                    key={link.label} 
-                    link={link} 
-                    index={i} 
+                  <SocialCard
+                    key={link.label}
+                    link={link}
+                    index={i}
                     inView={contentInView}
                     isLight={isLight}
                   />
                 ))}
               </div>
             </motion.div>
+
+            {/* API Endpoint Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={contentInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="rounded-xl p-5 backdrop-blur-xl"
+              style={{
+                background: isLight ? 'rgba(30, 30, 46, 0.9)' : 'rgba(10, 10, 15, 0.9)',
+                border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <Code2 className="w-4 h-4" style={{ color: '#34d399' }} />
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: '#34d399' }}>
+                  API Endpoint
+                </span>
+              </div>
+              <div
+                className="p-3 rounded-lg font-mono text-xs mb-3"
+                style={{
+                  background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(5, 5, 10, 0.95)',
+                  border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.2)'}`,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span style={{ color: '#34d399' }}>POST</span>
+                  <span style={{ color: isLight ? '#f3f4f6' : '#ffffff' }}>https://talhaweb.xyz/api/contact</span>
+                </div>
+                <div className="text-xs" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
+                  <div className="flex items-center gap-2">
+                    <span style={{ color: '#f472b6' }}>name</span>: <span style={{ color: '#fbbf24' }}>string</span> (required)
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span style={{ color: '#f472b6' }}>email</span>: <span style={{ color: '#fbbf24' }}>string</span> (required)
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span style={{ color: '#f472b6' }}>subject</span>: <span style={{ color: '#fbbf24' }}>string</span> (required)
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span style={{ color: '#f472b6' }}>message</span>: <span style={{ color: '#fbbf24' }}>string</span> (required)
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-mono">
+                <CheckCircle2 className="w-3 h-3" style={{ color: '#34d399' }} />
+                <span style={{ color: '#34d399' }}>Endpoint active</span>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Right — Contact Form */}
+          {/* Right Column - Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={contentInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative rounded-3xl overflow-hidden"
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="rounded-xl overflow-hidden backdrop-blur-xl"
             style={{
-              background: isLight ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.02)',
-              border: `1px solid ${isLight ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.15)'}`,
-              backdropFilter: 'blur(20px)',
-              boxShadow: isLight ? '0 4px 40px rgba(109,40,217,0.08)' : 'none',
+              background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(10, 10, 15, 0.95)',
+              border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.3)' : 'rgba(139, 92, 246, 0.4)'}`,
             }}
           >
-            {/* Top gradient bar */}
-            <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #7c3aed, #db2777, #ec4899)' }} />
 
             <AnimatePresence mode="wait">
-              {/* Success state */}
+              {/* Success State */}
               {formState === 'success' && (
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-10 flex flex-col items-center justify-center text-center min-h-[450px]"
+                  className="p-8 flex flex-col items-center justify-center text-center min-h-[400px]"
                 >
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
-                    className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-                    style={{ 
+                    className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                    style={{
                       background: 'linear-gradient(135deg, #34d399, #10b981)',
-                      boxShadow: '0 10px 40px rgba(52,211,153,0.4)',
+                      boxShadow: '0 0 30px rgba(52, 211, 153, 0.4)',
                     }}
                   >
-                    <CheckCircle className="w-10 h-10 text-white" />
+                    <CheckCircle2 className="w-8 h-8 text-white" />
                   </motion.div>
                   <h3
-                    className="text-2xl font-black mb-3"
-                    style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
+                    className="text-xl font-mono font-bold mb-2"
+                    style={{ color: isLight ? '#f3f4f6' : '#ffffff' }}
                   >
-                    Message Sent! 🎉
+                    ✓ Message Sent
                   </h3>
                   <p
-                    className="text-sm max-w-xs mb-6"
-                    style={{ fontFamily: "'DM Sans', sans-serif", color: isLight ? '#6b7280' : '#9ca3af' }}
+                    className="text-xs font-mono max-w-xs mb-6"
+                    style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}
                   >
-                    Thanks for reaching out! I've received your message and you should have a confirmation email in your inbox.
+                    Your request has been submitted successfully. 
+                    Expect a response within 24 hours.
                   </p>
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl"
-                    style={{ background: isLight ? 'rgba(52,211,153,0.1)' : 'rgba(52,211,153,0.15)' }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg"
+                    style={{
+                      background: 'rgba(52, 211, 153, 0.15)',
+                      border: '1px solid rgba(52, 211, 153, 0.3)',
+                    }}
                   >
-                    <Clock className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-xs font-mono text-emerald-600">I'll reply within 24 hours</span>
+                    <Clock className="w-3.5 h-3.5" style={{ color: '#34d399' }} />
+                    <span className="text-xs font-mono" style={{ color: '#34d399' }}>
+                      Response ETA: {'<'} 24 hours
+                    </span>
                   </motion.div>
                   <motion.button
                     onClick={() => setFormState('idle')}
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="mt-8 px-6 py-3 rounded-xl text-xs font-mono transition-colors"
-                    style={{ 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="mt-6 px-5 py-2.5 rounded-lg text-xs font-mono font-semibold"
+                    style={{
                       background: 'linear-gradient(135deg, #7c3aed, #db2777)',
-                      color: '#ffffff',
+                      color: 'white',
+                      boxShadow: '0 0 20px rgba(124, 58, 237, 0.4)',
                     }}
                   >
-                    Send another message
+                    Send Another Request
                   </motion.button>
                 </motion.div>
               )}
 
-              {/* Form state */}
+              {/* Form State */}
               {formState !== 'success' && (
                 <motion.form
                   key="form"
@@ -540,25 +609,52 @@ export default function Contact() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit}
-                  className="p-6 space-y-4"
+                  className="p-4 space-y-4"
                 >
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-mono mb-2 block" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
+                        name <span style={{ color: '#f472b6' }}>*</span>
+                      </label>
+                      <FormInput
+                        field="name"
+                        type="text"
+                        placeholder="John Doe"
+                        value={fields.name}
+                        onChange={handleChange}
+                        onFocus={setFocused}
+                        onBlur={() => setFocused(null)}
+                        focused={focused}
+                        isLight={isLight}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-mono mb-2 block" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
+                        email <span style={{ color: '#f472b6' }}>*</span>
+                      </label>
+                      <FormInput
+                        field="email"
+                        type="email"
+                        placeholder="john@example.com"
+                        value={fields.email}
+                        onChange={handleChange}
+                        onFocus={setFocused}
+                        onBlur={() => setFocused(null)}
+                        focused={focused}
+                        isLight={isLight}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-mono mb-2 block" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
+                      subject <span style={{ color: '#f472b6' }}>*</span>
+                    </label>
                     <FormInput
-                      field="name"
+                      field="subject"
                       type="text"
-                      placeholder="Your Name"
-                      value={fields.name}
-                      onChange={handleChange}
-                      onFocus={setFocused}
-                      onBlur={() => setFocused(null)}
-                      focused={focused}
-                      isLight={isLight}
-                    />
-                    <FormInput
-                      field="email"
-                      type="email"
-                      placeholder="Email Address"
-                      value={fields.email}
+                      placeholder="Project Inquiry"
+                      value={fields.subject}
                       onChange={handleChange}
                       onFocus={setFocused}
                       onBlur={() => setFocused(null)}
@@ -567,47 +663,40 @@ export default function Contact() {
                     />
                   </div>
 
-                  <FormInput
-                    field="subject"
-                    type="text"
-                    placeholder="Subject"
-                    value={fields.subject}
-                    onChange={handleChange}
-                    onFocus={setFocused}
-                    onBlur={() => setFocused(null)}
-                    focused={focused}
-                    isLight={isLight}
-                  />
+                  <div>
+                    <label className="text-xs font-mono mb-2 block" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
+                      message <span style={{ color: '#f472b6' }}>*</span>
+                    </label>
+                    <FormInput
+                      field="message"
+                      placeholder="Tell me about your project..."
+                      value={fields.message}
+                      onChange={handleChange}
+                      onFocus={setFocused}
+                      onBlur={() => setFocused(null)}
+                      focused={focused}
+                      isLight={isLight}
+                      rows={5}
+                    />
+                  </div>
 
-                  <FormInput
-                    field="message"
-                    placeholder="Tell me about your project..."
-                    value={fields.message}
-                    onChange={handleChange}
-                    onFocus={setFocused}
-                    onBlur={() => setFocused(null)}
-                    focused={focused}
-                    isLight={isLight}
-                    rows={5}
-                  />
-
-                  {/* Error message */}
+                  {/* Error Message */}
                   <AnimatePresence>
                     {formState === 'error' && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex items-center gap-3 p-4 rounded-xl"
-                        style={{ 
-                          background: 'rgba(239,68,68,0.08)', 
-                          border: '1px solid rgba(239,68,68,0.2)',
+                        className="flex items-center gap-3 p-3 rounded-lg"
+                        style={{
+                          background: 'rgba(239, 68, 68, 0.1)',
+                          border: '1px solid rgba(239, 68, 68, 0.2)',
                         }}
                       >
-                        <XCircle className="w-5 h-5 text-red-400 shrink-0" />
+                        <XCircle className="w-4 h-4 text-red-400 shrink-0" />
                         <p
-                          className="text-sm"
-                          style={{ fontFamily: "'DM Sans', sans-serif", color: '#ef4444' }}
+                          className="text-xs font-mono"
+                          style={{ color: '#ef4444' }}
                         >
                           {errorMsg}
                         </p>
@@ -615,50 +704,45 @@ export default function Contact() {
                     )}
                   </AnimatePresence>
 
+                  {/* Submit Button */}
                   <motion.button
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={formState === 'loading'}
-                    className="w-full relative py-4 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 overflow-hidden disabled:opacity-70"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    className="w-full py-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 disabled:opacity-70"
+                    style={{
+                      background: 'linear-gradient(135deg, #7c3aed, #db2777)',
+                      color: 'white',
+                      boxShadow: '0 0 20px rgba(124, 58, 237, 0.4)',
+                    }}
                   >
-                    <span className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #7c3aed, #db2777)' }} />
-                    <motion.span 
-                      className="absolute inset-0"
-                      style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.2), transparent)' }}
-                      animate={{ x: formState === 'loading' ? [-100, 100] : 0 }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    />
-                    <span className="relative flex items-center gap-2">
-                      {formState === 'loading' ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          Send Message
-                          <Send className="w-4 h-4" />
-                        </>
-                      )}
-                    </span>
+                    {formState === 'loading' ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Sending Request...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </motion.button>
 
-                  <div className="flex items-center justify-center gap-2 text-xs">
-                    <Sparkles className="w-3.5 h-3.5" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-                    <p
-                      className="text-center font-mono"
-                      style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
-                    >
-                      You'll receive an auto-reply confirmation · Usually responds within 24h
-                    </p>
-                    <Sparkles className="w-3.5 h-3.5" style={{ color: isLight ? '#f59e0b' : '#fbbf24' }} />
-                  </div>
+                  {/* Footer Note */}
+                  <p
+                    className="text-[10px] font-mono text-center"
+                    style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
+                  >
+                    <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'// '}</span>
+                    By submitting, you agree to the privacy policy
+                  </p>
                 </motion.form>
               )}
             </AnimatePresence>
-          </motion.div>
+          
+          </motion.div>       
         </div>
       </div>
     </section>

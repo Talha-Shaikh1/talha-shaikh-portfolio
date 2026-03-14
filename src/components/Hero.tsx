@@ -1,80 +1,37 @@
 'use client'
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useEffect, useRef, useState } from 'react'
-import { ArrowRight, MessageSquare, Github, Linkedin, Terminal, Sparkles, ChevronDown, Zap, Code2 } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react'
+import {
+  Terminal,
+  Code2,
+  Github,
+  Linkedin,
+  Mail,
+  Cpu,
+  Globe,
+  Database,
+  ChevronDown,
+  Play,
+  Maximize2,
+  X,
+  FolderOpen,
+  FileCode,
+  GitBranch,
+  Zap,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
 
 /* ═══════════════════════════════════════════════════════════════
-   PREMIUM HERO SECTION - Awwwards Style
+   DEVELOPER MODE HERO - IDE/Terminal Inspired
    ═══════════════════════════════════════════════════════════════ */
 
-// Animated background with gradient orbs and particles
-function PremiumBackground({ isLight }: { isLight: boolean }) {
-  return (
-    <>
-      {/* Gradient mesh */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute top-[-10%] left-[-10%] w-[70vw] h-[70vw]"
-          style={{
-            background: `radial-gradient(circle, ${isLight ? 'rgba(124,58,237,0.12)' : 'rgba(124,58,237,0.15)'} 0%, transparent 60%)`,
-          }}
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw]"
-          style={{
-            background: `radial-gradient(circle, ${isLight ? 'rgba(219,39,119,0.1)' : 'rgba(219,39,119,0.12)'} 0%, transparent 60%)`,
-          }}
-          animate={{
-            x: [0, -40, 0],
-            y: [0, -50, 0],
-            scale: [1, 1.15, 1],
-          }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute top-[40%] left-[60%] w-[40vw] h-[40vw]"
-          style={{
-            background: `radial-gradient(circle, ${isLight ? 'rgba(99,102,241,0.08)' : 'rgba(99,102,241,0.1)'} 0%, transparent 60%)`,
-          }}
-          animate={{
-            x: [0, 30, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
-
-      {/* Animated grid */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(${isLight ? 'rgba(124,58,237,0.06)' : 'rgba(139,92,246,0.05)'} 1px, transparent 1px),
-            linear-gradient(90deg, ${isLight ? 'rgba(124,58,237,0.06)' : 'rgba(139,92,246,0.05)'} 1px, transparent 1px)
-          `,
-          backgroundSize: '80px 80px',
-          opacity: isLight ? 0.4 : 0.5,
-        }}
-      />
-
-      {/* Floating particles */}
-      <ParticleField isLight={isLight} />
-    </>
-  )
-}
-
-// Particle system with canvas
-function ParticleField({ isLight }: { isLight: boolean }) {
+// Animated matrix-style background
+function CodeRain({ isLight }: { isLight: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -90,48 +47,28 @@ function ParticleField({ isLight }: { isLight: boolean }) {
     resize()
     window.addEventListener('resize', resize)
 
-    const particles = Array.from({ length: 80 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 1.5 + 0.5,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      alpha: Math.random() * 0.5 + 0.2,
-    }))
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
+    const charArray = chars.split('')
+    const fontSize = 14
+    const columns = canvas.width / fontSize
+    const drops: number[] = Array(Math.ceil(columns)).fill(1)
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      const color = isLight ? '124,58,237' : '139,92,246'
+      ctx.fillStyle = isLight ? 'rgba(250, 250, 252, 0.05)' : 'rgba(10, 10, 15, 0.05)'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      particles.forEach((p, i) => {
-        p.x += p.vx
-        p.y += p.vy
+      ctx.fillStyle = isLight ? 'rgba(124, 58, 237, 0.5)' : 'rgba(139, 92, 246, 0.5)'
+      ctx.font = `${fontSize}px 'JetBrains Mono', monospace`
 
-        if (p.x < 0) p.x = canvas.width
-        if (p.x > canvas.width) p.x = 0
-        if (p.y < 0) p.y = canvas.height
-        if (p.y > canvas.height) p.y = 0
+      drops.forEach((y, i) => {
+        const char = charArray[Math.floor(Math.random() * charArray.length)]
+        const x = i * fontSize
+        ctx.fillText(char, x, y * fontSize)
 
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${color},${p.alpha})`
-        ctx.fill()
-
-        // Connect nearby particles
-        particles.slice(i + 1).forEach((p2) => {
-          const dx = p.x - p2.x
-          const dy = p.y - p2.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-
-          if (dist < 120) {
-            ctx.beginPath()
-            ctx.moveTo(p.x, p.y)
-            ctx.lineTo(p2.x, p2.y)
-            ctx.strokeStyle = `rgba(${color},${0.1 * (1 - dist / 120)})`
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
-        })
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0
+        }
+        drops[i]++
       })
 
       animationId = requestAnimationFrame(draw)
@@ -147,377 +84,516 @@ function ParticleField({ isLight }: { isLight: boolean }) {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 -z-10"
-      style={{ opacity: isLight ? 0.5 : 0.7 }}
+      className="absolute inset-0 opacity-30"
+      style={{ filter: isLight ? 'none' : 'drop-shadow(0 0 8px rgba(139, 92, 246, 0.5))' }}
     />
   )
 }
 
-// Typewriter effect for roles
-function TypewriterText({ words }: { words: string[] }) {
-  const [displayText, setDisplayText] = useState('')
-  const [wordIndex, setWordIndex] = useState(0)
-  const [charIndex, setCharIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
-
-  useEffect(() => {
-    const currentWord = words[wordIndex]
-    const typingSpeed = 80
-    const deletingSpeed = 40
-    const pauseTime = 2000
-
-    let timeout: NodeJS.Timeout
-
-    if (!isDeleting && charIndex <= currentWord.length) {
-      timeout = setTimeout(() => {
-        setCharIndex(charIndex + 1)
-        setDisplayText(currentWord.slice(0, charIndex + 1))
-      }, typingSpeed)
-    } else if (!isDeleting && charIndex > currentWord.length) {
-      timeout = setTimeout(() => setIsDeleting(true), pauseTime)
-    } else if (isDeleting && charIndex >= 0) {
-      timeout = setTimeout(() => {
-        setCharIndex(charIndex - 1)
-        setDisplayText(currentWord.slice(0, charIndex - 1))
-      }, deletingSpeed)
-    } else {
-      setIsDeleting(false)
-      setWordIndex((prev) => (prev + 1) % words.length)
-    }
-
-    return () => clearTimeout(timeout)
-  }, [charIndex, isDeleting, wordIndex, words])
-
-  return (
-    <span className="inline-block min-h-[1.5em]">
-      {displayText}
-      <motion.span
-        className="inline-block w-[3px] h-[1.2em] ml-1 align-middle"
-        style={{
-          background: 'linear-gradient(180deg, #7c3aed, #db2777)',
-        }}
-        animate={{ opacity: [1, 0.3, 1] }}
-        transition={{ duration: 1, repeat: Infinity }}
-      />
-    </span>
-  )
-}
-
-// 3D tilt card effect
-function TiltCard({ children, isLight }: { children: React.ReactNode; isLight: boolean }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  const springConfig = { damping: 25, stiffness: 400 }
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), springConfig)
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), springConfig)
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    mouseX.set(x)
-    mouseY.set(y)
-  }
-
-  const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
-  }
+// IDE Window Component
+function IDEWindow({ children, title, icon: Icon, isLight }: { 
+  children: React.ReactNode
+  title: string
+  icon: React.ElementType
+  isLight: boolean
+}) {
+  const [isMaximized, setIsMaximized] = useState(false)
+  const [isMinimized, setIsMinimized] = useState(false)
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-      className="relative"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ 
+        opacity: isMinimized ? 0 : 1, 
+        scale: isMinimized ? 0.9 : isMaximized ? 1 : 0.95,
+      }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className={`
+        relative rounded-xl overflow-hidden backdrop-blur-xl
+        ${isMaximized ? 'fixed inset-4 z-50' : 'relative'}
+      `}
+      style={{
+        background: isLight 
+          ? 'rgba(250, 250, 252, 0.85)' 
+          : 'rgba(15, 15, 25, 0.85)',
+        border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
+        boxShadow: isLight
+          ? '0 25px 50px -12px rgba(0, 0, 0, 0.1)'
+          : '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.1)',
+      }}
     >
-      {children}
+      {/* Title bar */}
+      <div
+        className="flex items-center justify-between px-4 py-3"
+        style={{
+          background: isLight 
+            ? 'rgba(243, 244, 246, 0.8)' 
+            : 'rgba(30, 30, 46, 0.8)',
+          borderBottom: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.15)' : 'rgba(139, 92, 246, 0.2)'}`,
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors flex items-center justify-center group"
+            >
+              <X className="w-2 h-2 text-red-900 opacity-0 group-hover:opacity-100" />
+            </button>
+            <button 
+              onClick={() => setIsMaximized(!isMaximized)}
+              className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors"
+            />
+            <button 
+              className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 transition-colors"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Icon className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
+            <span 
+              className="text-xs font-mono"
+              style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
+            >
+              {title}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <GitBranch className="w-4 h-4" style={{ color: isLight ? '#9ca3af' : '#6b7280' }} />
+          <span 
+            className="text-xs font-mono"
+            style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
+          >
+            main
+          </span>
+        </div>
+      </div>
+
+      {/* Content */}
+      {!isMinimized && (
+        <div className="p-6">
+          {children}
+        </div>
+      )}
     </motion.div>
   )
 }
 
-// Stats counter animation
-function AnimatedCounter({ value, label, delay }: { value: string; label: string; delay: number }) {
+// Typewriter effect for code
+function TypewriterCode({ lines }: { lines: string[] }) {
+  const [displayedLines, setDisplayedLines] = useState<string[]>([])
+  const [currentLine, setCurrentLine] = useState(0)
+  const [currentChar, setCurrentChar] = useState(0)
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (currentLine < lines.length) {
+        if (currentChar < lines[currentLine].length) {
+          const newLines = [...displayedLines]
+          newLines[currentLine] = lines[currentLine].slice(0, currentChar + 1)
+          setDisplayedLines(newLines)
+          setCurrentChar(currentChar + 1)
+        } else {
+          setCurrentLine(currentLine + 1)
+          setCurrentChar(0)
+        }
+      }
+    }, currentChar === 0 ? 300 : 50)
+
+    return () => clearTimeout(timeout)
+  }, [currentLine, currentChar, lines, displayedLines])
+
+  return (
+    <div className="font-mono text-sm leading-relaxed">
+      {displayedLines.map((line, i) => (
+        <div key={i} className="flex">
+          <span 
+            className="select-none mr-4"
+            style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
+          >
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <pre dangerouslySetInnerHTML={{ __html: line || '&nbsp;' }} />
+        </div>
+      ))}
+      {currentLine < lines.length && (
+        <motion.span
+          className="inline-block w-2 h-4 ml-1 align-middle"
+          style={{ background: '#7c3aed' }}
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+        />
+      )}
+    </div>
+  )
+}
+
+// Tech stack badge
+function TechBadge({ icon: Icon, name, color, isLight }: { 
+  icon: React.ElementType
+  name: string
+  color: string
+  isLight: boolean
+}) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.5 })
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay }}
-      className="text-center"
+      initial={{ opacity: 0, scale: 0.8, y: 10 }}
+      animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+      transition={{ duration: 0.4, type: 'spring', stiffness: 200 }}
+      whileHover={{ scale: 1.05, y: -2 }}
+      className="flex items-center gap-3 px-4 py-3 rounded-lg backdrop-blur-sm"
+      style={{
+        background: isLight 
+          ? `rgba(${color}, 0.08)` 
+          : `rgba(${color}, 0.12)`,
+        border: `1px solid rgba(${color}, ${isLight ? 0.2 : 0.3})`,
+      }}
     >
-      <motion.p
-        className="text-4xl md:text-5xl font-black mb-1"
-        style={{
-          fontFamily: "'Syne', sans-serif",
-          background: 'linear-gradient(135deg, #a78bfa, #ec4899)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}
-        initial={{ scale: 0.5 }}
-        animate={inView ? { scale: 1 } : {}}
-        transition={{ duration: 0.8, delay: delay + 0.2, type: 'spring', stiffness: 200 }}
+      <Icon className="w-5 h-5" style={{ color: `rgb(${color})` }} />
+      <span 
+        className="text-sm font-mono font-medium"
+        style={{ color: isLight ? '#4b5563' : '#d1d5db' }}
       >
-        {value}
-      </motion.p>
-      <p
-        className="text-xs font-mono uppercase tracking-widest"
-        style={{ color: 'rgba(156,163,175,0.8)' }}
-      >
-        {label}
-      </p>
+        {name}
+      </span>
     </motion.div>
   )
 }
 
+// Social link button
+function SocialButton({ 
+  href, 
+  icon: Icon, 
+  label, 
+  isLight 
+}: { 
+  href: string
+  icon: React.ElementType
+  label: string
+  isLight: boolean
+}) {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      className="group flex items-center gap-3 px-5 py-3 rounded-lg transition-all duration-300"
+      style={{
+        background: isLight 
+          ? 'rgba(124, 58, 237, 0.08)' 
+          : 'rgba(124, 58, 237, 0.12)',
+        border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.3)'}`,
+      }}
+    >
+      <Icon 
+        className="w-5 h-5 group-hover:scale-110 transition-transform"
+        style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}
+      />
+      <span 
+        className="text-sm font-mono font-medium"
+        style={{ color: isLight ? '#4b5563' : '#d1d5db' }}
+      >
+        {label}
+      </span>
+    </motion.a>
+  )
+}
+
+const isLight = false
+
 export default function Hero() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
-  const isLight = mounted && theme === 'light'
+  const activeIsLight = mounted && theme === 'light'
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
-  
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  const contentY = useTransform(scrollYProgress, [0, 0.5], [0, 100])
+  const { scrollYProgress } = useScroll({ 
+    target: containerRef, 
+    offset: ['start start', 'end start'] 
+  })
 
-  const roles = [
-    'Full Stack Developer',
-    'AI Engineer',
-    'Next.js Expert',
-    'E-commerce Builder',
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '40%'])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const contentY = useTransform(scrollYProgress, [0, 0.6], [0, 80])
+
+  const codeLines = [
+    '<span style="color: #c084fc">const</span> <span style="color: #7dd3fc">developer</span> = {',
+    '&nbsp;&nbsp;name: <span style="color: #86efac">"Talha Shaikh"</span>,',
+    '&nbsp;&nbsp;role: <span style="color: #86efac">"Full Stack Developer"</span>,',
+    '&nbsp;&nbsp;skills: [<span style="color: #86efac">"Next.js"</span>, <span style="color: #86efac">"AI"</span>, <span style="color: #86efac">"TypeScript"</span>],',
+    '&nbsp;&nbsp;available: <span style="color: #f472b6">true</span>',
+    '};',
+    '&nbsp;',
+    '<span style="color: #c084fc">await</span> <span style="color: #7dd3fc">developer</span>.<span style="color: #fbbf24">buildAwesome</span>();',
   ]
 
-  const stats = [
-    { value: '6+', label: 'Projects' },
-    { value: '5+', label: 'AI Integrations' },
-    { value: '2+', label: 'Years Active' },
+  const techStack = [
+    { icon: Code2, name: 'Next.js 16', color: '255, 255, 255' },
+    { icon: Database, name: 'PostgreSQL', color: '59, 130, 246' },
+    { icon: Cpu, name: 'AI Agents', color: '139, 92, 246' },
+    { icon: Globe, name: 'React', color: '96, 165, 250' },
+    { icon: Zap, name: 'TypeScript', color: '59, 130, 246' },
+    { icon: Sparkles, name: 'Python', color: '234, 179, 8' },
   ]
 
   return (
     <section
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: 'var(--bg-primary)' }}
+      style={{ 
+        background: activeIsLight ? '#fafafc' : '#0a0a0f',
+      }}
     >
       {/* Font imports */}
-      <style dangerouslySetInnerHTML={{ __html: "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');" }} />
+      <style dangerouslySetInnerHTML={{ 
+        __html: "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');" 
+      }} />
 
-      {/* Background */}
-      <motion.div style={{ y: backgroundY }} className="absolute inset-0 -z-10">
-        <PremiumBackground isLight={isLight} />
+      {/* Animated background */}
+      <motion.div style={{ y: backgroundY }} className="absolute inset-0">
+        <CodeRain isLight={activeIsLight} />
       </motion.div>
 
-      {/* Noise texture overlay */}
-      <div className="noise-overlay" />
+      {/* Grid overlay */}
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(${activeIsLight ? 'rgba(124,58,237,0.1)' : 'rgba(139,92,246,0.08)'} 1px, transparent 1px),
+            linear-gradient(90deg, ${activeIsLight ? 'rgba(124,58,237,0.1)' : 'rgba(139,92,246,0.08)'} 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+        }}
+      />
 
-      {/* Content */}
+      {/* Main content */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-10 max-w-7xl mx-auto px-6 py-32"
+        className="relative z-10 max-w-7xl mx-auto px-6 py-20"
       >
-        <TiltCard isLight={isLight}>
-          <div className="text-center">
-            {/* Availability badge */}
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Left: IDE Window with code */}
+          <IDEWindow 
+            title="developer.tsx" 
+            icon={FileCode}
+            isLight={activeIsLight}
+          >
+            <div className="mb-6">
+              <TypewriterCode lines={codeLines} />
+            </div>
+
+            <div className="flex items-center gap-3 pt-4 border-t" style={{ 
+              borderColor: activeIsLight ? 'rgba(124, 58, 237, 0.15)' : 'rgba(139, 92, 246, 0.2)' 
+            }}>
+              <button 
+                className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-mono transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #7c3aed, #db2777)',
+                  color: 'white',
+                }}
+              >
+                <Play className="w-4 h-4" />
+                Run Code
+              </button>
+              <button 
+                className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-mono transition-all"
+                style={{
+                  background: activeIsLight 
+                    ? 'rgba(124, 58, 237, 0.08)' 
+                    : 'rgba(124, 58, 237, 0.12)',
+                  color: activeIsLight ? '#7c3aed' : '#a78bfa',
+                  border: `1px solid ${activeIsLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.3)'}`,
+                }}
+              >
+                <FolderOpen className="w-4 h-4" />
+                Open File
+              </button>
+            </div>
+          </IDEWindow>
+
+          {/* Right: Content */}
+          <div className="space-y-6">
+            {/* Terminal badge */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-8"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg"
               style={{
-                background: isLight 
-                  ? 'rgba(124,58,237,0.08)' 
-                  : 'rgba(124,58,237,0.12)',
-                border: `1px solid ${isLight ? 'rgba(124,58,237,0.2)' : 'rgba(124,58,237,0.3)'}`,
-                backdropFilter: 'blur(10px)',
+                background: activeIsLight 
+                  ? 'rgba(124, 58, 237, 0.1)' 
+                  : 'rgba(124, 58, 237, 0.15)',
+                border: `1px solid ${activeIsLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.3)'}`,
               }}
             >
-              <Terminal className="w-3.5 h-3.5" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-              <span
+              <Terminal className="w-4 h-4" style={{ color: activeIsLight ? '#7c3aed' : '#a78bfa' }} />
+              <span 
                 className="text-xs font-mono"
-                style={{ color: isLight ? '#7c3aed' : '#c4b5fd' }}
+                style={{ color: activeIsLight ? '#7c3aed' : '#c4b5fd' }}
               >
-                Available for opportunities
+                ~/portfolio $ whoami
               </span>
               <motion.span
-                className="w-2 h-2 rounded-full bg-emerald-400"
-                animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                className="w-2 h-4 rounded-sm bg-emerald-400"
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
               />
             </motion.div>
 
-            {/* Main heading */}
+            {/* Name */}
             <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 leading-none"
-              style={{ fontFamily: "'Syne', sans-serif" }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none"
+              style={{ 
+                fontFamily: "'JetBrains Mono', monospace",
+                color: activeIsLight ? '#0f0a1e' : '#ffffff',
+              }}
             >
-              <span style={{ color: isLight ? '#0f0a1e' : '#ffffff' }}>Talha</span>
-              <br className="md:hidden" />
-              {' '}
-              <span
+              <span>TALHA</span>
+              <br />
+              <span 
                 className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent"
                 style={{
-                  textShadow: isLight ? 'none' : '0 0 80px rgba(124,58,237,0.5)',
+                  textShadow: activeIsLight ? 'none' : '0 0 80px rgba(124,58,237,0.5)',
                 }}
               >
-                Shaikh
+                SHAIKH
               </span>
             </motion.h1>
 
-            {/* Typewriter role */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="h-12 flex items-center justify-center mb-8"
+            {/* Role */}
+            <motion.p
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-lg md:text-xl font-mono"
+              style={{ color: activeIsLight ? '#6b7280' : '#9ca3af' }}
             >
-              <span
-                className="text-lg md:text-xl font-mono"
-                style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
-              >
-                <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'>> '}</span>
-                <TypewriterText words={roles} />
-              </span>
-            </motion.div>
+              <span style={{ color: activeIsLight ? '#7c3aed' : '#a78bfa' }}>{'>'} </span>
+              Full Stack Developer <span style={{ color: activeIsLight ? '#9ca3af' : '#6b7280' }}>&</span>{' '}
+              <span style={{ color: activeIsLight ? '#db2777' : '#f0abfc' }}>AI Engineer</span>
+            </motion.p>
 
             {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.7 }}
-              className="text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed"
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                color: isLight ? '#6b7280' : '#9ca3af',
+            {/* <motion.p
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-base leading-relaxed max-w-xl"
+              style={{ 
+                fontFamily: "'JetBrains Mono', monospace",
+                color: activeIsLight ? '#6b7280' : '#9ca3af',
               }}
             >
-              I craft{' '}
-              <span className="font-semibold" style={{ color: isLight ? '#7c3aed' : '#c4b5fd' }}>
-                modern web applications
-              </span>{' '}
-              and{' '}
-              <span className="font-semibold" style={{ color: isLight ? '#db2777' : '#f0abfc' }}>
-                AI-powered solutions
-              </span>{' '}
-              with clean architecture, premium design, and performance at the core.
-            </motion.p>
+              Building <span style={{ color: activeIsLight ? '#7c3aed' : '#c4b5fd' }}>scalable web apps</span> and{' '}
+              <span style={{ color: activeIsLight ? '#db2777' : '#f0abfc' }}>AI-powered solutions</span> with{' '}
+              clean code, modern architecture, and developer-first mindset.
+            </motion.p> */}
+
+            {/* Tech stack */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-wrap gap-3"
+            >
+              {techStack.map((tech) => (
+                <TechBadge 
+                  key={tech.name}
+                  icon={tech.icon}
+                  name={tech.name}
+                  color={tech.color}
+                  isLight={activeIsLight}
+                />
+              ))}
+            </motion.div>
 
             {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="flex flex-wrap gap-4"
             >
               <Link href="#projects">
                 <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-semibold text-base overflow-hidden"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group inline-flex items-center gap-3 px-6 py-3 rounded-lg font-mono text-sm font-semibold transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #7c3aed, #db2777)',
+                    color: 'white',
+                    boxShadow: '0 4px 20px rgba(124, 58, 237, 0.4)',
+                  }}
                 >
-                  <span className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #7c3aed, #db2777)' }} />
-                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(135deg, #6d28d9, #be185d)' }} />
-                  <motion.span
-                    className="absolute inset-0"
-                    style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.2), transparent)' }}
-                    animate={{ x: ['-100%', '100%'] }}
-                    transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-                  />
-                  <span className="relative">View My Work</span>
-                  <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <Maximize2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  View Projects
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
               </Link>
 
               <Link href="#contact">
                 <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-base backdrop-blur-sm transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group inline-flex items-center gap-3 px-6 py-3 rounded-lg font-mono text-sm font-semibold transition-all"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    background: isLight ? 'rgba(124,58,237,0.08)' : 'rgba(124,58,237,0.1)',
-                    border: `1px solid ${isLight ? 'rgba(124,58,237,0.2)' : 'rgba(124,58,237,0.3)'}`,
-                    color: isLight ? '#7c3aed' : '#c4b5fd',
+                    background: activeIsLight 
+                      ? 'rgba(124, 58, 237, 0.08)' 
+                      : 'rgba(124, 58, 237, 0.12)',
+                    color: activeIsLight ? '#7c3aed' : '#a78bfa',
+                    border: `1px solid ${activeIsLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.3)'}`,
                   }}
                 >
+                  <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   Contact Me
-                  <MessageSquare className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 </motion.button>
               </Link>
             </motion.div>
 
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1, duration: 0.7 }}
-              className="flex items-center justify-center gap-12 md:gap-20 mb-16"
-            >
-              {stats.map((stat, i) => (
-                <AnimatedCounter key={stat.label} value={stat.value} label={stat.label} delay={i * 0.1} />
-              ))}
-            </motion.div>
-
             {/* Social links */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3 }}
-              className="flex items-center justify-center gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="flex gap-3"
             >
-              {[
-                { href: 'https://github.com/Talha-Shaikh1', icon: Github, label: 'GitHub' },
-                { href: 'https://linkedin.com/in/muhammad-talha-938b75377', icon: Linkedin, label: 'LinkedIn' },
-              ].map(({ href, icon: Icon, label }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  whileHover={{ scale: 1.15, y: -3 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 text-sm font-mono transition-colors"
-                  style={{ color: isLight ? '#9ca3af' : '#6b7280' }}
-                >
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300"
-                    style={{
-                      background: isLight ? 'rgba(124,58,237,0.08)' : 'rgba(124,58,237,0.1)',
-                      border: `1px solid ${isLight ? 'rgba(124,58,237,0.2)' : 'rgba(124,58,237,0.25)'}`,
-                    }}
-                  >
-                    <Icon className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-                  </div>
-                  <span className="hidden sm:inline">{label}</span>
-                </motion.a>
-              ))}
+              <SocialButton
+                href="https://github.com/Talha-Shaikh1"
+                icon={Github}
+                label="GitHub"
+                isLight={activeIsLight}
+              />
+              <SocialButton
+                href="https://linkedin.com/in/muhammad-talha-938b75377"
+                icon={Linkedin}
+                label="LinkedIn"
+                isLight={activeIsLight}
+              />
             </motion.div>
           </div>
-        </TiltCard>
+        </div>
       </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+        transition={{ delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
         <span
-          className="text-[10px] font-mono tracking-[0.3em] uppercase"
-          style={{ color: isLight ? '#d1d5db' : '#4b5563' }}
+          className="text-[10px] font-mono tracking-widest uppercase"
+          style={{ color: activeIsLight ? '#9ca3af' : '#6b7280' }}
         >
           Scroll to explore
         </span>
@@ -525,36 +601,55 @@ export default function Hero() {
           className="w-[1px] h-16"
           style={{ background: 'linear-gradient(180deg, #7c3aed, transparent)' }}
           animate={{ scaleY: [0, 1, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 2, repeat: Infinity }}
         />
         <motion.div
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
-          <ChevronDown className="w-5 h-5" style={{ color: isLight ? '#a78bfa' : '#6b7280' }} />
+          <ChevronDown className="w-5 h-5" style={{ color: activeIsLight ? '#a78bfa' : '#6b7280' }} />
         </motion.div>
       </motion.div>
 
-      {/* Side decorations */}
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-4">
-        {[
-          { icon: Code2, label: 'Code' },
-          { icon: Zap, label: 'Fast' },
-          { icon: Sparkles, label: 'AI' },
-        ].map(({ icon: Icon, label }) => (
-          <motion.div
-            key={label}
-            whileHover={{ scale: 1.1, x: 5 }}
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{
-              background: isLight ? 'rgba(124,58,237,0.06)' : 'rgba(124,58,237,0.08)',
-              border: `1px solid ${isLight ? 'rgba(124,58,237,0.15)' : 'rgba(124,58,237,0.2)'}`,
-            }}
+      {/* Floating status bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="absolute bottom-6 right-6 px-4 py-2 rounded-lg backdrop-blur-sm"
+        style={{
+          background: activeIsLight 
+            ? 'rgba(250, 250, 252, 0.9)' 
+            : 'rgba(15, 15, 25, 0.9)',
+          border: `1px solid ${activeIsLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(139, 92, 246, 0.3)'}`,
+        }}
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <motion.span
+              className="w-2 h-2 rounded-full bg-emerald-400"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            <span 
+              className="text-xs font-mono"
+              style={{ color: activeIsLight ? '#6b7280' : '#9ca3af' }}
+            >
+              Available for work
+            </span>
+          </div>
+          <div 
+            className="w-px h-4"
+            style={{ background: activeIsLight ? 'rgba(124, 58, 237, 0.3)' : 'rgba(139, 92, 246, 0.3)' }}
+          />
+          <span 
+            className="text-xs font-mono"
+            style={{ color: activeIsLight ? '#7c3aed' : '#a78bfa' }}
           >
-            <Icon className="w-4 h-4" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }} />
-          </motion.div>
-        ))}
-      </div>
+            UTC{new Date().getTimezoneOffset() / -60 > 0 ? '+' : ''}{Math.abs(new Date().getTimezoneOffset() / -60)}:00
+          </span>
+        </div>
+      </motion.div>
     </section>
   )
 }
