@@ -140,7 +140,7 @@ function TerminalWindow({ isLight }: { isLight: boolean }) {
 
   useEffect(() => {
     const commands = [
-      { cmd: '$ whoami', output: 'Talha Shaikh - Full Stack Developer' },
+      { cmd: '$ whoami', output: 'Hanzala Qadri - Full Stack Developer' },
       { cmd: '$ cat skills.json', output: '["Next.js", "TypeScript", "Python", "AI Agents", "PostgreSQL"]' },
       { cmd: '$ npm run build', output: '✓ Build completed successfully in 2.4s' },
       { cmd: '$ git status', output: 'On branch main - Your branch is up to date.' },
@@ -244,6 +244,27 @@ function TerminalWindow({ isLight }: { isLight: boolean }) {
   )
 }
 
+// Animated countup hook
+function useCountUp(target: number, inView: boolean, duration = 1500) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!inView) return
+    let start = 0
+    const step = target / (duration / 16)
+    const timer = setInterval(() => {
+      start += step
+      if (start >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(start))
+      }
+    }, 16)
+    return () => clearInterval(timer)
+  }, [inView, target, duration])
+  return count
+}
+
 // Stat Card Component
 function StatCard({
   icon: Icon,
@@ -262,6 +283,12 @@ function StatCard({
   delay: number
   inView: boolean
 }) {
+  // Extract the numeric part and suffix (e.g. "12+" -> 12, "+")
+  const numericMatch = value.match(/^(\d+)(.*)$/)
+  const numericTarget = numericMatch ? parseInt(numericMatch[1]) : 0
+  const suffix = numericMatch ? numericMatch[2] : value
+  const countedValue = useCountUp(numericTarget, inView)
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 10 }}
@@ -286,11 +313,8 @@ function StatCard({
           fontFamily: "'JetBrains Mono', monospace",
           color: `rgb(${color})`,
         }}
-        initial={{ scale: 0.5 }}
-        animate={inView ? { scale: 1 } : {}}
-        transition={{ delay: delay + 0.2, type: 'spring', stiffness: 300 }}
       >
-        {value}
+        {inView ? countedValue : 0}{suffix}
       </motion.p>
       <p
         className="text-xs font-mono uppercase tracking-wider"

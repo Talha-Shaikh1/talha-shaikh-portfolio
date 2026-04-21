@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'All fields are required.' }, { status: 400 })
     }
 
-    // ── 1. Notify Talha ──────────────────────────────────────────
+    // ── 1. Notify Hanzala ──────────────────────────────────────────
     await resend.emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>', // Use your verified domain later
       to: process.env.MY_EMAIL!, // Your personal email
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
             <!-- Footer -->
             <div style="padding:16px 32px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;">
               <p style="margin:0;color:#4b5563;font-size:11px;font-family:monospace;">
-                Sent from your portfolio contact form · talha.dev
+                Sent from your portfolio contact form · hanzala.dev
               </p>
             </div>
           </div>
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
 
     // ── 2. Auto-reply to client ──────────────────────────────────
     await resend.emails.send({
-      from: 'Talha Shaikh <onboarding@resend.dev>', // Replace with your domain later
+      from: 'Hanzala Qadri <onboarding@resend.dev>', // Replace with your domain later
       to: email,
       subject: `✅ Got your message, ${name}!`,
       html: `
@@ -163,13 +163,13 @@ export async function POST(req: NextRequest) {
               <div style="text-align:center;margin-bottom:8px;">
                 <p style="margin:0 0 14px;color:#9ca3af;font-size:12px;">Connect with me while you wait</p>
                 <div style="display:flex;justify-content:center;gap:12px;">
-                  <a href="https://github.com/talhashaikh" style="display:inline-block;background:#f3f4f6;color:#374151;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;">
+                  <a href="https://github.com/hanzalashaikh" style="display:inline-block;background:#f3f4f6;color:#374151;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;">
                     GitHub
                   </a>
-                  <a href="https://linkedin.com/in/talhashaikh" style="display:inline-block;background:#eff6ff;color:#1d4ed8;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;">
+                  <a href="https://linkedin.com/in/hanzalashaikh" style="display:inline-block;background:#eff6ff;color:#1d4ed8;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;">
                     LinkedIn
                   </a>
-                  <a href="https://twitter.com/talhashaikh" style="display:inline-block;background:#f5f3ff;color:#7c3aed;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;">
+                  <a href="https://twitter.com/hanzalashaikh" style="display:inline-block;background:#f5f3ff;color:#7c3aed;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;">
                     Twitter / X
                   </a>
                 </div>
@@ -179,7 +179,7 @@ export async function POST(req: NextRequest) {
             <!-- Footer -->
             <div style="padding:16px 32px 24px;text-align:center;">
               <p style="margin:0;color:#d1d5db;font-size:11px;">
-                This is an automated confirmation from <strong style="color:#a78bfa;">Talha Shaikh's</strong> portfolio.<br>
+                This is an automated confirmation from <strong style="color:#a78bfa;">Hanzala Qadri's</strong> portfolio.<br>
                 Please don't reply to this email — I'll reach out to you directly.
               </p>
             </div>

@@ -71,7 +71,7 @@ export const metadata = generatePageMetadata(
 
 1. **Google Search Console:**
    - Verify ownership
-   - Submit sitemap: `https://talhaweb.xyz/sitemap.xml`
+   - Submit sitemap: `https://hanzalaweb.xyz/sitemap.xml`
    - Monitor indexing status
 
 2. **Bing Webmaster Tools:**

@@ -13,13 +13,13 @@ type Message = {
 }
 
 const SUGGESTIONS = [
-  "What's Talha's tech stack?",
+  "What's Hanzala's tech stack?",
   'Tell me about his projects',
   'Is he available for hire?',
   'What AI tools does he use?',
 ]
 
-const WELCOME = "Hi! 👋 I'm Talha's AI assistant. Ask me anything about his skills, projects, or availability!"
+const WELCOME = "Hi! 👋 I'm Hanzala's AI assistant. Ask me anything about his skills, projects, or availability!"
 
 /* ─── Single message bubble ─────────────────────────────────────── */
 function MessageBubble({ msg, isLight }: { msg: Message; isLight: boolean }) {
@@ -277,7 +277,7 @@ export default function ChatWidget() {
                       className="text-sm font-bold leading-none"
                       style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
                     >
-                      Ask About Talha
+                      Ask About Hanzala
                     </p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -415,7 +415,7 @@ export default function ChatWidget() {
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
-                    placeholder="Ask anything about Talha..."
+                    placeholder="Ask anything about Hanzala..."
                     disabled={loading}
                     className="flex-1 bg-transparent text-sm outline-none"
                     style={{

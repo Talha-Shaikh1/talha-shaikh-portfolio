@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://talhaweb.xyz/sitemap.xml
+Sitemap: https://hanzalaweb.xyz/sitemap.xml
 
 # Crawl-delay (optional, polite crawling)
 Crawl-delay: 1

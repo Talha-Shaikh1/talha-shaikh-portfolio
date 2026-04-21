@@ -1,27 +1,12 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://talhaweb.xyz'
-  
   return [
     {
-      url: baseUrl,
+      url: 'https://hanzalaweb.xyz',
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 1,
     },
-    // Add additional routes if you have them
-    // {
-    //   url: `${baseUrl}/projects`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'monthly',
-    //   priority: 0.8,
-    // },
-    // {
-    //   url: `${baseUrl}/about`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'yearly',
-    //   priority: 0.5,
-    // },
   ]
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Menu, X, Home, User, Code, Briefcase, Mail, Moon, Sun, Sparkles } from 'lucide-react'
 import { useTheme } from 'next-themes'
@@ -21,7 +21,8 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home')
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const { scrollY } = useScroll()
+  const { scrollY, scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40 })
   
   const navOpacity = useTransform(scrollY, [0, 100], [0, 1])
   const navBlur = useTransform(scrollY, [0, 100], [0, 20])
@@ -64,6 +65,16 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-[60] h-[2px] origin-left"
+        style={{
+          scaleX,
+          background: 'linear-gradient(90deg, #7c3aed, #ec4899, #7c3aed)',
+          backgroundSize: '200% 100%',
+        }}
+      />
+
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -130,7 +141,7 @@ export default function Navbar() {
                       backgroundClip: 'text',
                     }}
                   >
-                    Talha
+                    Hanzala
                   </span>
                   <span
                     className="text-xl font-black tracking-tight ml-1"
@@ -379,7 +390,7 @@ export default function Navbar() {
                     className="text-center text-xs mt-3 font-mono"
                     style={{ color: isLight ? '#9ca3af' : '#4b5563' }}
                   >
-                    talha.dev
+                    hanzala.dev
                   </p>
                 </motion.div>
               </div>

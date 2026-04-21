@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useEffect, useState, useRef } from 'react'
 import {
@@ -30,63 +30,41 @@ import Link from 'next/link'
    DEVELOPER MODE HERO - IDE/Terminal Inspired
    ═══════════════════════════════════════════════════════════════ */
 
-// Animated matrix-style background
-function CodeRain({ isLight }: { isLight: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+import ParticleNetwork from './ParticleNetwork'
+import OrbitalIcons from './OrbitalIcons'
 
+// Rotating role component
+const roles = [
+  { text: 'Full Stack Developer', color: '#a78bfa' },
+  { text: 'AI Engineer', color: '#f0abfc' },
+  { text: 'Next.js Specialist', color: '#7dd3fc' },
+  { text: 'Python Developer', color: '#86efac' },
+]
+
+function RotatingRole({ isLight }: { isLight: boolean }) {
+  const [index, setIndex] = useState(0)
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')!
-    let animationId: number
-
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
-    const charArray = chars.split('')
-    const fontSize = 14
-    const columns = canvas.width / fontSize
-    const drops: number[] = Array(Math.ceil(columns)).fill(1)
-
-    const draw = () => {
-      ctx.fillStyle = isLight ? 'rgba(250, 250, 252, 0.05)' : 'rgba(10, 10, 15, 0.05)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      ctx.fillStyle = isLight ? 'rgba(124, 58, 237, 0.5)' : 'rgba(139, 92, 246, 0.5)'
-      ctx.font = `${fontSize}px 'JetBrains Mono', monospace`
-
-      drops.forEach((y, i) => {
-        const char = charArray[Math.floor(Math.random() * charArray.length)]
-        const x = i * fontSize
-        ctx.fillText(char, x, y * fontSize)
-
-        if (y * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0
-        }
-        drops[i]++
-      })
-
-      animationId = requestAnimationFrame(draw)
-    }
-    draw()
-
-    return () => {
-      cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
-    }
-  }, [isLight])
-
+    const id = setInterval(() => setIndex(i => (i + 1) % roles.length), 2500)
+    return () => clearInterval(id)
+  }, [])
+  const role = roles[index]
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 opacity-30"
-      style={{ filter: isLight ? 'none' : 'drop-shadow(0 0 8px rgba(139, 92, 246, 0.5))' }}
-    />
+    <span className="inline-flex items-center gap-2">
+      <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'> '}</span>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={role.text}
+          initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{ color: role.color }}
+          className="font-mono"
+        >
+          {role.text}
+        </motion.span>
+      </AnimatePresence>
+    </span>
   )
 }
 
@@ -180,6 +158,50 @@ function IDEWindow({ children, title, icon: Icon, isLight }: {
 }
 
 // Typewriter effect for code
+// Live System Monitor
+function LiveSystemMonitor({ isLight }: { isLight: boolean }) {
+  const [cpu, setCpu] = useState(0)
+  const [ram, setRam] = useState(0)
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCpu(Math.floor(Math.random() * 20) + 10) // 10-30%
+      setRam(Math.floor(Math.random() * 15) + 40) // 40-55%
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="flex items-center gap-6 mt-4 p-3 rounded-lg" style={{ background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(0,0,0,0.3)', border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.1)' : 'rgba(124, 58, 237, 0.2)'}` }}>
+      <div className="flex flex-col">
+        <span className="text-[10px] font-mono text-gray-500 uppercase">CPU Usage</span>
+        <div className="flex items-center gap-2">
+          <div className="w-16 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+            <motion.div className="h-full bg-violet-500" animate={{ width: `${cpu}%` }} transition={{ type: 'spring', damping: 15 }} />
+          </div>
+          <span className="text-xs font-mono" style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{cpu}%</span>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-[10px] font-mono text-gray-500 uppercase">Memory</span>
+        <div className="flex items-center gap-2">
+          <div className="w-16 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+            <motion.div className="h-full bg-pink-500" animate={{ width: `${ram}%` }} transition={{ type: 'spring', damping: 15 }} />
+          </div>
+          <span className="text-xs font-mono" style={{ color: isLight ? '#db2777' : '#f472b6' }}>{ram}%</span>
+        </div>
+      </div>
+      <div className="flex flex-col ml-auto">
+        <span className="text-[10px] font-mono text-gray-500 uppercase">Status</span>
+        <div className="flex items-center gap-1.5">
+          <motion.div className="w-2 h-2 rounded-full bg-emerald-500" animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+          <span className="text-xs font-mono text-emerald-500">Online</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function TypewriterCode({ lines }: { lines: string[] }) {
   const [displayedLines, setDisplayedLines] = useState<string[]>([])
   const [currentLine, setCurrentLine] = useState(0)
@@ -325,7 +347,7 @@ export default function Hero() {
 
   const codeLines = [
     '<span style="color: #c084fc">const</span> <span style="color: #7dd3fc">developer</span> = {',
-    '&nbsp;&nbsp;name: <span style="color: #86efac">"Talha Shaikh"</span>,',
+    '&nbsp;&nbsp;name: <span style="color: #86efac">"Hanzala Qadri"</span>,',
     '&nbsp;&nbsp;role: <span style="color: #86efac">"Full Stack Developer"</span>,',
     '&nbsp;&nbsp;skills: [<span style="color: #86efac">"Next.js"</span>, <span style="color: #86efac">"AI"</span>, <span style="color: #86efac">"TypeScript"</span>],',
     '&nbsp;&nbsp;available: <span style="color: #f472b6">true</span>',
@@ -358,7 +380,17 @@ export default function Hero() {
 
       {/* Animated background */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0">
-        <CodeRain isLight={activeIsLight} />
+        <ParticleNetwork isLight={activeIsLight} />
+        {/* Glow Orb */}
+        <motion.div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
+          style={{
+            background: activeIsLight ? 'radial-gradient(circle, rgba(124,58,237,0.15) 0%, rgba(219,39,119,0) 70%)' : 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(219,39,119,0) 70%)',
+            filter: 'blur(60px)',
+          }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </motion.div>
 
       {/* Grid overlay */}
@@ -372,6 +404,11 @@ export default function Hero() {
           backgroundSize: '60px 60px',
         }}
       />
+
+      {/* Orbital tech icons — hidden on mobile */}
+      <div className="hidden lg:block">
+        <OrbitalIcons />
+      </div>
 
       {/* Main content */}
       <motion.div
@@ -389,33 +426,36 @@ export default function Hero() {
               <TypewriterCode lines={codeLines} />
             </div>
 
-            <div className="flex items-center gap-3 pt-4 border-t" style={{ 
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t" style={{ 
               borderColor: activeIsLight ? 'rgba(124, 58, 237, 0.15)' : 'rgba(139, 92, 246, 0.2)' 
             }}>
-              <button 
-                className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-mono transition-all"
-                style={{
-                  background: 'linear-gradient(135deg, #7c3aed, #db2777)',
-                  color: 'white',
-                }}
-              >
-                <Play className="w-4 h-4" />
-                Run Code
-              </button>
-              <button 
-                className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-mono transition-all"
-                style={{
-                  background: activeIsLight 
-                    ? 'rgba(124, 58, 237, 0.08)' 
-                    : 'rgba(124, 58, 237, 0.12)',
-                  color: activeIsLight ? '#7c3aed' : '#a78bfa',
-                  border: `1px solid ${activeIsLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.3)'}`,
-                }}
-              >
-                <FolderOpen className="w-4 h-4" />
-                Open File
-              </button>
+              <div className="flex items-center gap-3">
+                <button 
+                  className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-mono transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, #7c3aed, #db2777)',
+                    color: 'white',
+                  }}
+                >
+                  <Play className="w-4 h-4" />
+                  Run Code
+                </button>
+                <button 
+                  className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-mono transition-all"
+                  style={{
+                    background: activeIsLight 
+                      ? 'rgba(124, 58, 237, 0.08)' 
+                      : 'rgba(124, 58, 237, 0.12)',
+                    color: activeIsLight ? '#7c3aed' : '#a78bfa',
+                    border: `1px solid ${activeIsLight ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.3)'}`,
+                  }}
+                >
+                  <FolderOpen className="w-4 h-4" />
+                  Open File
+                </button>
+              </div>
             </div>
+            <LiveSystemMonitor isLight={activeIsLight} />
           </IDEWindow>
 
           {/* Right: Content */}
@@ -458,29 +498,39 @@ export default function Hero() {
                 color: activeIsLight ? '#0f0a1e' : '#ffffff',
               }}
             >
-              <span>TALHA</span>
-              <br />
-              <span 
-                className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent"
+              <span
                 style={{
-                  textShadow: activeIsLight ? 'none' : '0 0 80px rgba(124,58,237,0.5)',
+                  textShadow: activeIsLight ? 'none' : '0 0 60px rgba(255,255,255,0.15), 0 0 120px rgba(139,92,246,0.2)',
                 }}
               >
-                SHAIKH
+                HANZALA
               </span>
+              <br />
+              <motion.span
+                className="inline-block"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #8b5cf6, #d946ef, #ec4899, #8b5cf6)',
+                  backgroundSize: '300% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  filter: activeIsLight ? 'none' : 'drop-shadow(0 0 30px rgba(139,92,246,0.6))',
+                }}
+                animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              >
+                SHAIKH
+              </motion.span>
             </motion.h1>
 
-            {/* Role */}
+            {/* Role - rotating */}
             <motion.p
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-lg md:text-xl font-mono"
-              style={{ color: activeIsLight ? '#6b7280' : '#9ca3af' }}
+              className="text-lg md:text-xl h-8"
             >
-              <span style={{ color: activeIsLight ? '#7c3aed' : '#a78bfa' }}>{'>'} </span>
-              Full Stack Developer <span style={{ color: activeIsLight ? '#9ca3af' : '#6b7280' }}>&</span>{' '}
-              <span style={{ color: activeIsLight ? '#db2777' : '#f0abfc' }}>AI Engineer</span>
+              <RotatingRole isLight={activeIsLight} />
             </motion.p>
 
             {/* Description */}
@@ -528,16 +578,23 @@ export default function Hero() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group inline-flex items-center gap-3 px-6 py-3 rounded-lg font-mono text-sm font-semibold transition-all"
+                  className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-lg font-mono text-sm font-semibold overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, #7c3aed, #db2777)',
                     color: 'white',
                     boxShadow: '0 4px 20px rgba(124, 58, 237, 0.4)',
                   }}
                 >
-                  <Maximize2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  View Projects
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  {/* Shimmer sweep */}
+                  <motion.span
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                    style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)' }}
+                    animate={{ x: ['-100%', '200%'] }}
+                    transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }}
+                  />
+                  <Maximize2 className="w-4 h-4 group-hover:scale-110 transition-transform relative z-10" />
+                  <span className="relative z-10">View Projects</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" />
                 </motion.button>
               </Link>
 
@@ -568,13 +625,13 @@ export default function Hero() {
               className="flex gap-3"
             >
               <SocialButton
-                href="https://github.com/Talha-Shaikh1"
+                href="https://github.com/Hanzala-Shaikh1"
                 icon={Github}
                 label="GitHub"
                 isLight={activeIsLight}
               />
               <SocialButton
-                href="https://linkedin.com/in/muhammad-talha-938b75377"
+                href="https://linkedin.com/in/muhammad-hanzala-938b75377"
                 icon={Linkedin}
                 label="LinkedIn"
                 isLight={activeIsLight}

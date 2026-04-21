@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
@@ -41,7 +41,7 @@ const projects = [
     categoryIcon: Cpu,
     accentColor: '139, 92, 246',
     image: '/projects/humanoid-robotics.png',
-    github: 'https://github.com/Talha-Shaikh1/humanoid-robotic-book',
+    github: 'https://github.com/Hanzala-Shaikh1/humanoid-robotic-book',
     demo: 'https://humanoid-robotic-book-eight.vercel.app/',
     delay: 0,
   },
@@ -60,7 +60,7 @@ const projects = [
     categoryIcon: Code2,
     accentColor: '59, 130, 246',
     image: '/projects/library.png',
-    github: 'https://github.com/Talha-Shaikh1',
+    github: 'https://github.com/Hanzala-Shaikh1',
     demo: 'https://bait-ul-kutub.vercel.app/',
     delay: 0.15,
   },
@@ -79,7 +79,7 @@ const projects = [
     categoryIcon: ShoppingCart,
     accentColor: '245, 158, 11',
     image: '/projects/ecommerce.png',
-    github: 'https://github.com/Talha-Shaikh1',
+    github: 'https://github.com/Hanzala-Shaikh1',
     demo: 'https://thearqa.com/',
     delay: 0.3,
   },
@@ -98,7 +98,7 @@ const projects = [
     categoryIcon: ShoppingCart,
     accentColor: '249, 115, 22',
     image: '/projects/beeroot.png',
-    github: 'https://github.com/Talha-Shaikh1',
+    github: 'https://github.com/Hanzala-Shaikh1',
     demo: 'https://beerootpk.com/',
     delay: 0.45,
   },
@@ -117,25 +117,68 @@ function RepoCard({
   const [isHovered, setIsHovered] = useState(false)
   const CategoryIcon = project.categoryIcon || Code2
 
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 })
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 })
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const width = rect.width
+    const height = rect.height
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+    const xPct = mouseX / width - 0.5
+    const yPct = mouseY / height - 0.5
+    x.set(xPct)
+    y.set(yPct)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    x.set(0)
+    y.set(0)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: project.delay, ease: [0.16, 1, 0.3, 1] }}
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        perspective: 1000,
+        transformStyle: "preserve-3d"
+      }}
       className="group"
     >
-      <div
-        className="rounded-xl overflow-hidden backdrop-blur-xl transition-all duration-300 h-full"
+      <motion.div
+        className="rounded-xl overflow-hidden backdrop-blur-xl transition-shadow duration-300 h-full relative"
         style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
           background: isLight ? 'rgba(15, 15, 25, 0.95)' : 'rgba(10, 10, 15, 0.95)',
           border: `1px solid ${isLight ? 'rgba(124, 58, 237, 0.2)' : `rgba(${project.accentColor}, 0.3)`}`,
           boxShadow: isHovered
-            ? `0 0 40px rgba(${project.accentColor}, 0.25)`
-            : 'none',
+            ? `0 20px 40px rgba(${project.accentColor}, 0.25)`
+            : '0 10px 30px rgba(0,0,0,0.5)',
         }}
       >
+        {/* Glow overlay */}
+        <motion.div
+          className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: `radial-gradient(circle at ${useTransform(mouseXSpring, [-0.5, 0.5], ['0%', '100%'])} ${useTransform(mouseYSpring, [-0.5, 0.5], ['0%', '100%'])}, rgba(${project.accentColor}, 0.15) 0%, transparent 60%)`,
+          }}
+        />
+
         {/* Repo Header */}
         <div
           className="flex items-center justify-between px-4 py-3"
@@ -331,7 +374,7 @@ function RepoCard({
             </span>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   )
 }
@@ -398,7 +441,7 @@ export default function Projects() {
               delay: i * 2,
             }}
           >
-            {['Talha-Shaikh1', 'github', 'repo', 'commit', 'push'][i % 5]}
+            {['Hanzala-Shaikh1', 'github', 'repo', 'commit', 'push'][i % 5]}
           </motion.div>
         ))}
       </div>
@@ -452,7 +495,7 @@ export default function Projects() {
             }}
           >
             <span style={{ color: isLight ? '#7c3aed' : '#a78bfa' }}>{'// '}</span>
-            A collection of production-ready repositories. 
+            A collection of production-ready repositories.
             All projects are open-source and actively maintained.
           </motion.p>
         </motion.div>
@@ -560,7 +603,7 @@ export default function Projects() {
                 </p>
                 <div className="flex items-center gap-3">
                   <motion.a
-                    href="https://github.com/Talha-Shaikh1"
+                    href="https://github.com/Hanzala-Shaikh1"
                     target="_blank"
                     rel="noreferrer"
                     whileHover={{ scale: 1.02 }}
@@ -573,7 +616,7 @@ export default function Projects() {
                     }}
                   >
                     <Github className="w-3 h-3" />
-                    @Talha-Shaikh1
+                    @Hanzala-Shaikh1
                   </motion.a>
                   <motion.div
                     className="flex items-center gap-2 text-xs font-mono"

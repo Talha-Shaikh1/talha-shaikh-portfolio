@@ -34,23 +34,23 @@ import {
 const socialLinks = [
   {
     icon: Github,
-    username: 'Talha-Shaikh1',
+    username: 'Hanzala-Shaikh1',
     label: 'GitHub',
-    href: 'https://github.com/Talha-Shaikh1',
+    href: 'https://github.com/Hanzala-Shaikh1',
     color: '#f0f6fc',
     bgColor: '139, 92, 246',
   },
   {
     icon: Linkedin,
-    username: 'muhammad-talha-938b75377',
+    username: 'muhammad-hanzala-938b75377',
     label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/muhammad-talha-938b75377',
+    href: 'https://www.linkedin.com/in/muhammad-hanzala-938b75377',
     color: '#0a66c2',
     bgColor: '59, 130, 246',
   },
   {
     icon: Twitter,
-    username: '@TalhaShaikh',
+    username: '@HanzalaShaikh',
     label: 'Twitter',
     href: 'https://twitter.com',
     color: '#1da1f2',
@@ -58,9 +58,9 @@ const socialLinks = [
   },
   {
     icon: Mail,
-    username: 'talha369852@gmail.com',
+    username: 'hanzala369852@gmail.com',
     label: 'Email',
-    href: 'mailto:talha369852@gmail.com',
+    href: 'mailto:hanzala369852@gmail.com',
     color: '#ea4335',
     bgColor: '234, 67, 53',
   },
@@ -499,7 +499,7 @@ export default function Contact() {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span style={{ color: '#34d399' }}>POST</span>
-                  <span style={{ color: isLight ? '#f3f4f6' : '#ffffff' }}>https://talhaweb.xyz/api/contact</span>
+                  <span style={{ color: isLight ? '#f3f4f6' : '#ffffff' }}>https://hanzalaweb.xyz/api/contact</span>
                 </div>
                 <div className="text-xs" style={{ color: isLight ? '#9ca3af' : '#d1d5db' }}>
                   <div className="flex items-center gap-2">

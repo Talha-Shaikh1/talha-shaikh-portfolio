@@ -239,55 +239,103 @@ function SkillCategory({
   )
 }
 
+// Animated countup hook
+function useCountUp(target: number, inView: boolean, duration = 1500) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!inView) return
+    let start = 0
+    const step = target / (duration / 16)
+    const timer = setInterval(() => {
+      start += step
+      if (start >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(start))
+      }
+    }, 16)
+    return () => clearInterval(timer)
+  }, [inView, target, duration])
+  return count
+}
+
 // Stats Component
 function SkillStats({ inView, isLight }: { inView: boolean; isLight: boolean }) {
   const stats = [
-    { icon: Package, label: 'Packages', value: '16+', color: '139, 92, 246' },
-    { icon: Zap, label: 'Proficiency', value: '90%', color: '236, 72, 153' },
-    { icon: Cloud, label: 'Deployments', value: '50+', color: '59, 130, 246' },
-    { icon: Cpu, label: 'AI Models', value: '5+', color: '52, 211, 153' },
+    { icon: Package, label: 'Packages', value: '16+', numeric: 16, suffix: '+', color: '139, 92, 246', progress: 100 },
+    { icon: Zap, label: 'Proficiency', value: '90%', numeric: 90, suffix: '%', color: '236, 72, 153', progress: 90 },
+    { icon: Cloud, label: 'Deployments', value: '50+', numeric: 50, suffix: '+', color: '59, 130, 246', progress: 100 },
+    { icon: Cpu, label: 'AI Models', value: '5+', numeric: 5, suffix: '+', color: '52, 211, 153', progress: 100 },
   ]
+
+  const circumference = 2 * Math.PI * 20 // radius 20
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      {stats.map((stat, i) => (
-        <motion.div
-          key={stat.label}
-          initial={{ opacity: 0, scale: 0.9, y: 10 }}
-          animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: i * 0.1, type: 'spring', stiffness: 200 }}
-          className="relative p-4 rounded-xl overflow-hidden"
-          style={{
-            background: isLight
-              ? `rgba(${stat.color}, 0.08)`
-              : `rgba(${stat.color}, 0.12)`,
-            border: `1px solid rgba(${stat.color}, ${isLight ? 0.2 : 0.3})`,
-          }}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <stat.icon className="w-5 h-5" style={{ color: `rgb(${stat.color})` }} />
-            <CheckCircle2 className="w-4 h-4" style={{ color: '#34d399' }} />
-          </div>
-          <motion.p
-            className="text-2xl font-black mb-1"
+      {stats.map((stat, i) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const countedValue = useCountUp(stat.numeric, inView)
+        return (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: i * 0.1, type: 'spring', stiffness: 200 }}
+            className="relative p-4 rounded-xl overflow-hidden flex items-center gap-4"
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              color: `rgb(${stat.color})`,
+              background: isLight
+                ? `rgba(${stat.color}, 0.08)`
+                : `rgba(${stat.color}, 0.12)`,
+              border: `1px solid rgba(${stat.color}, ${isLight ? 0.2 : 0.3})`,
             }}
-            initial={{ scale: 0.5 }}
-            animate={inView ? { scale: 1 } : {}}
-            transition={{ delay: i * 0.1 + 0.2, type: 'spring', stiffness: 300 }}
           >
-            {stat.value}
-          </motion.p>
-          <p
-            className="text-xs font-mono uppercase tracking-wider"
-            style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
-          >
-            {stat.label}
-          </p>
-        </motion.div>
-      ))}
+            {/* Circular Progress Ring */}
+            <div className="relative w-14 h-14 shrink-0 flex items-center justify-center">
+              <svg className="absolute inset-0 w-full h-full -rotate-90">
+                {/* Background Ring */}
+                <circle
+                  cx="28" cy="28" r="20"
+                  fill="none"
+                  strokeWidth="4"
+                  stroke={`rgba(${stat.color}, 0.2)`}
+                />
+                {/* Animated Progress Ring */}
+                <motion.circle
+                  cx="28" cy="28" r="20"
+                  fill="none"
+                  strokeWidth="4"
+                  stroke={`rgb(${stat.color})`}
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: circumference }}
+                  animate={inView ? { strokeDashoffset: circumference - (circumference * stat.progress) / 100 } : {}}
+                  transition={{ duration: 1.5, delay: i * 0.1 + 0.2, ease: "easeOut" }}
+                />
+              </svg>
+              <stat.icon className="w-5 h-5 relative z-10" style={{ color: `rgb(${stat.color})` }} />
+            </div>
+
+            <div>
+              <motion.p
+                className="text-2xl font-black mb-0"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  color: `rgb(${stat.color})`,
+                }}
+              >
+                {inView ? countedValue : 0}{stat.suffix}
+              </motion.p>
+              <p
+                className="text-xs font-mono uppercase tracking-wider"
+                style={{ color: isLight ? '#6b7280' : '#9ca3af' }}
+              >
+                {stat.label}
+              </p>
+            </div>
+          </motion.div>
+        )
+      })}
     </div>
   )
 }

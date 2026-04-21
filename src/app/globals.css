@@ -109,6 +109,13 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
 }
 
 /* Custom scrollbar */
@@ -224,6 +231,15 @@ body {
 
 .glow-gradient {
   box-shadow: 0 0 60px rgba(124, 58, 237, 0.3), 0 0 100px rgba(219, 39, 119, 0.2);
+}
+
+/* Neon text glow */
+.text-neon-violet {
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(139, 92, 246, 0.4);
+}
+
+.text-neon-pink {
+  text-shadow: 0 0 20px rgba(236, 72, 153, 0.8), 0 0 40px rgba(236, 72, 153, 0.4);
 }
 
 /* Border glow */
