@@ -8,14 +8,14 @@ import { ItemList, Person, WebSite, WebPage, WithContext } from 'schema-dts'
 export const siteConfig = {
   name: 'Hanzala Qadri',
   title: 'Full Stack Developer | AI Automation Engineer',
-  url: 'https://hanzalaweb.xyz',
+  url: 'https://talhaweb.xyz',
   description:
     'Full Stack Web Developer and AI Automation Engineer specializing in Next.js, AI Agents, SaaS, and business automation solutions.',
-  ogImage: 'https://hanzalaweb.xyz/ogImage.png',
+  ogImage: 'https://talhaweb.xyz/ogImage.png',
   links: {
-    github: 'https://github.com/Hanzala-Shaikh1', // Update with your actual username
-    linkedin: 'https://www.linkedin.com/in/muhammad-hanzala-938b75377?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-    twitter: 'https://x.com/Hanzala3690',
+    github: 'https://github.com/Talha-Shaikh1', // Update with your actual username
+    linkedin: 'https://www.linkedin.com/in/muhammad-talha-938b75377?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+    twitter: 'https://x.com/Talha3690',
     email: 'mailto:hanzala369852@gmail.com',
   },
 }
@@ -32,7 +32,7 @@ export function generatePageMetadata(
   canonicalPath: string = '/'
 ) {
   const fullUrl = `${siteConfig.url}${canonicalPath}`
-  
+
   return {
     title: pageTitle,
     description: pageDescription,
