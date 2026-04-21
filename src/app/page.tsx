@@ -24,6 +24,104 @@ import Contact from '../components/Contact'
 import Navbar from '../components/Navbar'
 import ParticleNetwork from '../components/ParticleNetwork'
 
+// Voice Assistant Visualizer Component (MAX FANKARI + SYNC)
+function VoiceVisualizer({ active, pulseIntensity }: { active: boolean, pulseIntensity: number }) {
+  return (
+    <div className="relative flex items-center justify-center w-48 h-48">
+      <AnimatePresence>
+        {active && (
+          <>
+            {/* Hexagon Grid Background */}
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='35' viewBox='0 0 40 35' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l20 10v15L20 35 0 25V10z' fill='none' stroke='%238b5cf6' stroke-width='1'/%3E%3C/svg%3E")`,
+                backgroundSize: '30px 30px'
+              }}
+            />
+
+            {/* Scanning Line */}
+            <motion.div
+              animate={{ top: ['0%', '100%', '0%'] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-400 to-transparent z-20 opacity-30"
+            />
+
+            {/* Floating Data Particles */}
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={`p-${i}`}
+                initial={{ x: 0, y: 0, opacity: 0 }}
+                animate={{ 
+                  x: (Math.random() - 0.5) * 120, 
+                  y: (Math.random() - 0.5) * 120, 
+                  opacity: [0, 1, 0],
+                  scale: [0, 1.2, 0]
+                }}
+                transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                className="absolute w-1 h-1 bg-pink-500/60 rounded-full"
+              />
+            ))}
+
+            {/* Rapid Pulse Outer Glow */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.4 + pulseIntensity * 0.4, 1], 
+                opacity: [0.1, 0.3 + pulseIntensity * 0.2, 0.1] 
+              }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+              className="absolute inset-0 rounded-full bg-violet-600/20 blur-3xl"
+            />
+
+            {/* Rotating Orbital Rings */}
+            <motion.div
+              animate={{ rotate: 360, scale: 1 + pulseIntensity * 0.1 }}
+              transition={{ rotate: { duration: 2, repeat: Infinity, ease: "linear" } }}
+              className="absolute inset-0 rounded-full border-[1px] border-dashed border-violet-500/60"
+            />
+            <motion.div
+              animate={{ rotate: -360, scale: 1 + pulseIntensity * 0.2 }}
+              transition={{ rotate: { duration: 4, repeat: Infinity, ease: "linear" } }}
+              className="absolute inset-4 rounded-full border-[1px] border-dotted border-pink-500/40"
+            />
+
+            {/* Sync Wave Rings */}
+            {[...Array(2)].map((_, i) => (
+              <motion.div
+                key={i}
+                animate={{ 
+                  scale: [1, 2 + pulseIntensity], 
+                  opacity: [0.3, 0] 
+                }}
+                transition={{ duration: 0.6, repeat: Infinity, ease: "easeOut" }}
+                className="absolute inset-0 rounded-full border-[1px] border-violet-400/20"
+              />
+            ))}
+
+            {/* The Core */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2 + pulseIntensity * 0.5, 1],
+                boxShadow: [
+                  `0 0 20px rgba(139,92,246,0.5)`,
+                  `0 0 ${40 + pulseIntensity * 60}px rgba(139,92,246,0.8)`,
+                  `0 0 20px rgba(139,92,246,0.5)`
+                ]
+              }}
+              transition={{ duration: 0.3, repeat: Infinity }}
+              className="relative w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center shadow-[0_0_30px_rgba(139,92,246,1)] z-30"
+            >
+              <Zap className="w-4 h-4 text-white animate-pulse" />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 type ViewState = 'core' | 'about' | 'projects' | 'skills' | 'services' | 'contact'
 
 const CORE_NODES = [
@@ -39,15 +137,70 @@ export default function Home() {
   const [mounted, setMounted] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [mouseActual, setMouseActual] = useState({ x: -1000, y: -1000 })
-  const [bootSequence, setBootSequence] = useState(true)
+  const [preBoot, setPreBoot] = useState(true)
+  const [bootSequence, setBootSequence] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [pulseIntensity, setPulseIntensity] = useState(0)
+
+  // Web Speech API Greeting (100% Free) - Jarvis Style
+  const speakGreeting = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel()
+      const text = "System online. Welcome back, Sir. The Neural Core is fully operational. Please select a module to explore Hanzala's portfolio."
+      const msg = new SpeechSynthesisUtterance(text)
+      
+      const voices = window.speechSynthesis.getVoices()
+      
+      // Look for a British Male voice (Jarvis style)
+      const jarvisVoice = voices.find(v => (v.lang === 'en-GB' || v.name.includes('Great Britain')) && (v.name.toLowerCase().includes('male') || v.name.includes('George') || v.name.includes('James'))) ||
+                          voices.find(v => v.lang.includes('en-GB')) ||
+                          voices.find(v => v.name.includes('Google UK English Male'))
+      
+      if (jarvisVoice) {
+        msg.voice = jarvisVoice
+      }
+
+      msg.pitch = 0.75 // Deep, sophisticated tone
+      msg.rate = 0.85  // Calm, deliberate pace
+      msg.volume = 1
+      
+      msg.onstart = () => setIsSpeaking(true)
+      msg.onend = () => {
+        setIsSpeaking(false)
+        setPulseIntensity(0)
+      }
+      msg.onerror = () => setIsSpeaking(false)
+
+      // Perfect word sync - pulse on every word
+      msg.onboundary = (event) => {
+        if (event.name === 'word') {
+          setPulseIntensity(1)
+          setTimeout(() => setPulseIntensity(0), 100)
+        }
+      }
+
+      window.speechSynthesis.speak(msg)
+    }
+  }
+
+  const handleInitialize = () => {
+    setPreBoot(false)
+    setBootSequence(true)
+    speakGreeting()
+    
+    // End boot sequence after 3.5s
+    setTimeout(() => {
+      setBootSequence(false)
+    }, 3500)
+  }
 
   useEffect(() => {
     setMounted(true)
     
-    // Boot sequence timer
-    const timer = setTimeout(() => {
-      setBootSequence(false)
-    }, 3500)
+    // Load voices early so they are ready when button is clicked
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.getVoices()
+    }
     
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({
@@ -59,7 +212,6 @@ export default function Home() {
     window.addEventListener('mousemove', handleMouseMove)
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      clearTimeout(timer)
     }
   }, [])
 
@@ -74,6 +226,38 @@ export default function Home() {
       case 'contact': return <Contact />
       default: return null
     }
+  }
+
+  // Pre-boot Interaction screen
+  if (preBoot) {
+    return (
+      <div className="fixed inset-0 bg-[#030205] z-[9999] flex flex-col items-center justify-center font-mono">
+        <ParticleNetwork isLight={false} />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative z-10 flex flex-col items-center gap-8"
+        >
+          <div className="w-16 h-16 rounded-full border border-violet-500/30 flex items-center justify-center animate-pulse shadow-[0_0_30px_rgba(139,92,246,0.3)] bg-violet-500/10">
+            {isSpeaking ? <VoiceVisualizer active={true} pulseIntensity={pulseIntensity} /> : <Cpu className="w-8 h-8 text-violet-400" />}
+          </div>
+          
+          <div className="text-center space-y-2">
+            <h1 className="text-xl font-bold tracking-[0.3em] text-white">HANZALA.OS</h1>
+            <p className="text-xs text-violet-400/60 uppercase tracking-widest">Neural Core Ready</p>
+          </div>
+
+          <motion.button
+            onClick={handleInitialize}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(139,92,246,0.5)' }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 rounded-full border border-violet-500/50 text-violet-300 text-xs font-bold tracking-widest uppercase bg-violet-500/10 hover:bg-violet-500/20 transition-colors"
+          >
+            Initialize System
+          </motion.button>
+        </motion.div>
+      </div>
+    )
   }
 
   // Boot Sequence Overlay
@@ -225,7 +409,7 @@ export default function Home() {
                   background: 'radial-gradient(circle at 30% 30%, rgba(139,92,246,0.8), rgba(88,28,135,0.9))',
                 }}
               >
-                <Activity className="w-12 h-12 text-white opacity-80" />
+                {isSpeaking ? <VoiceVisualizer active={true} pulseIntensity={pulseIntensity} /> : <Activity className="w-12 h-12 text-white opacity-80" />}
               </motion.div>
 
               {/* Orbiting Rings */}
