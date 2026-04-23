@@ -1,600 +1,244 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { 
-  Code2, 
-  Cpu, 
-  User, 
-  Briefcase, 
-  Mail, 
-  ArrowLeft,
-  Terminal,
-  Activity,
+import {
+  User,
+  Briefcase,
+  Github,
+  Linkedin,
   Zap,
-  Globe
+  Download,
+  Activity,
+  ArrowRight,
 } from 'lucide-react'
 
-// Import existing sections to render them inside our new paradigm
-import About from '../components/About'
-import Services from '../components/Services'
-import Skills from '../components/Skills'
-import Projects from '../components/Projects'
-import Contact from '../components/Contact'
+// Import components
 import Navbar from '../components/Navbar'
-import ParticleNetwork from '../components/ParticleNetwork'
-
-// Voice Assistant Visualizer Component (MAX FANKARI + SYNC)
-function VoiceVisualizer({ active, pulseIntensity }: { active: boolean, pulseIntensity: number }) {
-  return (
-    <div className="relative flex items-center justify-center w-48 h-48">
-      <AnimatePresence>
-        {active && (
-          <>
-            {/* Hexagon Grid Background */}
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='35' viewBox='0 0 40 35' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l20 10v15L20 35 0 25V10z' fill='none' stroke='%238b5cf6' stroke-width='1'/%3E%3C/svg%3E")`,
-                backgroundSize: '30px 30px'
-              }}
-            />
-
-            {/* Scanning Line */}
-            <motion.div
-              animate={{ top: ['0%', '100%', '0%'] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-400 to-transparent z-20 opacity-30"
-            />
-
-            {/* Floating Data Particles */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={`p-${i}`}
-                initial={{ x: 0, y: 0, opacity: 0 }}
-                animate={{ 
-                  x: (Math.random() - 0.5) * 120, 
-                  y: (Math.random() - 0.5) * 120, 
-                  opacity: [0, 1, 0],
-                  scale: [0, 1.2, 0]
-                }}
-                transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                className="absolute w-1 h-1 bg-pink-500/60 rounded-full"
-              />
-            ))}
-
-            {/* Rapid Pulse Outer Glow */}
-            <motion.div
-              animate={{ 
-                scale: [1, 1.4 + pulseIntensity * 0.4, 1], 
-                opacity: [0.1, 0.3 + pulseIntensity * 0.2, 0.1] 
-              }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-              className="absolute inset-0 rounded-full bg-violet-600/20 blur-3xl"
-            />
-
-            {/* Rotating Orbital Rings */}
-            <motion.div
-              animate={{ rotate: 360, scale: 1 + pulseIntensity * 0.1 }}
-              transition={{ rotate: { duration: 2, repeat: Infinity, ease: "linear" } }}
-              className="absolute inset-0 rounded-full border-[1px] border-dashed border-violet-500/60"
-            />
-            <motion.div
-              animate={{ rotate: -360, scale: 1 + pulseIntensity * 0.2 }}
-              transition={{ rotate: { duration: 4, repeat: Infinity, ease: "linear" } }}
-              className="absolute inset-4 rounded-full border-[1px] border-dotted border-pink-500/40"
-            />
-
-            {/* Sync Wave Rings */}
-            {[...Array(2)].map((_, i) => (
-              <motion.div
-                key={i}
-                animate={{ 
-                  scale: [1, 2 + pulseIntensity], 
-                  opacity: [0.3, 0] 
-                }}
-                transition={{ duration: 0.6, repeat: Infinity, ease: "easeOut" }}
-                className="absolute inset-0 rounded-full border-[1px] border-violet-400/20"
-              />
-            ))}
-
-            {/* The Core */}
-            <motion.div
-              animate={{ 
-                scale: [1, 1.2 + pulseIntensity * 0.5, 1],
-                boxShadow: [
-                  `0 0 20px rgba(139,92,246,0.5)`,
-                  `0 0 ${40 + pulseIntensity * 60}px rgba(139,92,246,0.8)`,
-                  `0 0 20px rgba(139,92,246,0.5)`
-                ]
-              }}
-              transition={{ duration: 0.3, repeat: Infinity }}
-              className="relative w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center shadow-[0_0_30px_rgba(139,92,246,1)] z-30"
-            >
-              <Zap className="w-4 h-4 text-white animate-pulse" />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
-type ViewState = 'core' | 'about' | 'projects' | 'skills' | 'services' | 'contact'
-
-const CORE_NODES = [
-  { id: 'about', title: 'ABOUT ME', subtitle: 'Identity / Auth', icon: User, angle: 0, color: '#ec4899' },
-  { id: 'projects', title: 'PROJECTS', subtitle: 'Deployed Systems', icon: Code2, angle: 72, color: '#8b5cf6' },
-  { id: 'skills', title: 'SKILLS', subtitle: 'Neural Weights', icon: Zap, angle: 144, color: '#3b82f6' },
-  { id: 'services', title: 'SERVICES', subtitle: 'Agentic Services', icon: Cpu, angle: 216, color: '#10b981' },
-  { id: 'contact', title: 'CONTACT', subtitle: 'Establish Link', icon: Mail, angle: 288, color: '#f59e0b' },
-]
+import AmbientOrbs from '../components/AmbientOrbs'
+import MagicCard from '../components/MagicCard'
+import IconCloud from '../components/IconCloud'
+import Projects from '../components/Projects'
+import ContactForm from '../components/ContactForm'
 
 export default function Home() {
-  const [view, setViewState] = useState<ViewState>('core')
   const [mounted, setMounted] = useState(false)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [mouseActual, setMouseActual] = useState({ x: -1000, y: -1000 })
-  const [preBoot, setPreBoot] = useState(true)
-  const [bootSequence, setBootSequence] = useState(false)
-  const [isSpeaking, setIsSpeaking] = useState(false)
-  const [pulseIntensity, setPulseIntensity] = useState(0)
-
-  // Web Speech API Greeting (100% Free) - Jarvis Style
-  const speakGreeting = () => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel()
-      const text = "System online. Welcome back, Sir. The Neural Core is fully operational. Please select a module to explore Hanzala's portfolio."
-      const msg = new SpeechSynthesisUtterance(text)
-      
-      const voices = window.speechSynthesis.getVoices()
-      
-      // Look for a British Male voice (Jarvis style)
-      const jarvisVoice = voices.find(v => (v.lang === 'en-GB' || v.name.includes('Great Britain')) && (v.name.toLowerCase().includes('male') || v.name.includes('George') || v.name.includes('James'))) ||
-                          voices.find(v => v.lang.includes('en-GB')) ||
-                          voices.find(v => v.name.includes('Google UK English Male'))
-      
-      if (jarvisVoice) {
-        msg.voice = jarvisVoice
-      }
-
-      msg.pitch = 0.75 // Deep, sophisticated tone
-      msg.rate = 0.85  // Calm, deliberate pace
-      msg.volume = 1
-      
-      msg.onstart = () => setIsSpeaking(true)
-      msg.onend = () => {
-        setIsSpeaking(false)
-        setPulseIntensity(0)
-      }
-      msg.onerror = () => setIsSpeaking(false)
-
-      // Perfect word sync - pulse on every word
-      msg.onboundary = (event) => {
-        if (event.name === 'word') {
-          setPulseIntensity(1)
-          setTimeout(() => setPulseIntensity(0), 100)
-        }
-      }
-
-      window.speechSynthesis.speak(msg)
-    }
-  }
-
-  const handleInitialize = () => {
-    setPreBoot(false)
-    setBootSequence(true)
-    speakGreeting()
-    
-    // End boot sequence after 3.5s
-    setTimeout(() => {
-      setBootSequence(false)
-    }, 3500)
-  }
 
   useEffect(() => {
     setMounted(true)
-    
-    // Load voices early so they are ready when button is clicked
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.getVoices()
-    }
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      })
-      setMouseActual({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
   }, [])
+
+  const handleDownloadResume = () => {
+    window.open('/resume', '_blank')
+  }
 
   if (!mounted) return null
 
-  const renderContent = () => {
-    switch (view) {
-      case 'about': return <About />
-      case 'projects': return <Projects />
-      case 'skills': return <Skills />
-      case 'services': return <Services />
-      case 'contact': return <Contact />
-      default: return null
-    }
-  }
-
-  // Pre-boot Interaction screen
-  if (preBoot) {
-    return (
-      <div className="fixed inset-0 bg-[#030205] z-[9999] flex flex-col items-center justify-center font-mono">
-        <ParticleNetwork isLight={false} />
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative z-10 flex flex-col items-center gap-8"
-        >
-          <div className="w-16 h-16 rounded-full border border-violet-500/30 flex items-center justify-center animate-pulse shadow-[0_0_30px_rgba(139,92,246,0.3)] bg-violet-500/10">
-            {isSpeaking ? <VoiceVisualizer active={true} pulseIntensity={pulseIntensity} /> : <Cpu className="w-8 h-8 text-violet-400" />}
-          </div>
-          
-          <div className="text-center space-y-2">
-            <h1 className="text-xl font-bold tracking-[0.3em] text-white">HANZALA.OS</h1>
-            <p className="text-xs text-violet-400/60 uppercase tracking-widest">Neural Core Ready</p>
-          </div>
-
-          <motion.button
-            onClick={handleInitialize}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(139,92,246,0.5)' }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 rounded-full border border-violet-500/50 text-violet-300 text-xs font-bold tracking-widest uppercase bg-violet-500/10 hover:bg-violet-500/20 transition-colors"
-          >
-            Initialize System
-          </motion.button>
-        </motion.div>
-      </div>
-    )
-  }
-
-  // Boot Sequence Overlay
-  if (bootSequence) {
-    return (
-      <div className="fixed inset-0 bg-[#030205] z-[9999] flex flex-col items-center justify-center font-mono text-sm">
-        <motion.div 
-          className="w-full max-w-2xl p-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Terminal className="w-6 h-6 text-violet-500" />
-            <h1 className="text-violet-500 font-bold tracking-widest uppercase">Hanzala.OS Bootloader v2.0</h1>
-          </div>
-          <div className="space-y-2 text-gray-400">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-              <span className="text-emerald-500">[SYS]</span> Initializing neural pathways... OK
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
-              <span className="text-emerald-500">[SYS]</span> Loading autonomous agent models... OK
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>
-              <span className="text-emerald-500">[SYS]</span> Connecting to primary data sources... OK
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.0 }}>
-              <span className="text-emerald-500">[SYS]</span> Rendering Cybernetic Core Interface... OK
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
-              <span className="text-violet-400">[READY]</span> Handing over control to User.
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: [0, 1, 0] }} 
-              transition={{ duration: 0.5, repeat: Infinity, delay: 3.0 }}
-              className="mt-4 w-4 h-6 bg-white"
-            />
-          </div>
-        </motion.div>
-      </div>
-    )
-  }
-
   return (
-    <main className={`relative w-full ${view === 'core' ? 'h-screen overflow-hidden' : 'min-h-screen overflow-x-hidden'} bg-[#030205] text-white selection:bg-violet-500/30`}>
-      {/* Dynamic Background Noise / Grid */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(139,92,246,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
-          transition: 'transform 0.1s ease-out'
-        }}
-      />
+    <main className="relative min-h-screen bg-[#030303] text-white selection:bg-violet-500/30 overflow-x-hidden font-inter">
+      <Navbar />
+      <AmbientOrbs />
 
-      <AnimatePresence mode="wait">
-        {view === 'core' ? (
-          <motion.div 
-            key="core-view"
-            initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px) hue-rotate(-90deg)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px) hue-rotate(0deg)' }}
-            exit={{ opacity: 0, scale: 1.2, filter: 'blur(20px) brightness(2)' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            {/* Interactive Particle Network Background */}
-            <ParticleNetwork isLight={false} />
+      {/* Grainy Noise Overlay */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-[90]" />
 
-            {/* Laser Data Link from Core to Cursor */}
-            {mounted && (
-              <svg className="absolute inset-0 z-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
-                <defs>
-                  <linearGradient id="laserGradient" x1="50%" y1="50%" x2={mouseActual.x} y2={mouseActual.y} gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="#ec4899" stopOpacity="0" />
-                  </linearGradient>
-                  <filter id="glow">
-                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                    <feMerge>
-                      <feMergeNode in="coloredBlur"/>
-                      <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                  </filter>
-                </defs>
-                <motion.line
-                  x1={window.innerWidth / 2}
-                  y1={window.innerHeight / 2}
-                  x2={mouseActual.x}
-                  y2={mouseActual.y}
-                  stroke="url(#laserGradient)"
-                  strokeWidth="2"
-                  filter="url(#glow)"
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </svg>
-            )}
+      <div className="container mx-auto px-6 pt-32 pb-24 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            {/* Top Bar for Core View */}
-            <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center backdrop-blur-md">
-                  <Terminal className="w-5 h-5 text-violet-400" />
-                </div>
-                <div>
-                  <h1 className="text-sm font-bold font-mono text-violet-300">HANZALA.OS // v2.0.4</h1>
-                  <p className="text-[10px] text-gray-500 font-mono tracking-widest uppercase">System Online</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <div className="px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 flex items-center gap-2">
-                  <motion.div 
-                    animate={{ opacity: [1, 0.4, 1] }} 
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-2 h-2 rounded-full bg-emerald-400"
-                  />
-                  <span className="text-[10px] font-mono text-emerald-400">Core Stable</span>
-                </div>
-              </div>
-            </div>
+          {/* HERO SECTION - BENTO STYLE */}
+          <div className="lg:col-span-8 space-y-6">
 
-            {/* The Central Neural Core - 3D Tilt Container */}
-            <motion.div 
-              className="relative w-[600px] h-[600px] flex items-center justify-center"
-              style={{
-                perspective: 1000,
-              }}
-              animate={{
-                rotateX: (mousePos.y / 20) * -20,
-                rotateY: (mousePos.x / 20) * 20,
-              }}
-              transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-            >
-              {/* Pulsing center orb */}
+            {/* Main Intro Card */}
+            <MagicCard className="p-6 md:p-10 lg:p-14 min-h-[450px] flex flex-col justify-center">
               <motion.div
-                animate={{ 
-                  scale: [1, 1.05, 1],
-                  boxShadow: [
-                    '0 0 60px rgba(139,92,246,0.2)',
-                    '0 0 100px rgba(139,92,246,0.5)',
-                    '0 0 60px rgba(139,92,246,0.2)'
-                  ]
-                }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute w-32 h-32 rounded-full z-10 flex items-center justify-center backdrop-blur-xl border border-white/10"
-                style={{
-                  background: 'radial-gradient(circle at 30% 30%, rgba(139,92,246,0.8), rgba(88,28,135,0.9))',
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
               >
-                {isSpeaking ? <VoiceVisualizer active={true} pulseIntensity={pulseIntensity} /> : <Activity className="w-12 h-12 text-white opacity-80" />}
-              </motion.div>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20">
+                    <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+                    <span className="text-[10px] font-mono text-violet-400 uppercase tracking-widest font-bold">
+                      Available for Hire
+                    </span>
+                  </div>
+                </div>
 
-              {/* Orbiting Rings */}
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-                className="absolute w-full h-full rounded-full border border-violet-500/10 border-dashed opacity-50"
-              />
-              <motion.div 
-                animate={{ rotate: -360 }}
-                transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-                className="absolute w-[450px] h-[450px] rounded-full border border-pink-500/10 opacity-30"
-              />
+                <h1 className="text-6xl lg:text-8xl font-black tracking-tighter mb-6 leading-none">
+                  Talha <br />
+                  <span className="bg-gradient-to-r from-violet-400 via-pink-500 to-violet-600 bg-clip-text text-transparent">Shaikh</span>
+                </h1>
 
-              {/* Orbital Nodes */}
-              {CORE_NODES.map((node) => {
-                const radius = 220
-                // Calculate position on the circle
-                const x = Math.cos((node.angle * Math.PI) / 180) * radius
-                const y = Math.sin((node.angle * Math.PI) / 180) * radius
+                <p className="text-xl text-gray-400 font-medium max-w-xl leading-relaxed mb-10">
+                  Full Stack Developer & AI Automation Engineer. <br />
+                  <span className="text-white">Crafting high-performance web systems and autonomous AI agents.</span>
+                </p>
 
-                return (
-                  <motion.div
-                    key={node.id}
-                    className="absolute z-20 group cursor-pointer"
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ 
-                      opacity: 1, 
-                      scale: 1,
-                      x, y
-                    }}
-                    transition={{ 
-                      type: 'spring', 
-                      damping: 12, 
-                      stiffness: 100, 
-                      delay: node.angle / 360 
-                    }}
-                    whileHover={{ scale: 1.15 }}
-                    onClick={() => setViewState(node.id as ViewState)}
+                <div className="flex flex-wrap items-center gap-4">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleDownloadResume}
+                    className="px-8 py-4 rounded-2xl bg-white text-black font-bold flex items-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
                   >
-                    <div 
-                      className="relative w-16 h-16 rounded-2xl flex items-center justify-center backdrop-blur-xl border transition-all duration-300"
-                      style={{
-                        background: 'rgba(20,20,30,0.8)',
-                        borderColor: `${node.color}40`,
-                        boxShadow: `0 0 20px ${node.color}20`
-                      }}
-                    >
-                      <node.icon 
-                        className="w-6 h-6 transition-all duration-300"
-                        style={{ color: node.color }}
-                      />
-                      
-                      {/* Always Visible Label */}
-                      <div className="absolute top-full mt-3 flex flex-col items-center pointer-events-none">
-                        <span 
-                          className="text-sm font-black tracking-wider whitespace-nowrap"
-                          style={{ color: node.color }}
-                        >
-                          {node.title}
-                        </span>
-                        <span 
-                          className="text-[9px] font-mono whitespace-nowrap opacity-60 uppercase"
-                          style={{ color: node.color }}
-                        >
-                          {node.subtitle}
-                        </span>
-                      </div>
-
-                      {/* Connection line to center */}
-                      <motion.svg 
-                        className="absolute top-1/2 left-1/2 -z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ overflow: 'visible' }}
+                    <Download className="w-5 h-5" />
+                    Get Resume
+                  </motion.button>
+                  <div className="flex items-center gap-2">
+                    {[
+                      { icon: Github, href: 'https://github.com/Talha-Shaikh1' },
+                      { icon: Linkedin, href: 'https://linkedin.com/in/talha-shaikh' }
+                    ].map((social, i) => (
+                      <motion.a
+                        key={i}
+                        href={social.href}
+                        target="_blank"
+                        whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                        className="w-14 h-14 rounded-2xl border border-white/10 flex items-center justify-center transition-colors"
                       >
-                        <line 
-                          x1="0" 
-                          y1="0" 
-                          x2={-x} 
-                          y2={-y} 
-                          stroke={node.color} 
-                          strokeWidth="1" 
-                          strokeDasharray="4 4"
-                          opacity="0.3"
-                        />
-                      </motion.svg>
-                    </div>
-                  </motion.div>
-                )
-              })}
-              {/* Helper CTA Text */}
-              <motion.div 
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
-                animate={{ opacity: [0.4, 1, 0.4], y: [0, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <div className="px-6 py-2 rounded-full border border-white/10 bg-black/50 backdrop-blur-md flex flex-col items-center gap-1">
-                  <span className="text-sm font-bold tracking-widest uppercase text-white">Select a Module to Explore</span>
-                  <span className="text-[10px] text-gray-400 font-mono">Click on Projects, Skills, or About</span>
+                        <social.icon className="w-5 h-5 text-gray-400 hover:text-white transition-colors" />
+                      </motion.a>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
-            </motion.div>
+            </MagicCard>
 
-            {/* Sidebar Data Rain (Left) */}
-            <div className="absolute left-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-30 pointer-events-none mix-blend-screen">
-              {[...Array(10)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 h-8 rounded-full bg-violet-500"
-                  animate={{ height: [8, Math.random() * 40 + 10, 8], opacity: [0.2, 0.8, 0.2] }}
-                  transition={{ duration: Math.random() * 2 + 1, repeat: Infinity }}
-                />
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Biography Bento */}
+              <MagicCard className="p-8" id="about">
+                <div className="flex items-center gap-3 mb-6">
+                  <User className="w-5 h-5 text-violet-500" />
+                  <h2 className="text-lg font-bold uppercase tracking-widest font-syne">Biography</h2>
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  I'm a self-taught developer exploring the intersection of modern web tech and AI. My journey is fueled by a passion for building practical solutions—from clean full-stack apps to experimental AI agents. I focus on learning fast, writing clean code, and contributing to projects that challenge me to grow every day.
+                </p>
+              </MagicCard>
+
+              {/* Experience Bento */}
+              <MagicCard className="p-8" id="experience">
+                <div className="flex items-center gap-3 mb-6">
+                  <Briefcase className="w-5 h-5 text-violet-500" />
+                  <h2 className="text-lg font-bold uppercase tracking-widest font-syne">Experience</h2>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { role: 'Learning AI & Modern Web', company: 'Self-Directed', date: '2024 - Present' },
+                    { role: 'Full Stack Projects', company: 'Personal Portfolio', date: '2023 - 2024' },
+                    { role: 'Frontend Explorer', company: 'Open Source', date: '2022 - 2023' }
+                  ].map((exp, i) => (
+                    <div key={i} className="flex justify-between items-center group/item">
+                      <div>
+                        <h4 className="text-sm font-bold group-hover/item:text-violet-400 transition-colors">{exp.role}</h4>
+                        <p className="text-[10px] text-gray-500 font-mono">{exp.company}</p>
+                      </div>
+                      <span className="text-[10px] font-mono text-gray-600">{exp.date}</span>
+                    </div>
+                  ))}
+                </div>
+              </MagicCard>
             </div>
+          </div>
 
-            {/* Sidebar Data Rain (Right) */}
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-end gap-2 opacity-30 pointer-events-none mix-blend-screen">
-              {[...Array(10)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 h-8 rounded-full bg-emerald-500"
-                  animate={{ height: [8, Math.random() * 40 + 10, 8], opacity: [0.2, 0.8, 0.2] }}
-                  transition={{ duration: Math.random() * 2 + 1, repeat: Infinity, delay: Math.random() }}
-                />
-              ))}
-            </div>
-
-            {/* Bottom Terminal Log */}
-            <div className="absolute bottom-6 left-6 right-6 h-32 rounded-xl bg-black/40 border border-white/5 backdrop-blur-md p-4 overflow-hidden font-mono text-xs">
-              <div className="flex items-center gap-2 mb-2 text-gray-400 border-b border-white/5 pb-2">
-                <Terminal className="w-3 h-3" />
-                <span>System Logs - Guide</span>
+          {/* SIDEBAR - ICON CLOUD & METRICS */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Tech Cloud Bento */}
+            <MagicCard className="h-[350px] md:h-[400px] flex flex-col items-center justify-center p-6 md:p-8 bg-gradient-to-b from-[#0a0a0f] to-[#030303]" id="skills">
+              <div className="absolute top-8 left-8 flex items-center justify-between w-[calc(100%-64px)]">
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-violet-500" />
+                  <span className="text-xs font-bold uppercase tracking-widest font-syne">Stack</span>
+                </div>
+                <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[8px] font-mono text-emerald-400 uppercase tracking-widest">Live Connection</span>
+                </div>
               </div>
-              <div className="space-y-1 opacity-70">
-                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                  <span className="text-emerald-400">[OK]</span> Core matrices loaded successfully.
-                </motion.div>
-                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1 }}>
-                  <span className="text-emerald-400">[HINT]</span> This is an interactive portfolio.
-                </motion.div>
-                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.5 }}>
-                  <span className="text-violet-400">[INFO]</span> Please click on the floating "PROJECTS" or "SKILLS" nodes above to proceed.
-                </motion.div>
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: [0, 1, 0] }} 
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 2 }}
-                >
-                  <span className="text-gray-500">_</span>
-                </motion.div>
+              <IconCloud />
+            </MagicCard>
+
+            {/* Profile / Stats Bento */}
+            <MagicCard className="p-8 flex flex-col items-center text-center">
+              <div className="w-32 h-32 rounded-3xl border border-white/10 p-2 relative group mb-6">
+                <div className="absolute inset-0 bg-violet-600/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <img
+                  src="/ogImage.png"
+                  alt="Talha"
+                  className="w-full h-full rounded-2xl object-cover relative z-10"
+                />
               </div>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="content-view"
-            initial={{ opacity: 0, scale: 0.9, filter: 'blur(20px) hue-rotate(90deg)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px) hue-rotate(0deg)' }}
-            exit={{ opacity: 0, scale: 1.1, filter: 'blur(20px) hue-rotate(-90deg)' }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full min-h-screen bg-[#030205]"
-          >
-            {/* Minimal navbar specifically for sub-views */}
-            <div className="sticky top-0 z-50 p-6 flex justify-between items-center pointer-events-none w-full">
-              <motion.button
-                onClick={() => {
-                  window.scrollTo(0, 0)
-                  setViewState('core')
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
-                style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
+              <h3 className="text-xl font-bold font-syne mb-1">Karachi, Pakistan</h3>
+              <p className="text-xs text-gray-500 font-mono mb-8 uppercase tracking-widest">Available Remotely</p>
+
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="p-6 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center gap-1">
+                  <span className="text-3xl font-black font-syne">30+</span>
+                  <span className="text-[10px] text-gray-500 uppercase font-mono tracking-tighter">Projects</span>
+                </div>
+                <div className="p-6 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center gap-1">
+                  <span className="text-3xl font-black font-syne">500+</span>
+                  <span className="text-[10px] text-gray-500 uppercase font-mono tracking-tighter">Commits</span>
+                </div>
+              </div>
+            </MagicCard>
+          </div>
+
+          {/* PROJECTS SECTION - FULL WIDTH */}
+          <div className="lg:col-span-12 mt-12" id="projects">
+            <div className="flex justify-between items-end mb-12">
+              <div>
+                <h2 className="text-5xl font-black font-syne tracking-tighter">SELECTED <span className="text-violet-500">WORKS</span></h2>
+                <p className="text-gray-500 font-mono text-xs uppercase tracking-[0.3em] mt-3">Architecting digital excellence</p>
+              </div>
+              <motion.a
+                href="https://github.com/Talha-Shaikh1"
+                target="_blank"
+                className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-white transition-colors"
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span className="font-mono text-xs uppercase tracking-wider">Return to Core</span>
-              </motion.button>
+                VIEW GITHUB <ArrowRight className="w-4 h-4" />
+              </motion.a>
             </div>
+            <Projects />
+          </div>
 
-            {/* Render the actual selected section */}
-            <div className="-mt-16 w-full">
-               {renderContent()}
+          {/* CONTACT SECTION */}
+          <div className="lg:col-span-12 mt-24 py-24 border-t border-white/5" id="contact">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl lg:text-7xl font-black font-syne tracking-tighter uppercase mb-4">
+                Ready to bring your <span className="text-violet-500">ideas</span> to life?
+              </h2>
+              <p className="text-gray-500 text-lg max-w-2xl mx-auto mb-8">
+                I'm a passionate developer always looking for new challenges and opportunities to learn and grow.
+              </p>
+              <div className="flex justify-center mb-12">
+                <motion.a
+                  href="https://wa.me/923121964939"
+                  target="_blank"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 rounded-2xl bg-emerald-600 text-white font-black flex items-center gap-3 shadow-[0_20px_40px_rgba(16,185,129,0.2)]"
+                >
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.316 1.592 5.43.003 9.85-4.415 9.854-9.845.002-5.43-4.415-9.851-9.841-9.851-5.429 0-9.848 4.421-9.85 9.85-.001 2.124.582 3.303 1.691 5.224l-.898 3.289 3.228-.851zM10.515 8.039c-.195-.433-.4-.442-.585-.45l-.497-.006c-.171 0-.45.064-.685.318-.235.253-.897.876-.897 2.138 0 1.262.919 2.48 1.046 2.649.127.17 1.809 2.762 4.383 3.87.621.266 1.105.423 1.485.544.624.198 1.192.171 1.641.103.501-.075 1.539-.628 1.756-1.235.217-.607.217-1.126.152-1.235-.065-.109-.239-.175-.506-.308-.268-.134-1.585-.781-1.831-.871-.246-.09-.426-.134-.606.134-.18.269-.696.871-.853 1.05-.157.179-.313.201-.58.067-.267-.134-1.128-.417-2.148-1.326-.793-.707-1.329-1.581-1.485-1.848-.156-.267-.017-.411.117-.544.121-.12.268-.314.401-.471.134-.157.179-.269.268-.449.09-.179.045-.336-.022-.471-.067-.134-.585-1.408-.802-1.921z" /></svg>
+                  Chat on WhatsApp
+                </motion.a>
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <ContactForm />
+          </div>
+
+        </div>
+
+        <footer className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 opacity-40">
+          <p className="text-[10px] font-mono uppercase tracking-[0.5em]">Talha Shaikh © 2024</p>
+          <div className="flex items-center gap-8">
+            <span className="text-[10px] font-mono uppercase tracking-widest">Built with Next.js & Framer Motion</span>
+            <span className="text-[10px] font-mono uppercase tracking-widest flex items-center gap-2">
+              <Activity className="w-3 h-3 text-emerald-500" /> System Active
+            </span>
+          </div>
+        </footer>
+      </div>
     </main>
   )
 }
