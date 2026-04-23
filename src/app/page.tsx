@@ -13,6 +13,8 @@ import {
   ArrowRight,
 } from 'lucide-react'
 
+
+
 // Import components
 import Navbar from '../components/Navbar'
 import AmbientOrbs from '../components/AmbientOrbs'
