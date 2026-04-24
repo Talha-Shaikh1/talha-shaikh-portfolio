@@ -4,10 +4,16 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Github, Linkedin, Menu, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { talhaData, hanzalaData } from '../lib/data'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isHanzalaPage = pathname.includes('/hanzala')
+  const currentData = isHanzalaPage ? hanzalaData : talhaData
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -41,9 +47,11 @@ export default function Navbar() {
           animate={{ opacity: 1, x: 0 }}
           className="pointer-events-auto"
         >
-          <Link href="/" className="text-xl font-black font-syne tracking-tighter flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center text-xs text-white shadow-[0_0_20px_rgba(124,58,237,0.4)]">TS</div>
-            <span className="hidden sm:inline">Talha.dev</span>
+          <Link href={isHanzalaPage ? "/hanzala" : "/"} className="text-xl font-black font-syne tracking-tighter flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center text-xs text-white shadow-[0_0_20px_rgba(124,58,237,0.4)]">
+                {currentData.initials}
+            </div>
+            <span className="hidden sm:inline">{currentData.firstName.toLowerCase()}.dev</span>
           </Link>
         </motion.div>
 
@@ -65,6 +73,13 @@ export default function Navbar() {
               {item}
             </button>
           ))}
+          <div className="w-px h-4 bg-white/10 mx-2" />
+          <Link 
+            href={isHanzalaPage ? "/" : "/hanzala"}
+            className="px-4 py-2 rounded-xl text-[10px] font-mono text-violet-400 hover:text-violet-300 transition-colors uppercase tracking-widest"
+          >
+            Switch to {isHanzalaPage ? "Talha" : "Hanzala"}
+          </Link>
         </motion.div>
 
         {/* Socials / Actions */}
@@ -75,8 +90,8 @@ export default function Navbar() {
         >
           <div className="hidden sm:flex items-center gap-2">
             {[
-              { icon: Github, href: 'https://github.com/Talha-Shaikh1' },
-              { icon: Linkedin, href: 'https://linkedin.com/in/talha-shaikh' }
+              { icon: Github, href: currentData.github },
+              { icon: Linkedin, href: currentData.linkedin }
             ].map((social, i) => (
               <a 
                 key={i}
@@ -94,7 +109,7 @@ export default function Navbar() {
             onClick={() => scrollToSection('contact')}
             className="px-6 py-2.5 rounded-xl bg-white text-black text-sm font-bold shadow-[0_8px_30px_rgb(255,255,255,0.2)]"
           >
-            Hire Me
+            Hire {currentData.firstName}
           </motion.button>
 
           {/* Mobile Menu Toggle */}
@@ -126,6 +141,13 @@ export default function Navbar() {
                   {item}
                 </button>
               ))}
+              <div className="h-px bg-white/10 my-2" />
+              <Link 
+                href={isHanzalaPage ? "/" : "/hanzala"}
+                className="w-full text-left px-4 py-3 rounded-xl text-lg font-bold text-violet-400"
+              >
+                Switch to {isHanzalaPage ? "Talha" : "Hanzala"}
+              </Link>
             </div>
           </motion.div>
         )}

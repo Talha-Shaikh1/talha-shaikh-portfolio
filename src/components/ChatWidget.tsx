@@ -4,6 +4,11 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from 'next-themes'
 import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles, RotateCcw } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { talhaData, hanzalaData } from '../lib/data'
+
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 type Message = {
   id: string
@@ -11,15 +16,6 @@ type Message = {
   content: string
   timestamp: Date
 }
-
-const SUGGESTIONS = [
-  "What's Hanzala's tech stack?",
-  'Tell me about his projects',
-  'Is he available for hire?',
-  'What AI tools does he use?',
-]
-
-const WELCOME = "Hi! 👋 I'm Hanzala's AI assistant. Ask me anything about his skills, projects, or availability!"
 
 /* ─── Single message bubble ─────────────────────────────────────── */
 function MessageBubble({ msg, isLight }: { msg: Message; isLight: boolean }) {
@@ -31,7 +27,6 @@ function MessageBubble({ msg, isLight }: { msg: Message; isLight: boolean }) {
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       className={`flex items-end gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
     >
-      {/* Avatar */}
       <div
         className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mb-0.5"
         style={{
@@ -49,9 +44,8 @@ function MessageBubble({ msg, isLight }: { msg: Message; isLight: boolean }) {
         }
       </div>
 
-      {/* Bubble */}
       <div
-        className="max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed"
+        className="max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed prose prose-invert prose-sm"
         style={{
           fontFamily: "'DM Sans', sans-serif",
           background: isUser
@@ -70,7 +64,23 @@ function MessageBubble({ msg, isLight }: { msg: Message; isLight: boolean }) {
           boxShadow: isLight && !isUser ? '0 1px 8px rgba(109,40,217,0.06)' : 'none',
         }}
       >
-        {msg.content}
+        {isUser ? (
+          msg.content
+        ) : (
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
+            components={{
+                p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                ul: ({children}) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
+                ol: ({children}) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
+                li: ({children}) => <li className="mb-1">{children}</li>,
+                code: ({children}) => <code className="bg-white/10 px-1 rounded text-xs">{children}</code>,
+                a: ({href, children}) => <a href={href} target="_blank" className="text-violet-400 underline">{children}</a>
+            }}
+          >
+            {msg.content}
+          </ReactMarkdown>
+        )}
       </div>
     </motion.div>
   )
@@ -118,9 +128,23 @@ function TypingIndicator({ isLight }: { isLight: boolean }) {
 /* ─── Main Widget ───────────────────────────────────────────────── */
 export default function ChatWidget() {
   const { theme } = useTheme()
+  const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const isLight = mounted && theme === 'light'
+
+  const isHanzalaPage = pathname.includes('/hanzala')
+  const currentData = isHanzalaPage ? hanzalaData : talhaData
+  const userType = isHanzalaPage ? 'hanzala' : 'talha'
+
+  const suggestions = [
+    `What's ${currentData.firstName}'s tech stack?`,
+    'Tell me about his projects',
+    'Is he available for hire?',
+    'What AI tools does he use?',
+  ]
+
+  const welcomeMessage = `Hi! 👋 I'm ${currentData.firstName}'s AI assistant. Ask me anything about his skills, projects, or availability!`
 
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -157,26 +181,33 @@ export default function ChatWidget() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          userType,
           messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.content })),
         }),
       })
       const data = await res.json()
+      
+      if (data.error) {
+          throw new Error(data.error)
+      }
+
       setMessages(prev => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: data.message || data.error || 'Something went wrong.',
+          content: data.message || 'Something went wrong.',
           timestamp: new Date(),
         },
       ])
-    } catch {
+    } catch (err: any) {
+      console.error("Chat Error:", err)
       setMessages(prev => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: "Couldn't connect right now. Please try again!",
+          content: err.message || "Couldn't connect right now. Please try again!",
           timestamp: new Date(),
         },
       ])
@@ -190,7 +221,6 @@ export default function ChatWidget() {
     setShowSuggestions(true)
   }
 
-  // ── Derived styles ───────────────────────────────────────────────
   const panelBg = isLight ? 'rgba(248,247,255,0.97)' : 'rgba(8,7,14,0.97)'
   const panelBorder = isLight ? 'rgba(109,40,217,0.18)' : 'rgba(139,92,246,0.2)'
   const headerBg = isLight
@@ -199,11 +229,12 @@ export default function ChatWidget() {
   const inputBg = isLight ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.04)'
   const inputBorder = isLight ? 'rgba(109,40,217,0.2)' : 'rgba(139,92,246,0.2)'
 
+  if (!mounted) return null
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');" }} />
 
-      {/* FAB Button */}
       <div className="fixed bottom-6 right-6 z-50">
         <AnimatePresence>
           {!open && (
@@ -223,7 +254,6 @@ export default function ChatWidget() {
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ background: 'linear-gradient(135deg, #6d28d9, #be185d)' }}
               />
-              {/* Pulse ring */}
               <motion.span
                 className="absolute inset-0 rounded-full"
                 style={{ border: '2px solid rgba(167,139,250,0.5)' }}
@@ -231,13 +261,11 @@ export default function ChatWidget() {
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
               />
               <MessageCircle className="w-6 h-6 text-white relative z-10" />
-              {/* Unread dot */}
               <div className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white z-10" />
             </motion.button>
           )}
         </AnimatePresence>
 
-        {/* Chat Panel */}
         <AnimatePresence>
           {open && (
             <motion.div
@@ -257,7 +285,6 @@ export default function ChatWidget() {
                   : '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.1)',
               }}
             >
-              {/* Header */}
               <div
                 className="px-4 py-3.5 flex items-center justify-between shrink-0"
                 style={{
@@ -277,7 +304,7 @@ export default function ChatWidget() {
                       className="text-sm font-bold leading-none"
                       style={{ fontFamily: "'Syne', sans-serif", color: isLight ? '#0f0a1e' : '#ffffff' }}
                     >
-                      Ask About Hanzala
+                      Ask About {currentData.firstName}
                     </p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -318,10 +345,7 @@ export default function ChatWidget() {
                 </div>
               </div>
 
-              {/* Messages area */}
-              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3" style={{ scrollbarWidth: 'thin' }}>
-
-                {/* Welcome message */}
+              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3" style={{ scrollbarWidth: 'thin', overscrollBehavior: 'contain' }}>
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -346,11 +370,10 @@ export default function ChatWidget() {
                       boxShadow: isLight ? '0 1px 8px rgba(109,40,217,0.06)' : 'none',
                     }}
                   >
-                    {WELCOME}
+                    {welcomeMessage}
                   </div>
                 </motion.div>
 
-                {/* Suggestion chips */}
                 <AnimatePresence>
                   {showSuggestions && (
                     <motion.div
@@ -359,7 +382,7 @@ export default function ChatWidget() {
                       exit={{ opacity: 0, height: 0 }}
                       className="flex flex-wrap gap-2 pl-8"
                     >
-                      {SUGGESTIONS.map((s, i) => (
+                      {suggestions.map((s, i) => (
                         <motion.button
                           key={s}
                           initial={{ opacity: 0, scale: 0.85 }}
@@ -383,12 +406,10 @@ export default function ChatWidget() {
                   )}
                 </AnimatePresence>
 
-                {/* Conversation */}
                 {messages.map(msg => (
                   <MessageBubble key={msg.id} msg={msg} isLight={isLight} />
                 ))}
 
-                {/* Typing indicator */}
                 <AnimatePresence>
                   {loading && <TypingIndicator isLight={isLight} />}
                 </AnimatePresence>
@@ -396,7 +417,6 @@ export default function ChatWidget() {
                 <div ref={bottomRef} />
               </div>
 
-              {/* Input area */}
               <div
                 className="px-3 py-3 shrink-0"
                 style={{ borderTop: `1px solid ${panelBorder}` }}
@@ -415,7 +435,7 @@ export default function ChatWidget() {
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
-                    placeholder="Ask anything about Hanzala..."
+                    placeholder={`Ask anything about ${currentData.firstName}...`}
                     disabled={loading}
                     className="flex-1 bg-transparent text-sm outline-none"
                     style={{
@@ -445,7 +465,7 @@ export default function ChatWidget() {
                   className="text-center text-[10px] font-mono mt-2"
                   style={{ color: isLight ? '#d1d5db' : '#374151' }}
                 >
-                  Powered by OpenRouter · Free LLM
+                  Powered by Gemini 2.0 Flash · Neural Core
                 </p>
               </div>
             </motion.div>
@@ -454,4 +474,4 @@ export default function ChatWidget() {
       </div>
     </>
   )
-}
+}

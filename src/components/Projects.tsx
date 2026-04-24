@@ -3,45 +3,8 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ExternalLink, Github, Code2, Sparkles, ArrowUpRight, Cpu, Globe, ShoppingCart, Terminal } from 'lucide-react'
 import { useRef } from 'react'
-
-const projects = [
-  {
-    title: 'AI Humanoid Robotics',
-    description: 'Interactive digital platform teaching Physical AI and Humanoid Robotics with ROS 2 architecture.',
-    tech: ['Next.js', 'Python', 'ROS 2', 'OpenAI'],
-    github: 'https://github.com/Talha-Shaikh1/humanoid-robotic-book',
-    demo: 'https://humanoid-robotic-book-eight.vercel.app/',
-    icon: Cpu,
-    accent: 'rgb(139, 92, 246)'
-  },
-  {
-    title: 'Bait-ul-Kutub LMS',
-    description: 'Full-stack Library Management System with AI-powered search and real-time tracking.',
-    tech: ['Next.js', 'Prisma', 'PostgreSQL', 'AI'],
-    github: 'https://github.com/Talha-Shaikh1',
-    demo: 'https://bait-ul-kutub.vercel.app/',
-    icon: Globe,
-    accent: 'rgb(59, 130, 246)'
-  },
-  {
-    title: 'The Arqa E-Commerce',
-    description: 'Scalable fashion store with custom admin panel and high-performance checkout.',
-    tech: ['Next.js', 'Sanity', 'Stripe', 'Tailwind'],
-    github: 'https://github.com/Talha-Shaikh1',
-    demo: 'https://thearqa.com/',
-    icon: ShoppingCart,
-    accent: 'rgb(245, 158, 11)'
-  },
-  {
-    title: 'BeeRoot D2C Store',
-    description: 'High-conversion brand store with WhatsApp order automation and Supabase backend.',
-    tech: ['Next.js', 'Supabase', 'Sanity', 'Twilio'],
-    github: 'https://github.com/Talha-Shaikh1',
-    demo: 'https://beeroot.vercel.app/',
-    icon: ShoppingCart,
-    accent: 'rgb(249, 115, 22)'
-  }
-]
+import { usePathname } from 'next/navigation'
+import { talhaData, hanzalaData } from '../lib/data'
 
 function ProjectCard({ project, index }: { project: any, index: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -120,9 +83,13 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
 }
 
 export default function Projects() {
+  const pathname = usePathname()
+  const isHanzalaPage = pathname.includes('/hanzala')
+  const currentProjects = isHanzalaPage ? hanzalaData.projects : talhaData.projects
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {projects.map((project, i) => (
+      {currentProjects.map((project: any, i: number) => (
         <ProjectCard key={i} project={project} index={i} />
       ))}
     </div>
