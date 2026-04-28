@@ -115,7 +115,8 @@ export default function IconCloud() {
             return (
               <motion.div
                 key={i}
-                className="absolute p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center backdrop-blur-xl shadow-2xl group cursor-pointer"
+                className="absolute p-4 rounded-2xl bg-white/10 border border-white/10 flex flex-col items-center justify-center shadow-lg group cursor-pointer"
+                style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
                 initial={{ 
                   x: Math.cos(angle) * radius, 
                   y: Math.sin(angle) * radius,
@@ -141,7 +142,6 @@ export default function IconCloud() {
                   ease: "linear",
                   delay: i * 0.2
                 }}
-                style={{ transformStyle: 'preserve-3d' }}
                 whileHover={{ scale: 1.3, z: 100, transition: { duration: 0.2 } }}
               >
                 <item.icon className="w-8 h-8 group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all" style={{ color: item.color }} />
@@ -153,8 +153,8 @@ export default function IconCloud() {
 
                 {/* Individual Icon Glow */}
                 <div 
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 blur-2xl transition-opacity pointer-events-none"
-                  style={{ background: item.color }}
+                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none scale-150"
+                  style={{ background: `radial-gradient(circle at center, ${item.color} 0%, transparent 70%)` }}
                 />
               </motion.div>
             )
@@ -163,11 +163,12 @@ export default function IconCloud() {
           {/* Core System Heartbeat */}
           <div className="absolute w-24 h-24 flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
             <motion.div 
-              className="absolute inset-0 rounded-full bg-violet-600/30 blur-[60px]"
+              className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.3)_0%,transparent_70%)]"
+              style={{ willChange: 'transform, opacity' }}
               animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0.7, 0.3] }}
               transition={{ duration: 3, repeat: Infinity }}
             />
-            <div className="relative w-16 h-16 rounded-full border border-violet-500/20 backdrop-blur-md flex items-center justify-center overflow-hidden">
+            <div className="relative w-16 h-16 rounded-full border border-violet-500/20 bg-black/40 flex items-center justify-center overflow-hidden">
                <motion.div 
                  className="absolute inset-0 bg-gradient-to-t from-violet-500/50 to-transparent"
                  animate={{ y: ["100%", "-100%"] }}

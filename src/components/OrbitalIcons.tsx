@@ -87,7 +87,7 @@ export default function OrbitalIcons() {
                 transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
               >
                 <div
-                  className="rounded-xl flex items-center justify-center backdrop-blur-sm"
+                  className="rounded-xl flex items-center justify-center bg-black/40"
                   style={{
                     width: size + 14,
                     height: size + 14,
