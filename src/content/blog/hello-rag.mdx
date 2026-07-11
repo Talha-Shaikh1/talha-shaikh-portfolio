@@ -1,0 +1,12 @@
+---
+title: "Grounding an LLM: what RAG actually buys you"
+description: "A short note on why retrieval beats bigger prompts for factual answers."
+date: "2026-07-11"
+---
+
+Retrieval-augmented generation isn't magic — it's a filing system. You chunk
+your content, embed it, and at query time you pull only the passages that
+actually matter, then ask the model to answer **from those passages only**.
+
+The payoff is grounding: the model stops guessing and starts citing. That's
+the same pattern behind Botaura, just scaled down.
