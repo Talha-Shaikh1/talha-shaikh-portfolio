@@ -91,21 +91,24 @@ type Project = {
 
 ## Content plan
 
-- **Hero:** name; one-line positioning ("Full-stack & AI engineer — I build and
-  ship production SaaS products solo"); subtext (RAG systems, multi-tenant
-  SaaS, WhatsApp Business API, full-stack product dev); CTAs **View Projects**
-  and **Contact / Résumé**.
-- **About:** self-taught path framed as a strength (shipped real product >
-  coursework), stated confidently. Botaura (live multi-tenant RAG chatbot SaaS
-  for Pakistani SMBs, built solo), Meta WhatsApp Tech Provider, deliberate CS
-  relearning (DSA, TypeScript, Python) and open-source tooling.
-- **Projects (priority section):** card grid.
-  - **Botaura** (flagship) — multi-tenant RAG SaaS, WhatsApp automation, Meta
-    Tech Provider. Real highlights (e.g. tenant isolation, RAG pipeline,
-    WhatsApp Cloud API integration). Deep-dive page.
-  - **WhatsApp Cloud API wrapper** (open source, in progress) — highlights on
-    API design / typing / DX.
-  - Fleshed-out placeholders; adding a project = editing `projects.ts`.
+- **Hero:** name; one-line positioning ("I build and ship production SaaS and AI
+  systems solo"); subtext (Next.js/TypeScript + applied AI: Botaura RAG SaaS,
+  plus LMS and e-commerce); CTAs **View Projects** and **Contact / Résumé**.
+- **About:** self-taught path framed as a strength (shipping > coursework),
+  stated confidently. Flagship **Botaura** (live multi-tenant RAG chatbot SaaS,
+  WhatsApp automation, Meta WhatsApp Tech Provider), plus Bait-ul-Kutub LMS, The
+  Arqa e-commerce, AI Humanoid Robotics; GIAIC (Cloud Native Applied Generative
+  AI). **Truthful content only** — all claims (including Botaura live + Meta Tech
+  Provider) confirmed real by the user 2026-07-12.
+- **Projects (priority section):** card grid, real projects.
+  - **Botaura** (flagship, featured, deep-dive) — live multi-tenant RAG SaaS,
+    WhatsApp automation, Meta Tech Provider. (Live URL pending from user.)
+  - **Bait-ul-Kutub LMS** (featured) — full-stack LMS, Prisma/PostgreSQL, AI
+    search. Live demo.
+  - **AI Humanoid Robotics Platform** (featured) — Next.js/Python/ROS 2/OpenAI.
+    Live demo.
+  - **The Arqa E-Commerce** — Next.js/Sanity/Stripe. Live demo.
+  - Adding a project = editing `projects.ts`.
 - **Skills:** grouped **Frontend / Backend / AI-RAG / Infra-DevOps /
   Integrations** — labeled groups, not a tag cloud.
 - **Contact:** working form **plus** links (email, LinkedIn, GitHub).

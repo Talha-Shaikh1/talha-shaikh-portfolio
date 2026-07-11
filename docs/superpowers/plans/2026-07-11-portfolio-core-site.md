@@ -318,12 +318,12 @@ Expected: FAIL — cannot resolve `./projects` etc.
 ```ts
 import type { Social } from "./types";
 
-export const email = "talha369852@gmail.com";
+export const email = "Talha369852@gmail.com";
 
-// TODO(talha): replace placeholder handles/URLs with real ones.
 export const socials: Social[] = [
-  { label: "GitHub", href: "https://github.com/talha-shaikh", handle: "@talha-shaikh" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/talha-shaikh", handle: "in/talha-shaikh" },
+  { label: "GitHub", href: "https://github.com/Talha-Shaikh1", handle: "@Talha-Shaikh1" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/talha-shaikh", handle: "in/talha-shaikh" },
+  { label: "WhatsApp", href: "https://wa.me/923121964939", handle: "+92 312 1964939" },
 ];
 ```
 
@@ -334,15 +334,16 @@ export const socials: Social[] = [
 export const profile = {
   name: "Talha Shaikh",
   role: "Full-stack & AI Engineer",
-  positioning: "I build and ship production SaaS products solo.",
+  positioning: "I build and ship production SaaS and AI systems solo.",
   subtext:
-    "I design and ship full-stack products end to end — RAG systems, multi-tenant SaaS, and WhatsApp Business API integrations — from database to deployment.",
+    "Self-taught engineer from Karachi working across modern web (Next.js, TypeScript) and applied AI — from Botaura, a live multi-tenant RAG chatbot SaaS, to full-stack products like an LMS and an e-commerce store.",
+  location: "Karachi, Pakistan",
   resumeHref: "/talha-shaikh-resume.pdf",
   about: [
-    "I'm a self-taught full-stack and AI engineer. My formal education stops at matric — my engineering education is a live, paying product.",
-    "I built Botaura from scratch, solo: a multi-tenant RAG chatbot SaaS serving Pakistani SMBs, with WhatsApp Business automation and Meta Tech Provider status. Every layer — data model, retrieval pipeline, tenant isolation, billing, deployment — is mine.",
-    "Shipping a real product taught me more than any syllabus could, and I now backfill fundamentals deliberately: data structures and algorithms, TypeScript, and Python, alongside open-source tooling I build in public.",
-    "I'm looking for remote backend, full-stack, or AI-engineering roles where shipping outweighs credentials.",
+    "I'm a self-taught full-stack and AI engineer based in Karachi. My formal schooling stops at matric — the rest I've taught myself by building and shipping real products.",
+    "I built Botaura solo: a live multi-tenant RAG chatbot SaaS for Pakistani SMBs with WhatsApp Business automation, operated as a Meta WhatsApp Tech Provider. Every layer — data model, retrieval pipeline, tenant isolation, and the WhatsApp integration — is mine.",
+    "I've also shipped Bait-ul-Kutub (an AI-powered Library Management System), The Arqa (a high-performance e-commerce store), and an interactive platform for teaching Physical AI and humanoid robotics.",
+    "I'm deepening my foundations through GIAIC's Cloud Native Applied Generative AI program and looking for remote full-stack or AI-engineering roles where shipping matters more than a traditional CS degree.",
   ],
 } as const;
 ```
@@ -357,32 +358,63 @@ export const projects: Project[] = [
   {
     slug: "botaura",
     name: "Botaura",
-    tagline: "Multi-tenant RAG chatbot SaaS for Pakistani SMBs, with WhatsApp automation.",
+    tagline: "Live multi-tenant RAG chatbot SaaS for Pakistani SMBs, with WhatsApp automation.",
     description:
-      "A production SaaS that lets small businesses spin up a grounded AI chatbot over their own content and connect it to WhatsApp Business — built and operated solo as a Meta Tech Provider.",
-    stack: ["Next.js", "TypeScript", "Postgres", "pgvector", "Python", "WhatsApp Cloud API", "OpenAI"],
+      "A production SaaS that lets small businesses run a grounded AI chatbot over their own content and connect it to WhatsApp Business — built solo, and operated as a Meta WhatsApp Tech Provider.",
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "pgvector", "Python", "WhatsApp Cloud API", "OpenAI"],
     highlights: [
-      "Designed row-level multi-tenant isolation so each business's documents, embeddings, and conversations never cross tenant boundaries.",
-      "Built the RAG pipeline end to end: chunking, embeddings, cosine retrieval, and grounded generation with strict 'answer only from context' prompting to prevent hallucination.",
-      "Integrated the WhatsApp Cloud API as a Meta Tech Provider, handling webhooks, message templates, and delivery/status reconciliation.",
+      "Designed row-level multi-tenant isolation so each business's documents, embeddings, and conversations stay separate.",
+      "Built the RAG pipeline end to end: chunking, embeddings, cosine retrieval, and grounded generation with strict answer-only-from-context prompting.",
+      "Integrated the WhatsApp Cloud API as a Meta Tech Provider — webhooks, message templates, and delivery/status reconciliation.",
     ],
-    links: { live: "https://botaura.com", caseStudy: "/projects/botaura" },
+    // TODO(talha): add the live Botaura URL (e.g. links.live) — confirmed live but URL not yet provided.
+    links: { caseStudy: "/projects/botaura" },
     featured: true,
     deepDive: true,
   },
   {
-    slug: "whatsapp-cloud-api-wrapper",
-    name: "WhatsApp Cloud API Wrapper",
-    tagline: "A typed, ergonomic open-source client for the WhatsApp Business Cloud API.",
+    slug: "bait-ul-kutub",
+    name: "Bait-ul-Kutub LMS",
+    tagline: "Full-stack Library Management System with AI-powered search and real-time tracking.",
     description:
-      "An open-source TypeScript library that wraps the WhatsApp Cloud API with a clean, fully-typed surface — extracted from patterns I built repeatedly for Botaura.",
-    stack: ["TypeScript", "Node.js", "WhatsApp Cloud API", "tsup", "Vitest"],
+      "A full-stack library management system: catalog, members, and loans, with an AI-assisted search/recommendation layer over the collection.",
+    stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "OpenAI"],
     highlights: [
-      "Fully-typed message builders (text, template, interactive, media) so invalid payloads fail at compile time, not at Meta's API.",
-      "Webhook signature verification and typed event parsing baked in, so consumers don't reimplement the security-sensitive parts.",
+      "Modeled the full library domain (books, members, loans) in PostgreSQL via Prisma, with real-time availability tracking.",
+      "Added an AI-powered search and recommendation layer over the catalog using the OpenAI SDK.",
     ],
-    links: { github: "https://github.com/talha-shaikh/whatsapp-cloud-api" },
+    links: { live: "https://bait-ul-kutub.vercel.app/", github: "https://github.com/Talha-Shaikh1" },
     featured: true,
+    deepDive: false,
+  },
+  {
+    slug: "humanoid-robotics",
+    name: "AI Humanoid Robotics Platform",
+    tagline: "Interactive platform for teaching Physical AI and humanoid robotics with ROS 2.",
+    description:
+      "An interactive digital platform that teaches Physical AI and humanoid robotics concepts, visualizing ROS 2 architecture with natural-language search.",
+    stack: ["Next.js", "Python", "ROS 2", "OpenAI"],
+    highlights: [
+      "Built an interactive teaching platform that visualizes ROS 2 architecture for Physical AI concepts.",
+      "Integrated OpenAI-powered search so learners can query robotics topics in natural language.",
+    ],
+    links: { live: "https://humanoid-robotic-book-eight.vercel.app/", github: "https://github.com/Talha-Shaikh1/humanoid-robotic-book" },
+    featured: true,
+    deepDive: false,
+  },
+  {
+    slug: "the-arqa",
+    name: "The Arqa — E-Commerce",
+    tagline: "High-performance fashion store with a custom admin panel and Stripe checkout.",
+    description:
+      "A production fashion e-commerce store on a headless CMS, with a custom admin panel and a performance-optimized storefront.",
+    stack: ["Next.js", "Sanity", "Stripe", "Tailwind"],
+    highlights: [
+      "Built a headless storefront on Sanity CMS with a custom admin panel for catalog management.",
+      "Optimized for Core Web Vitals and SEO (90+ Lighthouse) and integrated Stripe checkout.",
+    ],
+    links: { live: "https://thearqa.com/", github: "https://github.com/Talha-Shaikh1" },
+    featured: false,
     deepDive: false,
   },
 ];
@@ -395,11 +427,12 @@ export const projects: Project[] = [
 import type { SkillGroup } from "./types";
 
 export const skillGroups: SkillGroup[] = [
-  { category: "Frontend", items: ["React", "Next.js (App Router)", "TypeScript", "Tailwind CSS", "Framer Motion"] },
-  { category: "Backend", items: ["Node.js", "Python", "REST APIs", "Postgres", "Prisma", "Auth & sessions"] },
-  { category: "AI / RAG", items: ["Embeddings", "Vector search (pgvector)", "Chunking & retrieval", "Grounded generation", "Prompt design"] },
-  { category: "Infra / DevOps", items: ["Vercel", "Docker", "CI/CD", "Env & secrets", "Observability"] },
-  { category: "Integrations", items: ["WhatsApp Cloud API", "Meta Tech Provider", "Webhooks", "Payments", "Third-party APIs"] },
+  { category: "Frontend", items: ["Next.js (App Router)", "React", "TypeScript", "Tailwind CSS", "Framer Motion"] },
+  { category: "Backend", items: ["Node.js", "Python", "FastAPI", "Prisma", "REST APIs"] },
+  { category: "AI / RAG", items: ["OpenAI SDK", "LangChain", "RAG & retrieval", "Vector search (pgvector)", "Prompt engineering"] },
+  { category: "Database", items: ["PostgreSQL", "Neon", "Supabase", "MongoDB"] },
+  { category: "Infra / Tools", items: ["Vercel", "Docker", "Git", "Sanity CMS"] },
+  { category: "Integrations", items: ["WhatsApp Cloud API", "Meta Tech Provider", "Webhooks", "Stripe"] },
 ];
 ```
 
@@ -888,9 +921,9 @@ export function About() {
             <dl className="space-y-4 rounded-xl border border-border bg-surface p-6 font-mono text-sm">
               {[
                 ["Role", profile.role],
-                ["Focus", "RAG · Multi-tenant SaaS · Integrations"],
+                ["Focus", "RAG SaaS · Full-stack · AI"],
                 ["Status", "Open to remote roles"],
-                ["Based", "Pakistan (remote)"],
+                ["Based", "Karachi, Pakistan"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-0 last:pb-0">
                   <dt className="text-muted">{k}</dt>
@@ -1809,15 +1842,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
         name: "What does Talha Shaikh build?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Full-stack and AI products: RAG systems, multi-tenant SaaS, and WhatsApp Business API integrations. He built Botaura, a multi-tenant RAG chatbot SaaS, solo.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Does Talha have a computer science degree?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "No. He is self-taught, with formal education to matric level, and has shipped a live production SaaS product solo. He backfills CS fundamentals (DSA, TypeScript, Python) deliberately.",
+          text: "Full-stack products and applied AI. His flagship is Botaura, a live multi-tenant RAG chatbot SaaS for Pakistani SMBs with WhatsApp automation. He has also built an AI-powered LMS (Bait-ul-Kutub), an e-commerce store (The Arqa), and a Physical-AI teaching platform, using Next.js, TypeScript, Python, and the OpenAI SDK.",
         },
       },
       {
@@ -1825,7 +1850,15 @@ import { JsonLd } from "@/components/seo/JsonLd";
         name: "What is Talha's experience with WhatsApp APIs?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "He is a Meta WhatsApp Tech Provider and integrated the WhatsApp Cloud API into Botaura, handling webhooks, templates, and delivery reconciliation. He is also building an open-source WhatsApp Cloud API wrapper.",
+          text: "He is a Meta WhatsApp Tech Provider and integrated the WhatsApp Cloud API into Botaura — handling webhooks, message templates, and delivery/status reconciliation.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does Talha have a computer science degree?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. He is self-taught, with formal education to matric level, and is currently in GIAIC's Cloud Native Applied Generative AI program. He learns by building and shipping real products.",
         },
       },
     ],
