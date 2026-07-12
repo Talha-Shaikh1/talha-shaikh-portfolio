@@ -11,8 +11,8 @@ export function Projects() {
         <SectionHeading
           id="projects-heading"
           label="Projects"
-          title="Things I've built and shipped"
-          kicker="Real engineering decisions, not feature lists."
+          title="Things I've built"
+          kicker="Personal and course projects I built while learning — with the problems I ran into."
         />
         <div className="grid gap-6 md:grid-cols-2">
           {projects.map((p, i) => (

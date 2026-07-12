@@ -18,7 +18,7 @@ export default function Home() {
               name: "What does Talha Shaikh build?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Full-stack products and applied AI. His flagship is Botaura, a live multi-tenant RAG chatbot SaaS for Pakistani SMBs with WhatsApp automation. He has also built an AI-powered LMS (Bait-ul-Kutub), an e-commerce store (The Arqa), and a Physical-AI teaching platform, using Next.js, TypeScript, Python, and the OpenAI SDK.",
+                text: "Full-stack web projects, mostly with Next.js, React, and TypeScript. He built Botaura, a WhatsApp chatbot that answers from a small business's own content; Comforty, a furniture e-commerce store on Next.js and Sanity; a resume builder in plain HTML, CSS, and JavaScript; a library management system (Bait-ul-Kutub); and a couple of other projects.",
               },
             },
             {
@@ -34,7 +34,7 @@ export default function Home() {
               name: "Does Talha have a computer science degree?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "No. He is self-taught, with formal education to matric level, and is currently in GIAIC's Cloud Native Applied Generative AI program. He learns by building and shipping real products.",
+                text: "No. He is self-taught, with formal education to matric level, and is currently in GIAIC's Cloud Native Applied Generative AI program. He's about 1.5 years into coding and learns by building real projects.",
               },
             },
           ],

@@ -7,7 +7,7 @@ export function About() {
   return (
     <section id="about" className="scroll-mt-20 py-24">
       <Container>
-        <SectionHeading id="about-heading" label="About" title="Shipping over credentials" />
+        <SectionHeading id="about-heading" label="About" title="Still learning, building as I go" />
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr]">
           <Reveal>
             <div className="space-y-5 text-lg leading-relaxed text-muted">
@@ -20,8 +20,8 @@ export function About() {
             <dl className="space-y-4 rounded-xl border border-border bg-surface p-6 font-mono text-sm">
               {[
                 ["Role", profile.role],
-                ["Focus", "RAG SaaS · Full-stack · AI"],
-                ["Status", "Open to remote roles"],
+                ["Focus", "Frontend · Full-stack · Learning AI"],
+                ["Status", "Open to junior roles"],
                 ["Based", "Karachi, Pakistan"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-0 last:pb-0">

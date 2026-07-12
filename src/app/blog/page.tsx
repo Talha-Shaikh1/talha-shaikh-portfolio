@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
   title: "Blog — Talha Shaikh",
-  description: "Technical write-ups on RAG, SaaS, and shipping products solo.",
+  description: "Notes and write-ups on things I'm learning while building projects.",
 };
 
 export default function BlogIndex() {
