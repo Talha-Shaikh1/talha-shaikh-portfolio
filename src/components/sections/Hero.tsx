@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden py-28 sm:py-36">
+    <section className="relative overflow-hidden py-12">
       <Container>
         <Reveal>
           <p className="font-mono text-sm text-accent">{profile.role}</p>
