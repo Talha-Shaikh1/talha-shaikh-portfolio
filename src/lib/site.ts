@@ -1,7 +1,10 @@
 export const SITE = {
-  url: "https://talhashaikh.dev", // TODO(talha): confirm this is your production domain
+  url: "https://talhaweb.xyz",
   name: "Talha Shaikh",
-  title: "Talha Shaikh — Full-stack Developer",
+  title: "Talha Shaikh — Junior Full-Stack & AI Engineer",
   description:
-    "Junior full-stack developer from Karachi, self-taught and about 1.5 years in. I build real projects with Next.js, React, and TypeScript — from a furniture store and a resume builder to Botaura, a WhatsApp chatbot for small businesses.",
+    "Junior Full-Stack & AI Engineer specializing in Next.js, TypeScript, Python/FastAPI, and RAG vector search. Architect of Botaura SaaS and Meta WhatsApp Tech Provider.",
 } as const;
+
+
+

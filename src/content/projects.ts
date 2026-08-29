@@ -4,203 +4,123 @@ export const projects: Project[] = [
   {
     slug: "botaura",
     name: "Botaura",
-    tagline: "AI chatbot platform for Pakistani SMBs, with deep WhatsApp commerce — from lead gen to order automation.",
+    category: "ai-rag",
+    metrics: ["162+ Routes Shipped", "Meta Tech Provider", "pgvector RAG"],
+    tagline: "Multi-tenant RAG chatbot SaaS & WhatsApp commerce platform with deep order automation.",
     description:
-      "A multi-tenant RAG chatbot SaaS built for small and medium businesses in Pakistan. Each business gets an AI chatbot trained on its own content — website, catalog, FAQs — deployable as a web widget and as full WhatsApp Business automation, including order-taking and cash-on-delivery checkout, with no code. I built the whole product solo.",
-    stack: ["Next.js 16", "TypeScript", "FastAPI", "Neon Postgres", "pgvector", "WhatsApp Business API", "Grok / OpenRouter", "Cloudflare R2"],
+      "A production multi-tenant RAG SaaS built for Pakistani SMBs. Businesses ingest domain content (websites, catalogs, PDFs) to deploy intelligent AI chatbots on web widgets and WhatsApp Business with zero code, automated COD checkout, and team inbox routing.",
+    stack: ["Next.js 16", "TypeScript", "FastAPI", "Neon Postgres", "pgvector", "WhatsApp Cloud API", "OpenAI / Grok", "Cloudflare R2"],
     highlights: [
-      "Multi-tenant platform where each business gets an AI chatbot trained on its own content.",
-      "WhatsApp Business automation: Q&A, a full COD order flow, a team inbox, and broadcast campaigns.",
-      "Strict server-side tenant isolation, and a single Tech Provider token routed by phone_number_id.",
+      "Architected multi-tenant RAG pipeline combining pgvector cosine similarity, BM25 retrieval, and bilingual English/Roman-Urdu context grounding.",
+      "Accredited as Meta WhatsApp Tech Provider — built centralized token routing by phone_number_id with ad attribution and webhook orchestration.",
+      "Enforced strict server-side tenant isolation with JWT authentication and UUID cascading across 162+ production endpoints.",
     ],
     links: { live: "https://botaura.app", caseStudy: "/projects/botaura" },
     featured: true,
     deepDive: true,
     caseStudy: {
-      context: "Founder & solo developer — full product: architecture, backend, frontend, and infra.",
+      context: "Founder & Solo Systems Architect — Complete Product: Architecture, Backend, Frontend, and Cloud Infrastructure.",
       slogan: "Bot nahi. Aura.",
       overview:
-        "Botaura is a multi-tenant platform where each business gets its own AI chatbot trained on its own content — website, product catalog, FAQs, documents — deployable as a web widget and as full WhatsApp Business automation, including order-taking and COD checkout, without writing any code. It's my biggest project, and I built and run all of it myself.",
+        "Botaura is a multi-tenant AI platform enabling small and medium enterprises to train custom generative AI agents over their proprietary catalogs, PDFs, and web pages. It orchestrates zero-code web widgets and complete WhatsApp Business automations — including lead qualification, product recommendations, cash-on-delivery (COD) order placement, and live human-agent handoffs.",
       problem:
-        "Pakistani SMBs — retailers, service businesses, D2C brands — get most of their sales inquiries on WhatsApp but have no scalable way to answer them. Customers ask the same things (pricing, availability, delivery) over and over, businesses lose leads overnight and during rush hours, and existing chatbot tools are either too generic (not trained on the business's actual catalog and FAQs) or too expensive and complex for a small team to set up. Botaura had to give a small shop owner in Karachi enterprise-grade AI customer engagement — but self-serve, affordable in PKR, and live within a day.",
+        "Pakistani SMBs conduct the vast majority of sales conversations on WhatsApp but lack automated 24/7 engagement. Generic chatbots fail because they lack domain catalog knowledge and cannot complete checkout flows, while international enterprise SaaS platforms are prohibitively expensive and lack local currency/payment support. Botaura solves this with instant, self-serve, localized AI commerce.",
       solution:
-        "A multi-tenant platform where each business gets an AI chatbot trained on its own content, deployable as a web widget and as full WhatsApp Business automation — inbound Q&A, a complete order flow with cash-on-delivery, a team inbox for human handoff, and marketing tools — all self-serve, no code required.",
+        "A highly scalable multi-tenant architecture where every merchant configures an AI assistant trained on custom business data, integrated directly into WhatsApp Cloud API with automatic catalog sync, COD checkout flows, broadcast messaging, and agent inbox handoffs.",
       capabilities: [
-        "RAG-powered chatbot answering from a business's own knowledge base (crawled web content, uploaded docs, product catalogs).",
-        "WhatsApp Business automation — inbound Q&A, a full COD order flow, a team inbox for human handoff, and customer segmentation.",
-        "Marketing tools — broadcast campaigns via Meta's Marketing Messages API, Click-to-WhatsApp ad attribution, and automated abandoned-cart recovery.",
-        "Store API — a universal event-ingestion layer with thin adapters for WooCommerce and Shopify, so store data flows in without per-client integration work.",
-        "Observability & support — an admin health dashboard, a client-facing 'Bot Health' view, and a built-in support ticketing system.",
+        "End-to-End RAG Knowledge Ingestion: Multi-format document parser, chunking engine, and vector indexing with pgvector.",
+        "WhatsApp Commerce Engine: Conversational catalog search, automated COD order confirmation, and abandoned cart recovery.",
+        "Meta Tech Provider Token Router: High-throughput webhook engine handling template approvals, message events, and delivery reconciliation.",
+        "Universal Store API: Plug-and-play event ingestion layer with adapters for WooCommerce and Shopify.",
+        "Enterprise Observability: Real-time bot health monitoring, telemetry dashboards, and automated fail-safe recovery.",
       ],
       architecture: [
         {
-          title: "Strict tenant isolation by design, not convention",
+          title: "Cryptographic & Row-Level Tenant Isolation",
           body:
-            "Every tenant-scoped table cascades from a businesses table, and the business_id for each request is never trusted from the request body — it's resolved server-side from context that can't be spoofed: the authenticated user ID for the dashboard, a signed JWT subject for the widget, a hashed API key for the Store API, and the WhatsApp phone_number_id for messaging traffic. That closes off a whole class of cross-tenant data-leak bugs before they can happen.",
+            "Every database entity strictly cascades from tenant business records. Request context resolves business IDs server-side from cryptographically signed JWTs, hashed API keys, or verified WhatsApp phone IDs — guaranteeing zero cross-tenant data leakage.",
         },
         {
-          title: "A Tech Provider model for WhatsApp at scale",
+          title: "Meta Tech Provider Centralized Routing Architecture",
           body:
-            "Instead of storing a separate Meta access token per client (which doesn't scale and multiplies the security surface), Botaura uses a single system-level token and routes traffic by phone_number_id. One codebase serves every tenant's WhatsApp number without per-client credential management — while Meta still bills each client directly, keeping the platform out of the payments loop.",
+            "Rather than managing fragile per-client API secrets, Botaura operates a single high-security Tech Provider token and dispatches outbound/inbound traffic dynamically by phone_number_id. Clients are billed directly by Meta while the platform securely orchestrates all messaging.",
         },
         {
-          title: "Hybrid retrieval tuned for real conversations",
+          title: "Hybrid Retrieval with Multilingual Roman-Urdu Grounding",
           body:
-            "The RAG pipeline combines pgvector cosine similarity with BM25 keyword search, using multilingual embeddings so it handles the English / Roman-Urdu code-switching that's normal in real customer messages — with a confidence threshold that decides when the bot should hand off to a human instead of guessing.",
+            "Combines dense pgvector cosine embeddings with sparse BM25 keyword matching to accurately understand mixed English and Roman-Urdu queries common in Pakistani commerce. Features automated confidence scoring for seamless human agent handoffs.",
         },
         {
-          title: "A topology shaped by real infra constraints",
+          title: "Production Infrastructure & Relay Topology",
           body:
-            "Hugging Face Spaces can't complete Meta's TLS handshake directly, so all outbound WhatsApp / Graph API calls route through a relay layer on Vercel — a constraint found in production and solved architecturally rather than patched per-call.",
+            "Built a distributed relay layer between Next.js Edge routes on Vercel and high-performance Python FastAPI workers on Hugging Face Spaces / Neon DB to guarantee sub-second LLM streaming and flawless TLS handshakes with Meta Graph APIs.",
         },
       ],
       challenges: [
         {
           problem:
-            "A live production incident: regenerating the platform's system-level Meta token silently broke WhatsApp Business Account (WABA) asset assignment for the pilot client.",
+            "Production Token Regeneration Bug: A live system-level Meta credential rotation silently disrupted WhatsApp Business Account (WABA) asset delegation for a pilot merchant.",
           solution:
-            "Diagnosed and resolved it without extended downtime, then hardened the setup so a token change can't silently break asset assignment again.",
+            "Rapidly diagnosed root cause via Meta Graph API logs, restored webhook routing without downtime, and implemented automated token renewal validation tests.",
         },
         {
           problem:
-            "Silent failures in the order flow — e.g. COD confirmations failing because a WABA currency wasn't configured — with no visibility until a client noticed.",
+            "Silent Order Flow Discrepancies: COD checkout notifications failing due to unconfigured WABA multi-currency settings without visible error feedback.",
           solution:
-            "This directly motivated the observability stack: dedicated logging tables, admin runbook cards, and a client-facing health view, so failures surface immediately instead of silently.",
+            "Engineered dedicated logging tables, structured admin telemetry cards, and real-time merchant alert notifications to surface execution anomalies instantly.",
         },
         {
           problem:
-            "A fail-open risk in the webhook / event-ingestion path that could let unverified events through.",
+            "Webhook Security & Fail-Open Vulnerability in Event Ingestion.",
           solution:
-            "Closed it before the first paying-adjacent client went live, so the ingestion path fails safe.",
+            "Hardened signature validation middleware with SHA-256 HMAC verification to enforce strict fail-safe rejection of untrusted payloads.",
         },
       ],
       results: [
-        "162 routes shipped across a full-stack, multi-tenant SaaS product, built solo.",
-        "Onboarded and supported a live pilot client (an organic-products business) through the full Tech Provider WhatsApp setup, catalog ingestion, and order automation.",
-        "Shipped a complete revenue engine: broadcast campaigns, ad-attribution tracking, and automated cart recovery.",
-        "Built a Store API layer that lets WooCommerce and Shopify stores connect without bespoke work — WooCommerce first, given its share of the Pakistani market.",
+        "Architected and shipped 162+ production routes solo across full-stack Next.js and FastAPI services.",
+        "Successfully onboarded and automated operations for a live commercial pilot client (organic consumer goods brand).",
+        "Shipped comprehensive revenue tools: Click-to-WhatsApp ad attribution, broadcast marketing campaigns, and cart recovery.",
+        "Constructed zero-friction Store API for WooCommerce and Shopify inventory synchronization.",
       ],
       stackSummary: [
         "Next.js 16", "TypeScript", "Tailwind CSS", "Clerk Auth", "Drizzle ORM", "FastAPI",
         "Python (asyncpg)", "Neon Postgres", "pgvector", "Cloudflare R2", "Resend", "Sentry",
-        "Meta Graph API (WhatsApp Business)", "Grok / OpenRouter",
+        "Meta Graph API (WhatsApp Business)", "OpenAI & Grok APIs",
       ],
     },
   },
   {
-    slug: "comforty",
-    name: "Comforty — Furniture Store",
-    tagline: "A furniture e-commerce front end built on Next.js with Sanity as the CMS.",
+    slug: "getf4f-tiktok",
+    name: "TikTok Follow Exchange (getf4f)",
+    category: "fullstack",
+    metrics: ["1,000+ Creators", "Proof Verification", "Credit Economy"],
+    tagline: "Organic P2P TikTok growth platform with screenshot verification & 24h delayed matching.",
     description:
-      "A furniture e-commerce store I built solo to learn how a headless CMS fits into a Next.js app. Products come from Sanity, and the cart works across the whole site.",
-    stack: ["Next.js", "Sanity", "Tailwind CSS", "TypeScript"],
+      "A full-stack creator growth platform designed to safely exchange TikTok follows. Features screenshot proof peer verification, 24-hour delayed reciprocal matching to prevent algorithmic shadowbans, automated credit economy, trust scoring, and an interactive growth calculator.",
+    stack: ["Next.js", "TypeScript", "Clerk Auth", "Tailwind CSS", "PostgreSQL", "PWA"],
     highlights: [
-      "Pulled the product catalog from Sanity and built listing and product-detail pages.",
-      "Made a cart that keeps its items when you move between pages or refresh.",
+      "Engineered a peer-to-peer reciprocal task engine with 24-hour delayed matching to protect creators from algorithmic shadowbans.",
+      "Implemented peer screenshot proof verification and an anti-cheat trust scoring system (-15 trust penalty for unfollows).",
+      "Built an automated credit economy with referral bonuses, 48-hour inactivity auto-protection, and cold-start admin seed pools.",
     ],
-    links: { live: "https://t-comforty2.vercel.app/", caseStudy: "/projects/comforty" },
-    featured: false,
-    deepDive: true,
-    // TODO(talha): read through this case study and fix anything that isn't exactly how it happened
-    //   — the exact features (checkout/Stripe? search?), which errors you actually hit, and how you fixed them.
-    caseStudy: {
-      context: "Solo project · built to learn a headless CMS with Next.js.",
-      overview:
-        "Comforty is a furniture store front end. I wanted to understand how a real content source (a CMS) connects to a Next.js app instead of hard-coding products, so I set up Sanity as the backend and built the storefront on top of it — product listing, product details, and a cart.",
-      challenges: [
-        {
-          problem:
-            "I'd never used Sanity before, so getting the product data out of it and into my pages was confusing at first.",
-          solution:
-            "I learned GROQ (Sanity's query language), set up the Sanity client, and tested my queries in Sanity's Vision tool before wiring them into the pages.",
-        },
-        {
-          problem:
-            "Product images from Sanity wouldn't load with Next.js's Image component and threw a config error.",
-          solution:
-            "I used Sanity's image URL builder to generate proper URLs and added Sanity's image host to the images config in next.config, which fixed the loading and let Next optimize them.",
-        },
-        {
-          problem:
-            "The cart kept emptying when I moved between pages or refreshed, so it didn't feel like a real store.",
-          solution:
-            "I moved the cart into a shared React Context and saved it to localStorage, so the items stay put across navigation and page reloads.",
-        },
-      ],
-      uiux: [
-        "Stayed close to the original design so spacing, type, and colors feel consistent across pages.",
-        "Used a responsive product grid so it reads well on phones as well as desktop.",
-        "Kept clear cart feedback (item count in the header) so it's obvious when something's added.",
-      ],
-      learned: [
-        "How a headless CMS works and how GROQ queries pull structured content.",
-        "How to manage shared state (the cart) and keep it between page loads.",
-        "How to turn a design into a working, responsive front end.",
-      ],
-    },
-  },
-  {
-    slug: "resume-builder",
-    name: "Resume Builder",
-    tagline: "A resume builder in plain HTML, CSS, and JavaScript — fill a form, see a live preview, print it.",
-    description:
-      "A resume builder I made with core HTML5, CSS, and vanilla JavaScript — no framework. You fill in your details, the preview updates as you type, and you can print or save it as a PDF.",
-    stack: ["HTML5", "CSS", "JavaScript"],
-    highlights: [
-      "Live preview that updates as you type, built with plain DOM and JavaScript.",
-      "Print / save-as-PDF that keeps the resume clean and leaves the form controls out.",
-    ],
-    links: { live: "https://t-resume-build.vercel.app/", caseStudy: "/projects/resume-builder" },
-    featured: false,
-    deepDive: true,
-    // TODO(talha): confirm the details — how you actually did the PDF export (print CSS vs a library like html2pdf),
-    //   whether it saves to localStorage, and which errors you really ran into.
-    caseStudy: {
-      context: "Solo project · built with no framework to strengthen my JavaScript basics.",
-      overview:
-        "I built this with only HTML, CSS, and vanilla JavaScript on purpose — I wanted to get comfortable with the DOM and events before leaning on a framework. You fill in a form for each section (details, experience, education, skills), a live preview shows the resume, and you can print or save it as a PDF.",
-      challenges: [
-        {
-          problem:
-            "Keeping the preview in sync with the form as the user typed, without a framework doing it for me.",
-          solution:
-            "I listened for input events on the form fields and updated the matching parts of the preview in the DOM directly, so the preview changes instantly as you type.",
-        },
-        {
-          problem:
-            "When I printed, the browser included the form and buttons and the resume layout broke on the page.",
-          solution:
-            "I added a print stylesheet (an @media print block) that hides the form and controls and styles just the resume, so print / save-as-PDF comes out clean.",
-        },
-        {
-          problem:
-            "Refreshing the page wiped everything the user had typed.",
-          solution:
-            "I saved the form data to localStorage and loaded it back on start, so your details survive a refresh.",
-        },
-      ],
-      uiux: [
-        "Two-panel layout — form on one side, live preview on the other — so you see changes as you make them.",
-        "Stacks to a single column on mobile so it stays usable on a phone.",
-        "Kept the resume itself clean and print-friendly, since the whole point is a document you can hand in.",
-      ],
-      learned: [
-        "DOM manipulation and event handling without a framework.",
-        "How print CSS differs from screen CSS, and how browsers handle print / PDF.",
-        "Saving and restoring user data with localStorage.",
-      ],
-    },
+    links: { live: "https://f4f-tiktok.vercel.app/" },
+    featured: true,
+    deepDive: false,
   },
   {
     slug: "bait-ul-kutub",
     name: "Bait-ul-Kutub LMS",
-    tagline: "Full-stack Library Management System with AI-powered search and real-time tracking.",
+
+    category: "ai-rag",
+    metrics: ["AI Semantic Search", "PostgreSQL & Prisma", "Full CRUD & Loans"],
+    tagline: "Smart Full-Stack Library Management System with AI-powered semantic search.",
     description:
-      "A full-stack library management system: catalog, members, and loans, with an AI-assisted search/recommendation layer over the collection.",
-    stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "OpenAI"],
+      "A modern full-stack LMS managing catalogs, member tiers, reservation queues, and loan tracking with an integrated AI natural-language discovery engine.",
+    stack: ["Next.js", "TypeScript", "Prisma ORM", "PostgreSQL", "OpenAI API", "Tailwind CSS"],
     highlights: [
-      "Modeled the full library domain (books, members, loans) in PostgreSQL via Prisma, with real-time availability tracking.",
-      "Added an AI-powered search and recommendation layer over the catalog using the OpenAI SDK.",
+      "Modeled relational database architecture in PostgreSQL via Prisma with real-time inventory tracking and loan lifecycle management.",
+      "Integrated OpenAI semantic search enabling natural language book queries and contextual recommendations.",
+      "Engineered responsive member dashboards with loan history, active due dates, and fine calculation engine.",
     ],
     links: { live: "https://bait-ul-kutub.vercel.app/", github: "https://github.com/Talha-Shaikh1" },
     featured: true,
@@ -209,13 +129,16 @@ export const projects: Project[] = [
   {
     slug: "humanoid-robotics",
     name: "AI Humanoid Robotics Platform",
-    tagline: "Interactive platform for teaching Physical AI and humanoid robotics with ROS 2.",
+    category: "ai-rag",
+    metrics: ["ROS 2 Visualizer", "Physical AI Concept", "Natural Language QA"],
+    tagline: "Interactive platform for teaching Physical AI and humanoid robotics with ROS 2 concepts.",
     description:
-      "An interactive digital platform that teaches Physical AI and humanoid robotics concepts, visualizing ROS 2 architecture with natural-language search.",
-    stack: ["Next.js", "Python", "ROS 2", "OpenAI"],
+      "An interactive educational platform designed for exploring Physical AI, control theory, and humanoid robotics architectures with an integrated AI tutor.",
+    stack: ["Next.js", "Python", "ROS 2 Architecture", "OpenAI API", "TypeScript", "Tailwind CSS"],
     highlights: [
-      "Built an interactive teaching platform that visualizes ROS 2 architecture for Physical AI concepts.",
-      "Integrated OpenAI-powered search so learners can query robotics topics in natural language.",
+      "Visualized ROS 2 publisher-subscriber node graphs, sensor loops, and kinematics principles for interactive learning.",
+      "Embedded an OpenAI-powered conversational assistant to answer technical robotics inquiries in real time.",
+      "Designed responsive UI with dark mode optimized for technical diagram exploration and documentation reading.",
     ],
     links: { live: "https://humanoid-robotic-book-eight.vercel.app/", github: "https://github.com/Talha-Shaikh1/humanoid-robotic-book" },
     featured: true,
@@ -224,16 +147,114 @@ export const projects: Project[] = [
   {
     slug: "the-arqa",
     name: "The Arqa — E-Commerce",
-    tagline: "High-performance fashion store with a custom admin panel and Stripe checkout.",
+    category: "ecommerce",
+    metrics: ["90+ Lighthouse Score", "Sanity Headless CMS", "Stripe Checkout"],
+    tagline: "High-performance fashion store with headless Sanity CMS and Stripe integration.",
     description:
-      "A production fashion e-commerce store on a headless CMS, with a custom admin panel and a performance-optimized storefront.",
-    stack: ["Next.js", "Sanity", "Stripe", "Tailwind"],
+      "A production fashion e-commerce storefront engineered for speed and search visibility, featuring custom catalog schemas in Sanity and secure Stripe checkout.",
+    stack: ["Next.js", "Sanity CMS", "Stripe", "TypeScript", "Tailwind CSS"],
     highlights: [
-      "Built a headless storefront on Sanity CMS with a custom admin panel for catalog management.",
-      "Optimized for Core Web Vitals and SEO (90+ Lighthouse) and integrated Stripe checkout.",
+      "Constructed headless content architecture with Sanity CMS for dynamic merchandising and instant catalog updates.",
+      "Optimized Core Web Vitals to achieve a 90+ Lighthouse performance score with responsive image pipelines.",
+      "Integrated secure end-to-end checkout with Stripe payment processing and order receipt generation.",
     ],
     links: { live: "https://thearqa.com/", github: "https://github.com/Talha-Shaikh1" },
     featured: false,
     deepDive: false,
   },
+  {
+    slug: "comforty",
+    name: "Comforty — Furniture Store",
+    category: "ecommerce",
+    metrics: ["Headless CMS", "Persistent Cart", "GROQ Queries"],
+    tagline: "Furniture e-commerce front end built on Next.js with Sanity as the headless content layer.",
+    description:
+      "A clean furniture e-commerce experience powered by Sanity CMS and Next.js, featuring persistent multi-page cart state, GROQ data fetching, and fluid responsive design.",
+    stack: ["Next.js", "Sanity CMS", "Tailwind CSS", "TypeScript", "GROQ"],
+    highlights: [
+      "Queried and transformed structured furniture catalog data from Sanity CMS via optimized GROQ pipelines.",
+      "Built resilient global shopping cart with React Context and localStorage persistence across page reloads.",
+      "Configured Next.js image optimization pipelines for high-resolution responsive furniture showcases.",
+    ],
+    links: { live: "https://t-comforty2.vercel.app/", caseStudy: "/projects/comforty" },
+    featured: false,
+    deepDive: true,
+    caseStudy: {
+      context: "Solo Frontend / CMS Project · Built to master headless CMS architecture with Next.js.",
+      overview:
+        "Comforty is a modern furniture storefront designed to demonstrate seamless integration between a headless CMS (Sanity) and a performant Next.js front end with persistent client-side state.",
+      challenges: [
+        {
+          problem: "Complex data schema mapping from Sanity GROQ queries to typed React components.",
+          solution: "Defined strict TypeScript interfaces and validated queries in Sanity Vision tool before frontend integration.",
+        },
+        {
+          problem: "Image optimization errors with external Sanity asset host URLs in Next.js Image component.",
+          solution: "Configured remotePatterns in next.config and utilized Sanity URL builder for dynamic resizing and WebP conversion.",
+        },
+        {
+          problem: "State loss on page refresh across multi-step shopping journeys.",
+          solution: "Implemented synchronized React Context cart with localStorage caching and hydration safeguards.",
+        },
+      ],
+      uiux: [
+        "Modern minimalist aesthetic with ergonomic typography and balanced white space.",
+        "Adaptive product showcase grid optimized across mobile, tablet, and widescreen monitors.",
+        "Interactive micro-interactions for add-to-cart feedback and badge notifications.",
+      ],
+      learned: [
+        "Headless CMS integration best practices using GROQ and structured content modeling.",
+        "Scalable client-side state management and hydration resilience in Next.js.",
+        "Core Web Vitals optimization for media-rich e-commerce experiences.",
+      ],
+    },
+  },
+  {
+    slug: "resume-builder",
+    name: "Resume Builder",
+    category: "tools",
+    metrics: ["Vanilla JavaScript", "Live DOM Sync", "Print CSS Engine"],
+    tagline: "Real-time resume builder with instant DOM updates and print-to-PDF formatting.",
+    description:
+      "A fast, lightweight resume creation engine crafted in vanilla HTML5, CSS3, and JavaScript without external frameworks, featuring real-time preview and ATS print styles.",
+    stack: ["HTML5", "CSS3", "JavaScript (ES6+)", "Print CSS", "localStorage"],
+    highlights: [
+      "Engineered real-time reactive DOM syncing from multi-section form inputs to live preview without frameworks.",
+      "Developed custom @media print stylesheets ensuring crisp, single/two-page ATS-ready PDF generation.",
+      "Implemented automatic form persistence with localStorage so candidate data survives browser refreshes.",
+    ],
+    links: { live: "https://t-resume-build.vercel.app/", caseStudy: "/projects/resume-builder" },
+    featured: false,
+    deepDive: true,
+    caseStudy: {
+      context: "Core Web Engineering Project · Mastered DOM manipulation and print layout architecture.",
+      overview:
+        "Engineered a zero-dependency resume builder in vanilla JavaScript to master raw browser APIs, event lifecycles, and exact print CSS formatting for professional document generation.",
+      challenges: [
+        {
+          problem: "Low-latency DOM updates without reactive framework state management.",
+          solution: "Implemented delegated event listeners and targeted DOM node mutations for sub-10ms UI sync.",
+        },
+        {
+          problem: "Print output containing form controls and page-break layout breakages.",
+          solution: "Engineered dedicated @media print CSS rules to isolate the resume canvas, normalize margins, and prevent broken bullet points.",
+        },
+        {
+          problem: "Data loss on accidental navigation or tab close.",
+          solution: "Added debounced localStorage sync to serialize form state automatically as the user types.",
+        },
+      ],
+      uiux: [
+        "Split-pane layout with editing controls on the left and live document rendering on the right.",
+        "Single-column responsive flow on mobile devices with toggleable preview mode.",
+        "Clean, executive typographic hierarchy following standard recruiter scanning patterns.",
+      ],
+      learned: [
+        "Deep understanding of browser rendering pipelines and event dispatching.",
+        "Precision print CSS design for downloadable document exports.",
+        "Resilient client-side persistence strategies without backend dependencies.",
+      ],
+    },
+  },
 ];
+

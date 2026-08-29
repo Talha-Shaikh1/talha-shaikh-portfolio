@@ -1,15 +1,26 @@
 export const profile = {
   name: "Talha Shaikh",
-  role: "Full-stack Developer",
-  positioning: "I'm a junior full-stack developer who learns by building real projects.",
+  role: "Junior Full-Stack & AI Engineer",
+  positioning: "Junior Full-Stack & AI Engineer building production systems & intelligent RAG platforms.",
   subtext:
-    "Self-taught developer from Karachi, about 1.5 years into coding. I mostly work with Next.js, React, and TypeScript, and I learn best by building things and fixing what breaks — from a furniture store and a resume builder to some applied AI work.",
+    "Junior Full-Stack & AI Engineer based in Karachi trained through GIAIC (Governor Sindh Initiative for GenAI & Web3) with ~1.5 years of intensive coding. Built Botaura — a multi-tenant RAG chatbot SaaS with Meta WhatsApp Tech Provider accreditation — and TikTok Follow Exchange. Fast learner, shipping production software with Next.js, TypeScript, Python/FastAPI, and OpenAI SDK.",
   location: "Karachi, Pakistan",
-  resumeHref: "/talha-shaikh-resume.pdf",
+  status: "Open to Junior Full-Stack & AI Roles",
+  resumeHref: "/resume",
+  downloadResumeHref: "/Muhammad_Talha_Resume.pdf",
+  stats: [
+    { label: "SaaS Routes Shipped", value: "162+" },
+    { label: "Meta Tech Provider", value: "WhatsApp Cloud API" },
+    { label: "AI Architecture", value: "RAG & pgvector" },
+    { label: "Lighthouse Performance", value: "90+ Score" },
+  ],
   about: [
-    "I'm a self-taught full-stack developer based in Karachi, about a year and a half into writing code. I work mostly with Next.js, React, and TypeScript, and I learn best by building projects and figuring out what breaks.",
-    "The project I've put the most into is Botaura — an AI chatbot platform for small businesses in Pakistan that answers from their own content and runs full WhatsApp order automation. I built the whole thing solo — architecture, backend, frontend, and infra — and I'm registered as a Meta WhatsApp Tech Provider for it.",
-    "I've also built a furniture e-commerce store (Comforty) on Next.js and Sanity, a resume builder in plain HTML/CSS/JavaScript, a library management system, and a few other things — most of them solo, to learn a new tool or idea.",
-    "Right now I'm studying at GIAIC (Cloud Native Applied Generative AI) and looking for a junior full-stack or frontend role where I can keep learning and be useful.",
+    "I'm a Junior Full-Stack & AI Engineer based in Karachi with ~1.5 years of intensive coding experience. I developed my core full-stack and AI engineering foundations through GIAIC (Governor Sindh Initiative for GenAI, Web3 & Computing) — mastering Next.js, TypeScript, Python, FastAPI, and OpenAI Agent SDK / RAG architectures.",
+    "My flagship work is Botaura — a live multi-tenant RAG platform that enables businesses to ingest their domain documents/catalogs and deploy intelligent customer support with WhatsApp order automation. I designed the row-level multi-tenant isolation, implemented hybrid vector retrieval (pgvector + BM25), and integrated directly as an accredited Meta WhatsApp Tech Provider.",
+    "I've also built TikTok Follow Exchange (getf4f) with screenshot verification & credit economy, Bait-ul-Kutub LMS with AI catalog search, and high-performance headless e-commerce storefronts scoring 90+ on Core Web Vitals.",
+    "Actively seeking junior full-stack or AI engineering roles where I can contribute high velocity, deep curiosity, and immediate value to the engineering team.",
   ],
 } as const;
+
+
+

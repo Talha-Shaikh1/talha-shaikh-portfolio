@@ -4,8 +4,9 @@ import { Container } from "@/components/ui/Container";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-border py-12">
+    <footer className="mt-24 border-t border-border py-12 print:hidden">
       <Container className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+
         <p className="font-mono text-xs text-muted">
           © {new Date().getFullYear()} {profile.name}. Built with Next.js.
         </p>

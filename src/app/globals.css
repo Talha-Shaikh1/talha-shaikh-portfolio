@@ -64,3 +64,30 @@ body {
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+@media print {
+  @page {
+    margin: 8mm 11mm;
+    size: A4 portrait;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 8.5pt !important;
+    line-height: 1.28 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+}
+
+

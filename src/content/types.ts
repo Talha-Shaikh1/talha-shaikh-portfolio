@@ -16,11 +16,16 @@ export type CaseStudy = {
   stackSummary?: string[]; // full tech stack (rendered as tags)
 };
 
+export type ProjectCategory = "all" | "ai-rag" | "fullstack" | "ecommerce" | "tools";
+
+
 export type Project = {
   slug: string;
   name: string;
   tagline: string;
   description: string;
+  category?: ProjectCategory;
+  metrics?: string[];
   stack: string[];
   highlights: string[];
   links: { live?: string; github?: string; caseStudy?: string };
@@ -29,5 +34,11 @@ export type Project = {
   caseStudy?: CaseStudy;
 };
 
-export type SkillGroup = { category: string; items: string[] };
+export type SkillGroup = {
+  category: string;
+  description?: string;
+  items: string[];
+  featured?: boolean;
+};
 export type Social = { label: string; href: string; handle: string };
+
