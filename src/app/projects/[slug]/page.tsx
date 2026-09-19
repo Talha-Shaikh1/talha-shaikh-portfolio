@@ -4,16 +4,28 @@ import { projects } from "@/content/projects";
 import { Container } from "@/components/ui/Container";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { SITE } from "@/lib/site";
 
 export function generateStaticParams() {
-  return projects.filter((p) => p.deepDive).map((p) => ({ slug: p.slug }));
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
-  return { title: `${project.name} — Talha Shaikh`, description: project.tagline };
+  return {
+    title: `${project.name} — Talha Shaikh`,
+    description: project.tagline,
+    alternates: { canonical: `${SITE.url}/projects/${project.slug}` },
+    openGraph: {
+      title: `${project.name} — Talha Shaikh`,
+      description: project.description,
+      url: `${SITE.url}/projects/${project.slug}`,
+      images: project.image ? [{ url: `${SITE.url}${project.image}` }] : undefined,
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -25,6 +37,48 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main id="main" className="py-20">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: project.name,
+          description: project.description,
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web",
+          url: `${SITE.url}/projects/${project.slug}`,
+          author: {
+            "@type": "Person",
+            name: "Muhammad Talha Shaikh",
+            url: SITE.url,
+          },
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: SITE.url,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Projects",
+              item: `${SITE.url}/#projects`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: project.name,
+              item: `${SITE.url}/projects/${project.slug}`,
+            },
+          ],
+        }}
+      />
       <Container className="max-w-3xl">
         <Button href="/#projects" variant="ghost" className="mb-8">← Back to projects</Button>
         <p className="font-mono text-sm text-accent">Case study</p>
@@ -40,6 +94,43 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <Tag key={s}>{s}</Tag>
           ))}
         </div>
+
+        {/* Vercel-Style Live Web Preview Frame */}
+        {project.image ? (
+          <div className="mt-10 overflow-hidden rounded-xl border border-border bg-surface shadow-2xl">
+            {/* Browser top chrome */}
+            <div className="flex items-center justify-between border-b border-border bg-bg/90 px-4 py-2.5 font-mono text-xs">
+              <div className="flex items-center gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-rose-500/80" />
+                <span className="h-3 w-3 rounded-full bg-amber-500/80" />
+                <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
+              </div>
+              <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1 text-xs text-muted">
+                <span className="text-accent">🔒</span>
+                <span>
+                  {project.previewUrl ||
+                    project.links.live?.replace(/^https?:\/\//, "").replace(/\/$/, "") ||
+                    `${project.slug}.vercel.app`}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                <span>Production</span>
+              </div>
+            </div>
+            {/* Screenshot view */}
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-bg">
+              <img
+                src={project.image}
+                alt={`${project.name} live web preview`}
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+          </div>
+        ) : null}
 
         {cs ? (
           <>

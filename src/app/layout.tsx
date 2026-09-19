@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: { default: SITE.title, template: "%s" },
   description: SITE.description,
+  keywords: Array.from(SITE.keywords),
+  authors: [{ name: SITE.name, url: SITE.url }],
+  creator: SITE.name,
+  publisher: SITE.name,
   openGraph: {
     type: "website",
     url: SITE.url,

@@ -8,7 +8,7 @@ import { ResumeActions } from "./ResumeActions";
 export const metadata: Metadata = {
   title: "Résumé — Muhammad Talha Shaikh | Junior Full-Stack & AI Engineer",
   description:
-    "Professional ATS-optimized résumé of Muhammad Talha Shaikh. Junior Full-Stack & AI Engineer specializing in Next.js, TypeScript, Python/FastAPI, and production RAG systems.",
+    "Professional ATS-optimized résumé of Muhammad Talha Shaikh. Junior Full-Stack & AI Engineer specializing in Next.js 16, TypeScript, Python/FastAPI, Google Gemini, and production RAG & multi-tenant systems.",
 };
 
 export default function ResumePage() {
@@ -76,7 +76,7 @@ export default function ResumePage() {
               Professional Summary
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-text print:text-xs print:text-gray-900">
-              High-velocity <strong>Junior Full-Stack & AI Engineer</strong> (~1.5 years of intensive building experience) trained through <strong>GIAIC (Governor Sindh Initiative for GenAI & Web3)</strong>, with a proven track record of architecting, building, and deploying production-grade web systems and AI applications solo. Mastered <strong>Next.js, TypeScript, Python, FastAPI, and OpenAI Agent SDK / RAG</strong> during coursework and applied projects. Architected <strong>Botaura</strong>, a live multi-tenant RAG chatbot SaaS integrated with the WhatsApp Cloud API as a registered <strong>Meta WhatsApp Tech Provider</strong>, and built <strong>TikTok Follow Exchange (getf4f)</strong> with screenshot proof verification. Dedicated to rapid skill acquisition, clean system design, and immediate engineering impact.
+              High-velocity <strong>Junior Full-Stack & AI Engineer</strong> (~1.5 years intensive building experience) trained through <strong>GIAIC (Governor Sindh Initiative for GenAI & Web3)</strong>, with a proven track record of architecting and deploying scalable web systems, agentic AI pipelines, and multi-tenant platforms solo. Shipped <strong>Botaura</strong> (162+ route multi-tenant RAG SaaS with Meta WhatsApp Tech Provider accreditation), <strong>FlowCreator OS</strong> (autonomous AI video directing engine with locked facial geometry via Google Gemini SDK), <strong>ShieldTools</strong> (zero-server client-side privacy & e-commerce economics platform with PWA), and <strong>Volvelo</strong> (48-route luxury European marketplace with Clerk RBAC sync). Dedicated to rapid skill acquisition, clean system design, and immediate engineering impact.
             </p>
           </section>
 
@@ -87,27 +87,27 @@ export default function ResumePage() {
             </h2>
             <div className="mt-3 space-y-2 text-sm print:text-xs print:space-y-1">
               <p className="text-text print:text-gray-900">
-                <strong className="font-semibold">Languages & Frameworks:</strong> TypeScript, JavaScript (ES6+), Python, Next.js 16 (App Router, Server Components, Server Actions), React 19, FastAPI, Node.js
+                <strong className="font-semibold">Languages & Frameworks:</strong> TypeScript, JavaScript (ES6+), Python, Next.js 16 (App Router, Turbopack, Server Actions), React 19, FastAPI, Node.js, HTML5 Canvas API, jsPDF
               </p>
               <p className="text-text print:text-gray-900">
-                <strong className="font-semibold">AI & Vector Retrieval (RAG):</strong> OpenAI SDK, OpenAI Agent SDK, LangChain, pgvector, Cosine Similarity & BM25 Hybrid Retrieval, Multilingual Embeddings, Chunking Strategies, Prompt Engineering
+                <strong className="font-semibold">AI & Vector Retrieval (RAG):</strong> Google Gemini 2.5/3.6 Flash SDK, Reference Image Anchoring, Temporal Choreography, OpenAI SDK, OpenAI Agent SDK, LangChain, pgvector, BM25 Hybrid Retrieval, Structured JSON Outputs (Zod)
               </p>
               <p className="text-text print:text-gray-900">
-                <strong className="font-semibold">Databases & ORM:</strong> PostgreSQL, Neon DB, Supabase, MongoDB, Prisma ORM, Drizzle ORM
+                <strong className="font-semibold">Databases & ORM:</strong> Neon Serverless PostgreSQL, Prisma ORM 6, Drizzle ORM, Supabase, MongoDB
               </p>
               <p className="text-text print:text-gray-900">
-                <strong className="font-semibold">Cloud & DevOps:</strong> Vercel, Docker, Cloudflare R2, Git & GitHub Actions, Sentry, Hugging Face Spaces
+                <strong className="font-semibold">Cloud & DevOps:</strong> Vercel (Edge & Cron), Docker, Cloudflare R2, AWS S3, Git & GitHub Actions, Sentry, Hugging Face Spaces
               </p>
               <p className="text-text print:text-gray-900">
-                <strong className="font-semibold">Integrations & Third-Party APIs:</strong> WhatsApp Cloud API (Meta Tech Provider), Webhook Orchestration, Stripe Payments, Resend, Sanity Headless CMS
+                <strong className="font-semibold">Integrations & Third-Party APIs:</strong> WhatsApp Cloud API (Meta Tech Provider), Green-API, CallMeBot, Clerk Authentication (Core 3 / RBAC Sync), Stripe Checkout, Resend, Sanity Headless CMS (GROQ)
               </p>
               <p className="text-text print:text-gray-900">
-                <strong className="font-semibold">Architecture & Best Practices:</strong> Multi-Tenant Row-Level Security (RLS), RESTful API Design, JWT Authentication, Responsive UI/UX Design, Performance Optimization (90+ Lighthouse)
+                <strong className="font-semibold">Architecture & Best Practices:</strong> Zero-Knowledge Client Architecture, Multi-Tenant Row-Level Security, Progressive Web Apps (PWA), Answer Engine Optimization (AEO/JSON-LD), Sub-second TTFB
               </p>
             </div>
           </section>
 
-          {/* Featured Projects & Experience */}
+          {/* Featured Systems & Engineering Projects */}
           <section className="mt-6 border-t border-border pt-6 print:border-gray-300 print:pt-4">
             <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-accent print:text-xs print:text-black">
               Featured Systems & Engineering Projects
@@ -123,29 +123,25 @@ export default function ResumePage() {
                 <span className="font-mono text-xs text-muted print:text-gray-600">Founder & Solo Engineer</span>
               </div>
               <p className="mt-1 font-mono text-xs text-muted print:text-[11px] print:text-gray-700">
-                Live: <a href="https://botaura.app" className="underline">https://botaura.app</a> · Architecture: <a href="https://talhaweb.xyz/projects/botaura" className="underline">talhaweb.xyz/projects/botaura</a>
+                Live: <a href="https://botaura.app" className="underline">https://botaura.app</a> · Case Study: <a href="https://talhaweb.xyz/projects/botaura" className="underline">talhaweb.xyz/projects/botaura</a>
               </p>
 
               <ul className="mt-2.5 space-y-1.5 text-sm text-text print:text-xs print:text-gray-900 print:space-y-1">
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Architected and deployed a multi-tenant SaaS platform</strong> from scratch spanning <strong>162+ production routes</strong>, enabling businesses to train custom AI chatbots on proprietary knowledge bases (docs, catalogs, websites) and automate WhatsApp customer sales.</span>
+                  <span><strong>Architected and deployed a multi-tenant SaaS platform</strong> spanning <strong>162+ production routes</strong>, enabling SMBs to train custom AI chatbots on proprietary knowledge bases and automate WhatsApp customer sales.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Implemented an end-to-end Hybrid RAG Pipeline:</strong> Integrated OpenAI embeddings with <code className="font-mono text-xs print:text-black">pgvector</code> cosine similarity and BM25 search, handling multilingual English/Roman-Urdu conversations with automated confidence thresholds and human handoff.</span>
+                  <span><strong>Hybrid RAG Pipeline:</strong> Integrated OpenAI embeddings with <code className="font-mono text-xs print:text-black">pgvector</code> cosine similarity and BM25 search, handling multilingual English/Roman-Urdu conversations with automated confidence thresholds.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Registered as a Meta WhatsApp Tech Provider:</strong> Built a centralized token routing engine by <code className="font-mono text-xs print:text-black">phone_number_id</code>, orchestrating real-time webhooks, message templates, ad attribution, and delivery reconciliations across multiple merchant accounts without exposing per-client secrets.</span>
+                  <span><strong>Meta WhatsApp Tech Provider:</strong> Built centralized token routing engine by <code className="font-mono text-xs print:text-black">phone_number_id</code>, orchestrating real-time webhooks, templates, and ad attribution across merchant accounts without exposing secrets.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Designed Strict Multi-Tenant Isolation:</strong> Enforced server-side tenant resolution using signed JWTs, business UUID cascading, and hashed API keys, preventing cross-tenant data leakage by design.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Engineered Full Commerce Automation:</strong> Implemented zero-code WhatsApp cash-on-delivery (COD) checkout, cart-recovery automations, broadcast marketing campaigns, and a universal Store API for WooCommerce/Shopify sync.</span>
+                  <span><strong>Strict Multi-Tenant Isolation:</strong> Enforced server-side tenant resolution using signed JWTs, UUID cascading, and hashed API keys, preventing cross-tenant leakage by design.</span>
                 </li>
               </ul>
               <p className="mt-2 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
@@ -153,95 +149,123 @@ export default function ResumePage() {
               </p>
             </div>
 
-            {/* TikTok Follow Exchange (getf4f) */}
+            {/* FlowCreator OS */}
             <div className="mt-5 border-t border-border/50 pt-4 print:border-gray-200">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="font-display text-base font-bold text-text print:text-sm print:text-black">
-                  TikTok Follow Exchange (getf4f) — P2P Creator Growth Platform
+                  FlowCreator OS — Autonomous AI Video Directing & CreatorOps Operating System
                 </h3>
-                <span className="font-mono text-xs text-muted print:text-gray-600">Full-Stack Engineer</span>
+                <span className="font-mono text-xs text-muted print:text-gray-600">Lead System Architect</span>
               </div>
               <p className="mt-1 font-mono text-xs text-muted print:text-[11px] print:text-gray-700">
-                Live: <a href="https://f4f-tiktok.vercel.app/" className="underline">https://f4f-tiktok.vercel.app/</a>
+                Live: <a href="https://flow-creator-os.vercel.app/" className="underline">https://flow-creator-os.vercel.app/</a> · Case Study: <a href="https://talhaweb.xyz/projects/flow-creator-os" className="underline">talhaweb.xyz/projects/flow-creator-os</a>
               </p>
               <ul className="mt-2.5 space-y-1.5 text-sm text-text print:text-xs print:text-gray-900 print:space-y-1">
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Architected an organic P2P creator exchange platform</strong> with a 24-hour delayed reciprocal task matching engine to protect creators from TikTok algorithmic shadowbans.</span>
+                  <span><strong>Engineered Autonomous AI Director</strong> using Google Gemini 2.5/3.6 Flash SDK to transform high-level premises into camera-sequenced video production bundles for Google Veo 2 and Sora.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span><strong>Engineered screenshot proof verification</strong> and automated trust scoring with -15 penalty rules for unfollow violations.</span>
+                  <span><strong>Zero Face-Drift Architecture:</strong> Designed Reference Image Anchoring injecting master biometric tokens, and Temporal Choreography isolating single-speaker clips with continuous room-tone match-cuts.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span>Implemented a credit economy with referral bonuses, 48-hour inactivity auto-protection, and admin seed pool cold-start mechanisms.</span>
+                  <span><strong>CreatorOps WhatsApp Automation:</strong> Built an automated PKT time-zoned cron engine tracking 4-platform uploads (YouTube, IG Reels, TikTok, Facebook) with CallMeBot and Green-API alerts.</span>
                 </li>
               </ul>
               <p className="mt-2 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
-                <strong>Tech:</strong> Next.js, TypeScript, Clerk Auth, Tailwind CSS, PostgreSQL, PWA.
+                <strong>Tech:</strong> Next.js 16, React 19, Tailwind CSS v4, Google Gemini Flash, Neon Postgres, Prisma ORM 6, Clerk Auth, Vercel Cron, WhatsApp API.
               </p>
             </div>
 
-            {/* Bait-ul-Kutub */}
+            {/* ShieldTools */}
             <div className="mt-5 border-t border-border/50 pt-4 print:border-gray-200">
-
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="font-display text-base font-bold text-text print:text-sm print:text-black">
-                  Bait-ul-Kutub — Smart Library Management System (LMS)
+                  ShieldTools — Zero-Server Digital Privacy & COD E-Commerce Economics
+                </h3>
+                <span className="font-mono text-xs text-muted print:text-gray-600">Lead Architect & Creator</span>
+              </div>
+              <p className="mt-1 font-mono text-xs text-muted print:text-[11px] print:text-gray-700">
+                Live: <a href="https://tools.talhaweb.xyz/" className="underline">https://tools.talhaweb.xyz/</a> · Case Study: <a href="https://talhaweb.xyz/projects/shield-tools" className="underline">talhaweb.xyz/projects/shield-tools</a>
+              </p>
+              <ul className="mt-2.5 space-y-1.5 text-sm text-text print:text-xs print:text-gray-900 print:space-y-1">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span><strong>100% In-Browser Zero-Knowledge Privacy:</strong> Built DocShield™ using HTML5 Canvas API and jsPDF to watermark confidential national IDs (CNIC/Passports) directly in RAM with $0 backend cost.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span><strong>EcomShield™ COD Unit Economics:</strong> Engineered diagnostic engine isolating reverse courier penalties, packaging waste, and wasted ad spend on COD returns with automated WhatsApp summaries.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span><strong>PWA with Early Prompt Capture:</strong> Injected custom inline head scripts to solve Next.js beforeinstallprompt race conditions, achieving sub-second load times across 22 statically prerendered routes.</span>
+                </li>
+              </ul>
+              <p className="mt-2 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
+                <strong>Tech:</strong> Next.js 16 (App Router + SSG), TypeScript, Tailwind CSS v4, HTML5 Canvas API, jsPDF, PWA Service Worker.
+              </p>
+            </div>
+
+            {/* Volvelo */}
+            <div className="mt-5 border-t border-border/50 pt-4 print:border-gray-200">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="font-display text-base font-bold text-text print:text-sm print:text-black">
+                  Volvelo — Luxury Multi-Tenant European Dropshipping Marketplace
+                </h3>
+                <span className="font-mono text-xs text-muted print:text-gray-600">Full-Stack Architect</span>
+              </div>
+              <p className="mt-1 font-mono text-xs text-muted print:text-[11px] print:text-gray-700">
+                Live: <a href="https://vovelo.vercel.app/" className="underline">https://vovelo.vercel.app/</a> · Case Study: <a href="https://talhaweb.xyz/projects/volvelo" className="underline">talhaweb.xyz/projects/volvelo</a>
+              </p>
+              <ul className="mt-2.5 space-y-1.5 text-sm text-text print:text-xs print:text-gray-900 print:space-y-1">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span><strong>Strict Multi-Tenant Partitioning:</strong> Architected 48-route platform separating customer storefront, merchant atelier portal (/portal), and super-admin hub (/admin) on Neon PostgreSQL via Prisma ORM.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span><strong>Clerk Cloud RBAC Synchronization:</strong> Built bidirectional metadata sync between local database roles and Clerk publicMetadata via updateUserMetadata, eliminating session desync.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span><strong>Multi-Currency Engine:</strong> Implemented real-time dynamic converter (EUR, USD, GBP, PKR) with Zustand persistence and hydration guards, avoiding React 19 SSR hydration mismatches.</span>
+                </li>
+              </ul>
+              <p className="mt-2 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
+                <strong>Tech:</strong> Next.js 16, React 19, TypeScript, Tailwind CSS v4, Neon Postgres, Prisma ORM, Clerk Core 3, Zustand.
+              </p>
+            </div>
+
+            {/* GetF4F */}
+            <div className="mt-5 border-t border-border/50 pt-4 print:border-gray-200">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="font-display text-base font-bold text-text print:text-sm print:text-black">
+                  GetF4F — P2P TikTok Social Growth & Proof Verification Exchange
                 </h3>
                 <span className="font-mono text-xs text-muted print:text-gray-600">Full-Stack Engineer</span>
               </div>
-              <ul className="mt-2 space-y-1 text-sm text-text print:text-xs print:text-gray-900">
-                <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold print:text-black">▹</span>
-                  <span>Modeled relational database architecture in PostgreSQL via Prisma ORM with active loan lifecycles, member tiers, and real-time inventory tracking.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold print:text-black">▹</span>
-                  <span>Integrated OpenAI semantic search enabling natural language book queries and contextual recommendations.</span>
-                </li>
-              </ul>
-              <p className="mt-1.5 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
-                <strong>Tech:</strong> Next.js, TypeScript, Prisma ORM, PostgreSQL, Tailwind CSS, OpenAI API.
+              <p className="mt-1 font-mono text-xs text-muted print:text-[11px] print:text-gray-700">
+                Live: <a href="https://f4f-tiktok.vercel.app/" className="underline">https://f4f-tiktok.vercel.app/</a> · Case Study: <a href="https://talhaweb.xyz/projects/getf4f-tiktok" className="underline">talhaweb.xyz/projects/getf4f-tiktok</a>
               </p>
-            </div>
-
-            {/* AI Humanoid Robotics Platform */}
-            <div className="mt-5 border-t border-border/50 pt-4 print:border-gray-200">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-display text-base font-bold text-text print:text-sm print:text-black">
-                  AI Humanoid Robotics Interactive Platform
-                </h3>
-                <span className="font-mono text-xs text-muted print:text-gray-600">AI & Frontend Engineer</span>
-              </div>
-              <ul className="mt-2 space-y-1 text-sm text-text print:text-xs print:text-gray-900">
+              <ul className="mt-2.5 space-y-1.5 text-sm text-text print:text-xs print:text-gray-900 print:space-y-1">
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span>Visualized ROS 2 publisher-subscriber node graphs, sensor loops, and kinematics principles for interactive learning with embedded OpenAI QA.</span>
+                  <span><strong>Asynchronous 24-Hour Delayed Matching:</strong> Designed an algorithmic queue delaying reciprocal follow-backs by 24–48 hours to evade TikTok mutual-follow anti-spam flags.</span>
                 </li>
-              </ul>
-              <p className="mt-1.5 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
-                <strong>Tech:</strong> Next.js, TypeScript, Python, ROS 2 Architecture Visualizer, OpenAI API, Tailwind CSS.
-              </p>
-            </div>
-
-            {/* The Arqa & Comforty */}
-            <div className="mt-5 border-t border-border/50 pt-4 print:border-gray-200">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-display text-base font-bold text-text print:text-sm print:text-black">
-                  The Arqa & Comforty — Headless E-Commerce Platforms
-                </h3>
-                <span className="font-mono text-xs text-muted print:text-gray-600">Frontend / Full-Stack Engineer</span>
-              </div>
-              <ul className="mt-2 space-y-1 text-sm text-text print:text-xs print:text-gray-900">
                 <li className="flex items-start gap-2">
                   <span className="text-accent font-bold print:text-black">▹</span>
-                  <span>Engineered performant headless storefronts on Sanity CMS with Stripe checkout and persistent global cart state, achieving <strong>90+ Google Lighthouse score</strong>.</span>
+                  <span><strong>AI Heuristic Proof Engine:</strong> Validated screenshot uploads using layout signals (follow button state, handles) paired with a 100-point Trust Score and 5-day peer-reporting grace period.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold print:text-black">▹</span>
+                  <span>Implemented double-entry credit ledger, streak gamification mechanics, and emergency admin kill switches using Drizzle ORM on Neon PostgreSQL.</span>
                 </li>
               </ul>
-              <p className="mt-1.5 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
-                <strong>Tech:</strong> Next.js, Sanity CMS (GROQ), Stripe Checkout, TypeScript, Tailwind CSS.
+              <p className="mt-2 font-mono text-xs text-muted print:text-[10px] print:text-gray-600">
+                <strong>Tech:</strong> Next.js 16, React 19, TypeScript, Tailwind CSS v4, Neon Postgres, Drizzle ORM, Clerk Auth, AWS S3, Resend, PWA.
               </p>
             </div>
           </section>
@@ -260,7 +284,7 @@ export default function ResumePage() {
                   <span className="font-mono text-xs text-muted print:text-gray-600">Ongoing</span>
                 </div>
                 <p className="mt-0.5 text-xs text-muted print:text-[11px] print:text-gray-700">
-                  Comprehensive training & hands-on development in Next.js, TypeScript, Python, FastAPI, OpenAI Agent SDK, RAG pipelines, and Vector Databases.
+                  Comprehensive training & hands-on development in Next.js, TypeScript, Python, FastAPI, OpenAI Agent SDK, Gemini SDK, RAG pipelines, and Vector Databases.
                 </p>
               </div>
               <div className="flex flex-wrap items-baseline justify-between gap-2 pt-1">
@@ -271,13 +295,12 @@ export default function ResumePage() {
               </div>
               <div className="flex flex-wrap items-baseline justify-between gap-2 pt-1">
                 <p>
-                  <strong>Intensive Project-Based Systems Development</strong> — Real-world full-stack & AI applications
+                  <strong>Intensive Project-Based Systems Development</strong> — Real-world production full-stack & AI applications
                 </p>
                 <span className="font-mono text-xs text-muted print:text-gray-600">2022 – Present</span>
               </div>
             </div>
           </section>
-
         </div>
       </Container>
     </main>

@@ -29,6 +29,8 @@ export type Project = {
   stack: string[];
   highlights: string[];
   links: { live?: string; github?: string; caseStudy?: string };
+  image?: string;
+  previewUrl?: string;
   featured?: boolean;
   deepDive?: boolean;
   caseStudy?: CaseStudy;
