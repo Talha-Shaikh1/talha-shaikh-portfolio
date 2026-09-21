@@ -1,6 +1,6 @@
 # MUHAMMAD TALHA SHAIKH
 **Junior Full-Stack & AI Engineer**  
-Karachi, Pakistan · [Talha369852@gmail.com](mailto:Talha369852@gmail.com) · [+92 312 1964939](https://wa.me/923121964939) · [talhaweb.xyz](https://talhaweb.xyz) · [github.com/Talha-Shaikh1](https://github.com/Talha-Shaikh1) · [linkedin.com/in/talha-shaikh](https://linkedin.com/in/talha-shaikh)
+Karachi, Pakistan · [hello@talhaweb.xyz](mailto:hello@talhaweb.xyz) · [+92 312 1964939](https://wa.me/923121964939) · [talhaweb.xyz](https://talhaweb.xyz) · [github.com/Talha-Shaikh1](https://github.com/Talha-Shaikh1) · [linkedin.com/in/talha-shaikh](https://linkedin.com/in/talha-shaikh)
 
 ---
 
@@ -72,5 +72,5 @@ High-velocity **Junior Full-Stack & AI Engineer** (~1.5 years of intensive build
 - **GitHub:** [github.com/Talha-Shaikh1](https://github.com/Talha-Shaikh1)
 - **LinkedIn:** [linkedin.com/in/talha-shaikh](https://linkedin.com/in/talha-shaikh)
 - **Direct WhatsApp:** [+92 312 1964939](https://wa.me/923121964939)
-- **Email:** [Talha369852@gmail.com](mailto:Talha369852@gmail.com)
+- **Email:** [hello@talhaweb.xyz](mailto:hello@talhaweb.xyz)
 

@@ -1,6 +1,6 @@
 import type { Social } from "./types";
 
-export const email = "Talha369852@gmail.com";
+export const email = "hello@talhaweb.xyz";
 
 export const socials: Social[] = [
   { label: "GitHub", href: "https://github.com/Talha-Shaikh1", handle: "@Talha-Shaikh1" },

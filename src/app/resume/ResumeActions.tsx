@@ -16,7 +16,7 @@ export function ResumeActions({ downloadHref }: { downloadHref: string }) {
     try {
       const resumeText = `MUHAMMAD TALHA SHAIKH
 Junior Full-Stack & AI Engineer
-Karachi, Pakistan · Talha369852@gmail.com · +92 312 1964939 · https://talhaweb.xyz · https://github.com/Talha-Shaikh1 · https://linkedin.com/in/talha-shaikh
+Karachi, Pakistan · hello@talhaweb.xyz · +92 312 1964939 · https://talhaweb.xyz · https://github.com/Talha-Shaikh1 · https://linkedin.com/in/talha-shaikh
 
 PROFESSIONAL SUMMARY
 High-velocity Junior Full-Stack & AI Engineer (~1.5 years experience) trained through GIAIC (Governor Sindh Initiative for GenAI & Web3). Mastered Next.js, TypeScript, Python, FastAPI, and OpenAI Agent SDK / RAG. Architected Botaura (multi-tenant RAG chatbot SaaS & Meta WhatsApp Tech Provider) and built TikTok Follow Exchange (getf4f). Proficient in Next.js, TypeScript, Tailwind CSS, Node.js, Python, FastAPI, PostgreSQL, and production RAG pipelines with pgvector.

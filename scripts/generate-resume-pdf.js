@@ -178,7 +178,7 @@ const resumeHtml = `<!DOCTYPE html>
       <div class="title">Junior Full-Stack & AI Engineer</div>
     </div>
     <div class="contact-col">
-      <div>Karachi, Pakistan · <a href="mailto:talhashaikh728@gmail.com">talhashaikh728@gmail.com</a> · +92 312 2843477</div>
+      <div>Karachi, Pakistan · <a href="mailto:hello@talhaweb.xyz">hello@talhaweb.xyz</a> · +92 312 2843477</div>
       <div>
         <a href="https://talhaweb.xyz">talhaweb.xyz</a> · 
         <a href="https://github.com/Talha-Shaikh1">github.com/Talha-Shaikh1</a> · 
