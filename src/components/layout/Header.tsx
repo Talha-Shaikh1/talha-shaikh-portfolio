@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/nav";
 import { ThemeToggle } from "./ThemeToggle";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { cn } from "@/lib/cn";
 
 export function Header() {
@@ -12,8 +13,16 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur print:hidden">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6 sm:px-8">
 
-        <Link href="/" className="font-display text-lg font-semibold text-text">
-          Talha Shaikh<span className="text-accent">.</span>
+        <Link
+          href="/"
+          className="group flex items-center gap-2.5 font-display text-lg font-semibold text-text transition-colors"
+        >
+          <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+            <BrandLogo size={28} className="rounded-lg drop-shadow-sm" />
+          </div>
+          <span className="tracking-tight">
+            Talha Shaikh<span className="text-accent">.</span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
