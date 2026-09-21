@@ -3,7 +3,6 @@ import { BotauraSpotlight } from "@/components/sections/BotauraSpotlight";
 import { Projects } from "@/components/sections/Projects";
 import { Skills } from "@/components/sections/Skills";
 import { ExperienceTimeline } from "@/components/sections/ExperienceTimeline";
-import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { JsonLd } from "@/components/seo/JsonLd";
 
@@ -47,7 +46,6 @@ export default function Home() {
       <Projects />
       <Skills />
       <ExperienceTimeline />
-      <About />
       <Contact />
     </main>
   );

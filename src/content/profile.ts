@@ -1,18 +1,18 @@
 export const profile = {
   name: "Talha Shaikh",
   role: "Junior Full-Stack & AI Engineer",
-  positioning: "Junior Full-Stack & AI Engineer building production systems & intelligent RAG platforms.",
+  positioning: "Junior Full-Stack & AI Engineer building modern web apps, clean APIs & practical AI systems.",
   subtext:
-    "Junior Full-Stack & AI Engineer based in Karachi trained through GIAIC (Governor Sindh Initiative for GenAI & Web3) with ~1.5 years of intensive building. Architected Botaura (Meta WhatsApp Tech Provider), FlowCreator OS (Gemini 3.6 autonomous director), ShieldTools ($0 server privacy suite), and Volvelo (luxury multi-tenant marketplace). Shipping production software with Next.js 16, TypeScript, Python/FastAPI, and Neon PostgreSQL.",
+    "Junior developer based in Karachi, trained through GIAIC (Governor Sindh Initiative for GenAI & Web3). Passionate about shipping fast, user-friendly web apps and practical AI tools with Next.js 16, TypeScript, Python, and Neon PostgreSQL.",
   location: "Karachi, Pakistan",
   status: "Open to Junior Full-Stack & AI Roles",
   resumeHref: "/resume",
   downloadResumeHref: "/Muhammad_Talha_Resume.pdf",
   stats: [
-    { label: "Production Routes", value: "220+" },
+    { label: "Real-World Projects", value: "10+" },
     { label: "Meta Tech Provider", value: "WhatsApp Cloud API" },
-    { label: "AI Directing & RAG", value: "Gemini & pgvector" },
-    { label: "Architecture", value: "Zero-Knowledge & RLS" },
+    { label: "Core Technologies", value: "Next.js & Python" },
+    { label: "Hands-on Experience", value: "~1.5 Years" },
   ],
   about: [
     "I'm a Junior Full-Stack & AI Engineer based in Karachi with ~1.5 years of intensive coding and shipping experience. I developed my core full-stack and AI engineering foundations through GIAIC (Governor Sindh Initiative for GenAI, Web3 & Computing) — mastering Next.js 16, TypeScript, Python, FastAPI, and generative AI agent architectures.",

@@ -31,6 +31,15 @@ export function Header() {
               {l.label}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true }))}
+            className="flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs text-muted hover:border-accent/40 hover:text-text transition-colors"
+            title="Press Cmd+K or Ctrl+K to search"
+          >
+            <span className="text-[11px]">Search</span>
+            <kbd className="rounded bg-bg px-1 font-mono text-[9px] text-muted">⌘K</kbd>
+          </button>
           <ThemeToggle />
         </nav>
 

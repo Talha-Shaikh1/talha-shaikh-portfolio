@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/cn";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CommandPalette } from "@/components/ui/CommandPalette";
 import { SITE } from "@/lib/site";
 import { socials, email } from "@/content/socials";
 import { profile } from "@/content/profile";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <CommandPalette />
       </body>
     </html>
   );
